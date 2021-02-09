@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>SB Admin 2 - Tables</title>
+
+  <!-- Custom fonts for this template -->
+  <link href="/vendor/fontawesome-free//css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this page -->
+  <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <% include ./sidebar %>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <% include ./topbar %>
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid font-16">
+
+          <!-- Page Heading -->
+          <h1 class="h3 mb-2 text-gray-800">보고서관리</h1>
+          <!-- <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p> -->
+          <p class="mb-4">보고서 정보를 관리하는 메뉴 입니다.</p>
+
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">보고서관리 - 등록</h6>
+              <!-- <div class="card-body" style="text-align: center;">
+                <button type="button" class="btn btn-info" id="btnAdd">저장</button>
+                <button type="button" class="btn btn-info" onclick="location.href='/site'">목록</button>
+              </div> -->
+            </div>
+            
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-12">
+              <!-- Tabs -->
+                  <form class="form-horizontal" id="mForm" name="mForm" method="post" action="/report/save">
+                    <input type="hidden" name="itemcnt" value="0">
+                    <div class="card">
+                        <div class="card-body">
+                          <div class="form-group row">                              
+                            <label for="carNm" class="col-sm-2 control-label col-form-label">제목</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="rptTitle" name="rptTitle" value="<%=data.rptTitle%>">
+                            </div>                              
+                          </div>
+                          <div class="form-group row">                              
+                            <label for="carNm" class="col-sm-2 control-label col-form-label">부제목</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="rptSubtitle" name="rptSubtitle" value="<%=data.rptSubtitle%>">
+                            </div>                              
+                          </div>
+                          <div class="form-group row">                              
+                            <label for="carNm" class="col-sm-2 control-label col-form-label">설명</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="rptDesc" name="rptDesc" value="<%=data.rptDesc%>">
+                            </div>                              
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body" style="text-align: right;">              
+                      <a href="#" class="btn btn-primary btn-icon-split" id="btnAdd">
+                        <span class="icon text-white-50">
+                          <i class="fas fa-plus"></i>
+                        </span>
+                        <span class="text">추가</span>
+                      </a>
+                      <a href="#" class="btn btn-danger btn-icon-split" id="btnDel">
+                        <span class="icon text-white-50">
+                          <i class="fas fa-minus"></i>
+                        </span>
+                        <span class="text">삭제</span>
+                      </a>
+                    </div>
+                    
+                    <div class="card">                      
+                        <div class="card-body" id="mcardbody">
+                          <%
+                            var itemnm = "";
+                            var itemtype = "";
+                            var itemlist = "";
+
+                            if(data.itemlist != undefined){
+
+                              for(var i=0; i<data.itemlist.length; i++){
+                                itemnm = data.itemlist[i].itemnm;
+                                itemtype = data.itemlist[i].itemtype;
+                                itemlist = data.itemlist[i].itemlist;                                                            
+                            %>
+                              <div class="form-group row" id="row_<%=i+1%>">
+                                <div class="col-sm-2">
+                                  <input type="text" class="form-control is-invalid" id="itemnm_<%=i+1%>" name="itemnm" value="<%=itemnm%>">
+                                </div>
+                                <div class="col-sm-2">
+                                  <select class="select form-control custom-select" style="width: 100%;" id="itemtype_<%=i+1%>" name="itemtype" onchange="f1(this)">
+                                      <option value="">선택</option>
+                                      <option value="text" <%=itemtype == "text" ? "selected" : ""%>>입력(싱글라인)</option>
+                                      <option value="textarea" <%=itemtype == "textarea" ? "selected" : ""%>>입력(멀티라인)</option>
+                                      <option value="select" <%=itemtype == "select" ? "selected" : ""%>>선택박스</option>
+                                      <option value="checkbox" <%=itemtype == "checkbox" ? "selected" : ""%>>체크박스</option>
+                                      <option value="radio" <%=itemtype == "radio" ? "selected" : ""%>>라디오버튼</option>
+                                  </select>
+                                </div>
+                                <% if(itemlist != undefined){ %>
+                                  <div class='col-sm-1' id='itemsize_<%=i+1%>'>
+                                    <input type='text' class='form-control is-invalid' value="<%=itemlist.length%>" onchange='f2(this.value, "<%=i+1%>")'>
+                                  </div>
+                                  <div class='card' id='card_<%=i%>'>
+                                    <div class='card-body' id='cardbody_<%=i%>'>
+                                    <%
+                                        for(var j=0; j<itemlist.length; j++){
+                                    %>                                  
+                                        <div class='form-group row' id='itemlist_<%=i+1%><%=j+1%>'>
+                                          <div class='col-sm-5' id='itemkey_<%=i+1%><%=j+1%>'>
+                                            KEY<%=j+1%>
+                                            <input type='text' class='form-control is-invalid' name="itemkey<%=i+1%>" value="<%=itemlist[j].key%>">
+                                          </div>                           
+                                          <div class='col-sm-5' id='itemvalue_<%=i+1%><%=j+1%>'>
+                                            VALUE<%=j+1%>
+                                            <input type='text' class='form-control is-invalid' name="itemvalue<%=i+1%>" value="<%=itemlist[j].value%>">
+                                          </div>
+                                        </div>
+                                    <%  
+                                        }
+                                    %>
+                                    </div>
+                                  </div>
+                                <%
+                                  }
+                                %>                                
+                              </div>                                                                    
+                            <% 
+                                }
+                              }
+                            %>
+                        </div>
+                        <div class="border-top">
+                            <div class="card-body" style="text-align: center;">
+                              <button type="button" class="btn btn-info" id="mPreView">미리보기</button>
+                                <button type="submit" class="btn btn-info" id="mSave">저장</button>
+                                <button type="button" class="btn btn-info" onclick="location.href='/report'">목록</button>
+                            </div>
+                        </div>
+                        <div class="border-top">
+                          <div class="card-body" id="rptPrint" style="text-align: center;">
+                            표시할 내용이 없습니다.                                  
+                          </div>
+                        </div>                        
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- ============================================================== -->
+          <!-- Recent comment and chats -->
+          <!-- ============================================================== -->
+      </div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <% include ./footer %>
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap//js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="/js/sb-admin-2.min.js"></script>
+
+  <!-- Page level plugins -->
+  <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="/js/demo/datatables-demo.js"></script>
+
+  <script>
+    $("#btnAdd").click(function(){
+
+      var mcardbody = $("#mcardbody");
+      var nextSeq = $("#mcardbody").children().length + 1;
+      
+      mcardbody.append(
+          " <div class='form-group row' id='row_" + nextSeq + "'>"
+        + "   <div class='col-sm-2'>"
+        + "     <input type='text' class='form-control is-invalid' id='itemnm_" + nextSeq + "' name='itemnm'>"
+        + "   </div>"
+        + "   <div class='col-sm-2'>"
+        + "       <select class='select form-control custom-select' style='width: 100%;' id='itemtype_" + nextSeq + "' name='itemtype' onchange='f1(this)'>"
+        + "       <option value=''>선택</option>"
+        + "       <option value='text'>입력(싱글라인)</option>"
+        + "       <option value='textarea'>입력(멀티라인)</option>"
+        + "       <option value='select'>선택박스</option>"
+        + "       <option value='checkbox'>체크박스</option>"
+        + "       <option value='radio'>라디오버튼</option>"
+        + "     </select>"
+        + "   </div>"
+        + " </div>"        
+      )
+
+      document.mForm.itemcnt.value++;
+    });
+
+    $("#btnDel").click(function(){
+      var form = $("#mcardbody").children('.form-group.row').last();
+      form.remove();
+
+      if(document.mForm.itemcnt.value > 0)
+        document.mForm.itemcnt.value--;
+    });
+
+    function f1(a){
+      
+      var seq = a.id.split('_')[1];
+
+      $("#itemvalue_" + seq).children().remove();
+      $("#itemsize_" + seq).children().remove();
+      $("#card_" + seq).children().remove();
+
+      $("#itemvalue_" + seq).remove();
+      $("#itemsize_" + seq).remove();
+      $("#card_" + seq).remove();
+
+      // $("#row_" + seq)
+
+      switch(a.value){
+        case 'text':          
+        case 'textarea':
+          // $("#row_" + seq).append(        
+          //   "   <div class='col-sm-5' id='itemvalue_" + seq + "'>"
+          //   + "     <input type='text' class='form-control is-invalid'>"
+          //   + "   </div>"
+          // );
+          break;
+        case 'select':
+        case 'checkbox':
+        case 'radio':
+          $("#row_" + seq).append(        
+            "   <div class='col-sm-1' id='itemsize_" + seq + "'>"
+            + "     <input type='text' class='form-control is-invalid' onchange='f2(this.value, " + seq + ")'>"
+            + "   </div>"
+            );          
+        
+          break;
+        default:
+          return;
+      }
+    }
+
+    function f2(cnt, seq){
+
+      $("#card_" + seq).children().remove();
+      $("#card_" + seq).remove();
+
+      console.log($("#itemtype_" + seq).val());
+      
+      $("#row_" + seq).append(
+            "<div class='card' id='card_" + seq + "'>"
+          + " <div class='card-body' id='cardbody_" + seq + "'>"
+          + " </div>"
+          + "</div>"
+      );
+
+      var result = "";
+      var colspan = 5;
+
+      for(var i=1; i<=cnt; i++){
+
+        result += "<div class='form-group row' id='itemlist_" + seq + i + "'>";
+
+        // if($("#itemtype_" + seq).val() == 'select'){
+        //   result += " <div class='col-sm-" + colspan + "' id='itemkey_" + seq + i + "'>"
+        //           + "   KEY" + i + " : "
+        //           + "   <input type='text' class='form-control is-invalid'>"
+        //           + " </div>";
+        // }
+
+        result += " <div class='col-sm-" + colspan + "' id='itemkey_" + seq + i + "'>"
+                  + "   KEY" + i + " : "
+                  + "   <input type='text' class='form-control is-invalid' name='itemkey" + seq + "'>"
+                  + " </div>";
+
+        result += " <div class='col-sm-" + colspan + "' id='itemvalue_" + seq + i + "'>"
+                + "   VALUE" + i + " : "
+                + "   <input type='text' class='form-control is-invalid' name='itemvalue" + seq + "'>"
+                + " </div>"
+                + "</div>";
+      }
+
+      $("#cardbody_" + seq).append(result);
+    }
+
+    $("#mPreView").click(function(){
+      $("#rptPrint").children().remove();
+      $("#rptPrint").html("");
+
+      // 보고서 타이틀 구성
+
+      var divTitle = document.createElement("div");
+      var strong = document.createElement("strong");
+      var font = document.createElement("font");
+      divTitle.className = "card-title";
+      strong.append(font);
+      divTitle.append(strong);
+      font.textContent = $("#rptTitle").val();
+      font.size = "20px";
+
+      var divSubtitle = document.createElement("div");
+      var font2 = document.createElement("font");
+
+      divSubtitle.className = "card-subtitle";
+      font2.textContent = $("#rptSubtitle").val();
+      font2.size = "5px";
+      
+      divSubtitle.append(font2);
+
+      var divDesc = document.createElement("div");
+      var font3 = document.createElement("font");
+
+      divDesc.className = "card-text";
+      font3.textContent = $("#rptDesc").val();      
+      
+      divDesc.append(font3);
+      
+      
+      // 보고서 항목 구성
+
+      var cnt = $("#mcardbody").children().length;      
+      if(cnt == 0){
+        $("#rptPrint").html("표시할 내용이 없습니다.");
+      }
+
+      // alert(cnt);
+      for(var i=1; i<=cnt; i++){
+        // alert(i);
+        var div = document.createElement("div");
+        div.className = "form-group row";
+
+        var label = document.createElement("label");
+        label.className = "col-sm-2 control-label col-form-label";
+        label.textContent = $("#itemnm_" + i).val();
+
+        switch($("#itemtype_" + i).val()){
+
+          case 'text':
+            var divChild = document.createElement("div");
+            divChild.className = "col-sm-5";
+
+            var input = document.createElement("input");
+            input.type = "text";
+            input.className = "form-control is-invalid";
+            
+            divChild.append(input);
+
+            div.append(label);
+            div.append(divChild);
+            
+            break;
+          case 'textarea':
+
+            var divChild = document.createElement("div");
+            divChild.className = "col-sm-10";
+
+            var textarea = document.createElement("textarea");            
+            textarea.className = "form-control is-invalid";
+            
+            divChild.append(textarea);
+
+            div.append(label);
+            div.append(divChild);
+            
+            break;
+          case 'select':        
+            var itemCnt = $("#itemsize_" + i + " input").val();
+            var divChild = document.createElement("div");
+            divChild.className = "col-sm-5";
+
+            var select = document.createElement("select");
+            select.className = "form-control custom-select";
+            select.style.width = "100%";
+
+            for(var j=1; j<=itemCnt; j++){
+              
+              console.log($("#itemkey_" + i + j + " input").val());
+              console.log($("#itemvalue_" + i + j + " input").val());
+              var option = document.createElement("option");
+              option.value = $("#itemkey_" + i + j + " input").val();
+              option.text = $("#itemvalue_" + i + j + " input").val();
+              
+              select.append(option);
+            }
+
+            divChild.append(select);
+            div.append(label);
+            div.append(divChild);
+
+            break;
+
+          case 'checkbox':
+          case 'radio':
+            var itemCnt = $("#itemsize_" + i + " input").val();
+            var divChild = document.createElement("div");
+            divChild.className = "col-sm-10";
+            divChild.style.display = "inline";
+
+            for(var j=1; j<=itemCnt; j++){
+              var label2 = document.createElement("label");
+              label2.className = "col-sm-2 control-label col-form-label";
+              label2.textContent = $("#itemvalue_" + i + j + " input").val();
+
+              var input = document.createElement("input");
+              input.type = $("#itemtype_" + i).val();
+              input.className = "custom-" + $("#itemtype_" + i).val();
+              input.value = $("#itemkey_" + i + j + " input").val();
+              
+              // input.textContent = $("#itemvalue_" + i + j + " input").val();              
+              
+              if(j == 0){
+                input.checked = true;
+              }
+              
+              // label2.append(input);
+              divChild.append(input);
+              divChild.append(label2);
+
+              // divChild.append(input);
+            }
+
+            div.append(label);
+            div.append(divChild);
+
+            break;
+          default:
+            return;
+        }
+        
+        divTitle.append(divSubtitle);
+        divSubtitle.append(divDesc);
+        divDesc.append(div);
+
+        $("#rptPrint").append(divTitle);
+      }
+      
+    });
+    
+  </script>
+
+</body>
+
+</html>

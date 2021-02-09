@@ -1,0 +1,98 @@
+{
+	"rptTitle": "청소상태관리",
+	"rptSubtitle": "객실 청소 상태 점검 리스트",
+	"rptDesc": "각 항목별 청소 상태를 확인해 주십시오.",
+	"itemlist": [{
+			"itemnm": "1. 소등 여부",
+			"itemtype": "select",
+			"itemkeylist": [{
+					"key": "Y",
+					"value": "예"
+				},
+				{
+					"key": "N",
+					"value": "아니오"
+				}
+			]
+		},
+		{
+			"itemnm": "2. 화장실 청소 상태",
+			"itemtype": "checkbox",
+			"itemkeylist": [{
+					"key": "5",
+					"value": "매우양호"
+				},
+				{
+					"key": "4",
+					"value": "양호"
+				},
+				{
+					"key": "3",
+					"value": "보통"
+				},
+				{
+					"key": "2",
+					"value": "불량"
+				},
+				{
+					"key": "1",
+					"value": "매우불량"
+				}
+			]
+		},
+		{
+			"itemnm": "3. 침구류 정리 정돈 상태",
+			"itemtype": "checkbox",
+			"itemkeylist": [{
+					"key": "5",
+					"value": "매우양호"
+				},
+				{
+					"key": "4",
+					"value": "양호"
+				},
+				{
+					"key": "3",
+					"value": "보통"
+				},
+				{
+					"key": "2",
+					"value": "불량"
+				},
+				{
+					"key": "1",
+					"value": "매우불량"
+				}
+			]
+		},
+		{
+			"itemnm": "4. 쓰레기 수거 상태",
+			"itemtype": "radio",
+			"itemkeylist": [{
+					"key": "5",
+					"value": "매우양호"
+				},
+				{
+					"key": "4",
+					"value": "양호"
+				},
+				{
+					"key": "3",
+					"value": "보통"
+				},
+				{
+					"key": "2",
+					"value": "불량"
+				},
+				{
+					"key": "1",
+					"value": "매우불량"
+				}
+			]
+		},
+		{
+			"itemnm": "5. 기타",
+			"itemtype": "입력"
+		}
+	]
+}

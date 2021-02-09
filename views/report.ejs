@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>SB Admin 2 - Tables</title>
+
+  <!-- Custom fonts for this template -->
+  <link href="/vendor/fontawesome-free//css/all.min.css" rel="stylesheet" type="text//css">
+  <link href="https://fonts.googleapis.com//css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this page -->
+  <link href="/vendor/datatables/dataTables.min.css" rel="stylesheet">
+  <!-- <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"> -->
+
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <% include ./sidebar %>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <% include ./topbar %>
+
+        <!-- Begin Page Content -->
+
+        <script src="/qr/qrcode.min.js"></script>
+
+        <div class="container-fluid">
+
+          <!-- Page Heading -->
+          <h1 class="h3 mb-2 text-gray-800">보고서관리</h1>
+          <!-- <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p> -->
+          <p class="mb-4">보고서 정보를 관리하는 메뉴 입니다.</p>
+
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-primary">보고서관리 - 목록</h6>
+              <!-- <div class="card-body" style="text-align: center;"> -->
+              <button type="button" class="btn btn-info" id="btnRegi">등록</button>
+              <!-- </div>               -->
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>No</th>                                            
+                      <th>사업장코드</th>
+                      <th>사업장명</th>
+                      <th>보고서코드</th>
+                      <th>보고서명</th>
+                      <th>부제</th>
+                      <th>설명</th>
+                      <th>QR</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>No</th>                                            
+                      <th>사업장코드</th>
+                      <th>사업장명</th>
+                      <th>보고서코드</th>
+                      <th>보고서명</th>
+                      <th>부제</th>
+                      <th>설명</th>
+                      <th>QR</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>                    
+                    <tr>
+                      <td>1</td>
+                      <td>S0001</td>
+                      <td>한화데이터센터</td>
+                      <td>R202011002</td>
+                      <td>요청사항접수</td>
+                      <td>요청사항 관리 보고서</td>
+                      <td>호텔 제반 서비스 접수</td>
+                      <td>
+                        <div id="qrcode_1" data-toggle="modal" data-target="#myQrModal"></div>
+                        <script>
+                          var qrcode = new QRCode(document.getElementById("qrcode_1"), {
+                            text: window.location.href + "/report/form?rptType=A",
+                            width: 30,
+                            height: 30,
+                            colorDark : "#000000",
+                            colorLight : "#ffffff",
+                            correctLevel : QRCode.CorrectLevel.H
+                          });
+                        </script>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>S0002</td>
+                      <td>한화리조트(수안보)</td>
+                      <td>R202011003</td>
+                      <td>청소상태관리</td>
+                      <td>객실 청소 상태 관리</td>
+                      <td></td>
+                      <td>                        
+                        <div id="qrcode_2" data-toggle="modal" data-target="#myQrModal"></div>
+                        <script>
+                          var qrcode = new QRCode(document.getElementById("qrcode_2"), {
+                            text: window.location.href + "/report/form?rptType=B",
+                            width: 30,
+                            height: 30,
+                            colorDark : "#000000",
+                            colorLight : "#ffffff",
+                            correctLevel : QRCode.CorrectLevel.H
+                          });
+                        </script>
+                      </td>                      
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <% include ./footer %>
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap//js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="/js/sb-admin-2.min.js"></script>
+
+  <!-- Page level plugins -->
+  <script src="/vendor/datatables/dataTables.min.js"></script>
+  <!-- <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script> -->
+
+  <!-- Page level custom scripts -->
+  <script src="/js/demo/datatables-demo.js"></script>
+
+  <script>
+
+    $("#qrcode_1 > img, #qrcode_2 > img").css({"margin":"auto"});
+
+    $("#btnRegi").click(function(){
+      location.href = '/report/form';
+    });
+
+    var table = $("#dataTable").DataTable();    
+
+    $(table.table().container()).on( 'click', 'td', function () {
+      var row = table.row( this );
+      var column = table.column( this );
+      var cell = table.cell( this );
+
+      var idx = row.index() + 1;
+      
+      if(column.index() != 7){
+        switch(row.data()["4"]){
+          case "요청사항접수":
+            location.href = "/report/form?rptCd=A";
+          break;
+          case "청소상태관리":
+            location.href = "/report/form?rptCd=B";
+          break;
+        }
+      }else{
+
+        $("#show_qrcode").children().remove();
+        $("#myQrModal .modal-title").text(row.data()["4"]);
+
+        new QRCode(document.getElementById("show_qrcode"), {
+                            text: $("#qrcode_" + idx).attr('title'),
+                            width: 125,
+                            height: 125,
+                            colorDark : "#000000",
+                            colorLight : "#ffffff",
+                            correctLevel : QRCode.CorrectLevel.H
+                          });
+
+        $("#show_qrcode > img").css({"margin":"auto"});
+      }
+      
+
+      // switch(row.data()["6"]){
+      //   case "요청사항접수":
+      //     location.href = "/report/form?rptCd=A";
+      //   break;
+      //   case "청소상태관리":
+      //     location.href = "/report/form?rptCd=B";
+      //   break;
+      // }
+    } );
+  </script>
+
+  <!-- QR 눌렀을 때 표시 -->
+  <div class="modal fade" id="myQrModal" role="dialog"> <!-- 사용자 지정 부분① : id명 -->
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"></h4> <!-- 사용자 지정 부분② : 타이틀 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+        </div>
+        <div class="modal-body">
+         <!-- <p>여기에 필요한 텍스트 메시지 넣기</p>    // 사용자 지정 부분③ : 텍스트 메시지 -->
+          <div id="show_qrcode">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
