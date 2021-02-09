@@ -107,14 +107,14 @@
                           <%
                             var itemnm = "";
                             var itemtype = "";
-                            var itemlist = "";
+                            var itemkeylist = "";
 
                             if(data.itemlist != undefined){
 
                               for(var i=0; i<data.itemlist.length; i++){
                                 itemnm = data.itemlist[i].itemnm;
                                 itemtype = data.itemlist[i].itemtype;
-                                itemlist = data.itemlist[i].itemlist;                                                            
+                                itemkeylist = data.itemlist[i].itemkeylist;
                             %>
                               <div class="form-group row" id="row_<%=i+1%>">
                                 <div class="col-sm-2">
@@ -130,23 +130,23 @@
                                       <option value="radio" <%=itemtype == "radio" ? "selected" : ""%>>라디오버튼</option>
                                   </select>
                                 </div>
-                                <% if(itemlist != undefined){ %>
+                                <% if(itemkeylist != undefined){ %>
                                   <div class='col-sm-1' id='itemsize_<%=i+1%>'>
-                                    <input type='text' class='form-control is-invalid' value="<%=itemlist.length%>" onchange='f2(this.value, "<%=i+1%>")'>
+                                    <input type='text' class='form-control is-invalid' value="<%=itemkeylist.length%>" onchange='f2(this.value, "<%=i+1%>")'>
                                   </div>
                                   <div class='card' id='card_<%=i%>'>
                                     <div class='card-body' id='cardbody_<%=i%>'>
                                     <%
-                                        for(var j=0; j<itemlist.length; j++){
+                                        for(var j=0; j<itemkeylist.length; j++){
                                     %>                                  
-                                        <div class='form-group row' id='itemlist_<%=i+1%><%=j+1%>'>
+                                        <div class='form-group row' id='itemkeylist_<%=i+1%><%=j+1%>'>
                                           <div class='col-sm-5' id='itemkey_<%=i+1%><%=j+1%>'>
                                             KEY<%=j+1%>
-                                            <input type='text' class='form-control is-invalid' name="itemkey<%=i+1%>" value="<%=itemlist[j].key%>">
+                                            <input type='text' class='form-control is-invalid' name="itemkey<%=i+1%>" value="<%=itemkeylist[j].key%>">
                                           </div>                           
                                           <div class='col-sm-5' id='itemvalue_<%=i+1%><%=j+1%>'>
                                             VALUE<%=j+1%>
-                                            <input type='text' class='form-control is-invalid' name="itemvalue<%=i+1%>" value="<%=itemlist[j].value%>">
+                                            <input type='text' class='form-control is-invalid' name="itemvalue<%=i+1%>" value="<%=itemkeylist[j].value%>">
                                           </div>
                                         </div>
                                     <%  
