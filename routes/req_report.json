@@ -1,22 +1,22 @@
 {
-	"rptTitle": "요청사항접수",
-	"rptSubtitle": "고객 요청사항 접수",
-	"rptDesc": "객실 내 비품 요청, 청결 상태 등 서비스 이용 시 필요 및 불편 사항을 가감없이 기재해 주십시오.",
+	"RPTNM": "요청사항접수",
+	"RPTSUBNM": "고객 요청사항 접수",
+	"DESC": "객실 내 비품 요청, 청결 상태 등 서비스 이용 시 필요 및 불편 사항을 가감없이 기재해 주십시오.",
 	"itemlist": [{			
-			"itemnm": "제목",
-			"itemtype": "text"
+			"ITEMNM": "제목",
+			"ITEMTYP": "text"
 		},
 		{
-			"itemnm": "내용",
-			"itemtype": "textarea"
+			"ITEMNM": "내용",
+			"ITEMTYP": "textarea"
 		},
 		{
-			"itemnm": "요청자",
-			"itemtype": "text"
+			"ITEMNM": "요청자",
+			"ITEMTYP": "text"
 		},
 		{
-			"itemnm": "연락처",
-			"itemtype": "text"
+			"ITEMNM": "연락처",
+			"ITEMTYP": "text"
 		}
 	]
 }

@@ -86,20 +86,26 @@
                       <th>QR</th>
                     </tr>
                   </tfoot>
-                  <tbody>                    
-                    <tr id="row-1" onclick="rowClick(this)">
-                      <td>1</td>
-                      <td>S0001</td>
-                      <td>한화데이터센터</td>
-                      <td class="rptCd">R202011002</td>
-                      <td>요청사항접수</td>
-                      <td>요청사항 관리 보고서</td>
-                      <td>호텔 제반 서비스 접수</td>
+                  <tbody>
+                    <%
+                      
+                      for(var i=0; i<data.length; i++){                    
+                        console.log(data[i].RPTCD); 
+                    %>
+                    <tr id="row-<%=i+1%>" onclick="rowClick(this)">
+                      <td><%=i+1%></td>
+                      <!-- <td><%=data[i].SITECD == undefined ? '' : data[i].SITECD%></td> -->
+                      <td><%=data[i].SITECD%></td>
+                      <td><%=data[i].SITENM%></td>
+                      <td class="rptCd"><%=data[i].RPTCD%></td>
+                      <td><%=data[i].RPTNM%></td>
+                      <td><%=data[i].RPTSUBNM%></td>
+                      <td><%=data[i].DESC%></td>
                       <td>
-                        <div id="qrcode_1" data-toggle="modal" data-target="#myQrModal"></div>
+                        <div id="qrcode_<%=i+1%>" data-toggle="modal" data-target="#myQrModal"></div>
                         <script>
-                          var qrcode = new QRCode(document.getElementById("qrcode_1"), {
-                            text: window.location.href + "/report/form?rptType=A",
+                          var qrcode = new QRCode(document.getElementById("qrcode_<%=i+1%>"), {
+                            text: window.location.href + "/report/form?rptCd=<%=data[i].RPTCD%>",
                             width: 30,
                             height: 30,
                             colorDark : "#000000",
@@ -109,28 +115,7 @@
                         </script>
                       </td>
                     </tr>
-                    <tr id="row-2" onclick="rowClick(this)">
-                      <td>2</td>
-                      <td>S0002</td>
-                      <td>한화리조트(수안보)</td>
-                      <td class="rptCd">R202011003</td>
-                      <td>청소상태관리</td>
-                      <td>객실 청소 상태 관리</td>
-                      <td></td>
-                      <td>                        
-                        <div id="qrcode_2" data-toggle="modal" data-target="#myQrModal"></div>
-                        <script>
-                          var qrcode = new QRCode(document.getElementById("qrcode_2"), {
-                            text: window.location.href + "/report/form?rptType=B",
-                            width: 30,
-                            height: 30,
-                            colorDark : "#000000",
-                            colorLight : "#ffffff",
-                            correctLevel : QRCode.CorrectLevel.H
-                          });
-                        </script>
-                      </td>                      
-                    </tr>
+                    <% } %>                    
                     <form name="mForm" method="post" action="/report/form">
                       <input type="hidden" name="rptCd">
                     </form>

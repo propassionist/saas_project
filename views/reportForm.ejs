@@ -63,25 +63,30 @@
                 <div class="col-md-12">
               <!-- Tabs -->
                   <form class="form-horizontal" id="mForm" name="mForm" method="post" action="/report/save">
+                    <%
+                      console.log(data);
+                      console.log(data.RPTCD);
+                    %>
+                    <input type="hidden" name="rptCd" value="<%=data.RPTCD%>">
                     <input type="hidden" name="itemcnt" value="0">
                     <div class="card">
                         <div class="card-body">
                           <div class="form-group row">                              
                             <label for="carNm" class="col-sm-2 control-label col-form-label">제목</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="rptTitle" name="rptTitle" value="<%=data.rptTitle%>">
+                                <input type="text" class="form-control" id="rptTitle" name="rptTitle" value="<%=data.RPTNM%>">
                             </div>                              
                           </div>
                           <div class="form-group row">                              
                             <label for="carNm" class="col-sm-2 control-label col-form-label">부제목</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="rptSubtitle" name="rptSubtitle" value="<%=data.rptSubtitle%>">
+                                <input type="text" class="form-control" id="rptSubtitle" name="rptSubtitle" value="<%=data.RPTSUBNM%>">
                             </div>                              
                           </div>
                           <div class="form-group row">                              
                             <label for="carNm" class="col-sm-2 control-label col-form-label">설명</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="rptDesc" name="rptDesc" value="<%=data.rptDesc%>">
+                                <input type="text" class="form-control" id="rptDesc" name="rptDesc" value="<%=data.DESC%>">
                             </div>                              
                           </div>
                         </div>
@@ -109,11 +114,13 @@
                             var itemtype = "";
                             var itemkeylist = "";
 
+                            console.log(data);
+
                             if(data.itemlist != undefined){
 
                               for(var i=0; i<data.itemlist.length; i++){
-                                itemnm = data.itemlist[i].itemnm;
-                                itemtype = data.itemlist[i].itemtype;
+                                itemnm = data.itemlist[i].ITEMNM;
+                                itemtype = data.itemlist[i].ITEMTYP;
                                 itemkeylist = data.itemlist[i].itemkeylist;
                             %>
                               <div class="form-group row" id="row_<%=i+1%>">
@@ -130,7 +137,10 @@
                                       <option value="radio" <%=itemtype == "radio" ? "selected" : ""%>>라디오버튼</option>
                                   </select>
                                 </div>
-                                <% if(itemkeylist != undefined){ %>
+                                <% if(itemkeylist != undefined && itemkeylist.length > 0){ %>
+                                  <%
+                                    console.log(itemkeylist);
+                                  %>
                                   <div class='col-sm-1' id='itemsize_<%=i+1%>'>
                                     <input type='text' class='form-control is-invalid' value="<%=itemkeylist.length%>" onchange='f2(this.value, "<%=i+1%>")'>
                                   </div>
@@ -142,11 +152,11 @@
                                         <div class='form-group row' id='itemkeylist_<%=i+1%><%=j+1%>'>
                                           <div class='col-sm-5' id='itemkey_<%=i+1%><%=j+1%>'>
                                             KEY<%=j+1%>
-                                            <input type='text' class='form-control is-invalid' name="itemkey<%=i+1%>" value="<%=itemkeylist[j].key%>">
+                                            <input type='text' class='form-control is-invalid' name="itemkey<%=i+1%>" value="<%=itemkeylist[j].KEY%>">
                                           </div>                           
                                           <div class='col-sm-5' id='itemvalue_<%=i+1%><%=j+1%>'>
                                             VALUE<%=j+1%>
-                                            <input type='text' class='form-control is-invalid' name="itemvalue<%=i+1%>" value="<%=itemkeylist[j].value%>">
+                                            <input type='text' class='form-control is-invalid' name="itemvalue<%=i+1%>" value="<%=itemkeylist[j].VALUE%>">
                                           </div>
                                         </div>
                                     <%  
@@ -223,6 +233,19 @@
   <script src="/js/demo/datatables-demo.js"></script>
 
   <script>
+
+    // var submitAction = function() {
+    //     /* do something with Error */
+    //     console.log('weg');
+    //     $('form').submit();
+    //     return false;
+    // };
+    // $('form').bind('submit', submitAction);
+
+    // $('#mSave').click(function(){
+    //   submitAction();
+    // });
+    
     $("#btnAdd").click(function(){
 
       var mcardbody = $("#mcardbody");

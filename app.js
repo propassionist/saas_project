@@ -55,7 +55,8 @@ var pool  = mysql.createPool({
   password        : 'hwhnr123!@#',
   database        : 'HWHNR',
   connectionLimit : 50,
-  queueLimit: 0
+  queueLimit: 0,
+  multipleStatements: true
 });
  
 /*var mssql = require("mssql");
