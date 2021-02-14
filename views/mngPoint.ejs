@@ -19,8 +19,8 @@
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
   <!-- Custom styles for this page -->
-  <link href="vendor/datatables/dataTables.min.css" rel="stylesheet">
-  <!-- <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"> -->
+  <!-- <link href="vendor/datatables/dataTables.min.css" rel="stylesheet"> -->
+  <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -60,82 +60,77 @@
               <button type="button" class="btn btn-info" id="btnRegi">등록</button>
               <!-- </div>               -->
             </div>
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
-                  <thead>
-                    <tr>
-                      <th>No</th>                                            
-                      <th>사업장코드</th>
-                      <th>사업장명</th>
-                      <th>관리포인트코드</th>
-                      <th>관리포인트</th>
-                      <th>관리포인트명</th>                      
-                      <th>비고</th>
-                      <th>QR</th>
-                    </tr>
-                  </thead>
-                  <tfoot>
-                    <tr>
-                      <th>No</th>                                            
-                      <th>사업장코드</th>
-                      <th>사업장명</th>
-                      <th>관리포인트코드</th>
-                      <th>관리포인트</th>
-                      <th>관리포인트명</th>
-                      <th>비고</th>               
-                      <th>QR</th>
-                    </tr>
-                  </tfoot>
-                  <tbody>                    
-                    <tr>
-                      <td>1</td>
-                      <td>S0001</td>
-                      <td>한화데이터센터</td>
-                      <td>M2020110001</td>
-                      <td>로비</td>
-                      <td>요청사항 관리 관리포인트</td>
-                      <td>데이터센터 VOC 접수</td>
-                      <td>
-                        <div id="qrcode_1" data-toggle="modal" data-target="#myQrModal"></div>
-                        <script>
-                          var qrcode = new QRCode(document.getElementById("qrcode_1"), {
-                            text: encodeURI("http://10.27.2.49:3000/report/form?rptType=A&mngPointCd=M2020110001&mngPointName=로비"),
-                            width: 30,
-                            height: 30,
-                            colorDark : "#000000",
-                            colorLight : "#ffffff",
-                            correctLevel : QRCode.CorrectLevel.H
-                          });
-                        </script>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>S0002</td>
-                      <td>한화리조트(수안보)</td>                      
-                      <td>M2020110002</td>
-                      <td>202호</td>
-                      <td>청소상태관리</td>                      
-                      <td></td>
-                      <td>                        
-                        <div id="qrcode_2" data-toggle="modal" data-target="#myQrModal"></div>
-                        <script>
-                          var qrcode = new QRCode(document.getElementById("qrcode_2"), {
-                            text: encodeURI("http://10.27.2.49:3000/report/form?rptType=B&mngPointCd=M2020110002&mngPointName=202호"),
-                            width: 30,
-                            height: 30,
-                            colorDark : "#000000",
-                            colorLight : "#ffffff",
-                            correctLevel : QRCode.CorrectLevel.H
-                          });
-                        </script>
-                      </td>                      
-                    </tr>
-                  </tbody>
-                </table>
+            <form action="/mngPoint/form" method="post" name="mForm">
+              <input type="hidden" name="rowIdx">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>사업장코드</th>
+                        <th>사업장명</th>
+                        <th>관리포인트코드</th>
+                        <th>관리포인트</th>
+                        <th>비고</th>
+                        <th>보고서</th>
+                        <th>QR</th>
+                      </tr>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <th>No</th>
+                        <th>사업장코드</th>
+                        <th>사업장명</th>
+                        <th>관리포인트코드</th>
+                        <th>관리포인트</th>
+                        <th>비고</th>
+                        <th>보고서</th>
+                        <th>QR</th>
+                      </tr>
+                    </tfoot>
+                    <tbody>
+                      <%
+                      for(var i=0; i<data.length; i++){
+                      %>
+                      <tr id="row-<%=i+1%>">
+                        <input type="hidden" name="bussCd" value="<%=data[i].BUSSCD%>">
+                        <input type="hidden" name="siteCd" value="<%=data[i].SITECD%>">
+                        <input type="hidden" name="mngPointCd" value="<%=data[i].MNGPOINTCD%>">
+                        <input type="hidden" name="rptCd" value="<%=data[i].RPTCD%>">
+
+                        <td>1</td>
+                        <td><%=data[i].SITECD%></td>
+                        <td><%=data[i].SITENM%></td>
+                        <td class="mngPointCd" onclick="rowClick(<%=i%>)"><%=data[i].MNGPOINTCD%></td>
+                        <td class="mngPointNm" onclick="rowClick(<%=i%>)"><%=data[i].MNGPOINTNM%></td>
+                        <td><%=data[i].REMARK%></td>
+                        <td class="rptNm"><%=data[i].RPTNM%></td>
+                        <td>
+                          <div id="qrcode_<%=i+1%>" data-toggle="modal" data-target="#myQrModal"></div>
+                          <script>
+                            var qrcode = new QRCode(document.getElementById("qrcode_<%=i+1%>"), {
+                              // text: encodeURI(window.location.href + "/report/form?rptCd=A&mngPointCd=M2020110001&mngPointName=로비"),
+                              // text: encodeURI(window.location.href + "/view?bussCd=<%=data[i].BUSSCD%>&rptCd=<%=data[i].RPTCD%>&mngPointCd=<%=data[i].MNGPOINTCD%>&mngPointNm=<%=data[i].MNGPOINTNM%>"),
+                              text: encodeURI(window.location.protocol + "//" + window.location.hostname + ":" + window.location.port
+                                + "/report/view?bussCd=<%=data[i].BUSSCD%>&rptCd=<%=data[i].RPTCD%>&mngPointCd=<%=data[i].MNGPOINTCD%>&mngPointNm=<%=data[i].MNGPOINTNM%>"),
+                              width: 30,
+                              height: 30,
+                              colorDark : "#000000",
+                              colorLight : "#ffffff",
+                              correctLevel : QRCode.CorrectLevel.H
+                            });
+                          </script>
+                        </td>
+                        <%
+                        }
+                        %>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
+            </form>
           </div>
 
         </div>
@@ -157,71 +152,6 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  
-
-  <!-- Bootstrap core JavaScript-->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Core plugin JavaScript-->
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-  <!-- Custom scripts for all pages-->
-  <script src="js/sb-admin-2.min.js"></script>
-
-  <!-- Page level plugins -->
-  <script src="vendor/datatables/dataTables.min.js"></script>
-  <!-- <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script> -->
-
-  <!-- Page level custom scripts -->
-  <script src="js/demo/datatables-demo.js"></script>
-
-  <script>
-
-    $("#qrcode_1 > img, #qrcode_2 > img").css({"margin":"auto"});
-
-    $("#btnRegi").click(function(){
-      location.href = '/mngPointForm';
-    });
-
-    var table = $("#dataTable").DataTable();    
-
-    $(table.table().container()).on( 'click', 'td', function () {
-      var row = table.row( this );
-      var column = table.column( this );
-      var cell = table.cell( this );
-
-      var idx = row.index() + 1;
-      
-      if(column.index() == 7){      
-
-        $("#show_qrcode").children().remove();
-        $("#myQrModal .modal-title").text(row.data()["4"]);
-
-        new QRCode(document.getElementById("show_qrcode"), {
-                            text: $("#qrcode_" + idx).attr('title'),
-                            width: 125,
-                            height: 125,
-                            colorDark : "#000000",
-                            colorLight : "#ffffff",
-                            correctLevel : QRCode.CorrectLevel.H
-                          });
-
-        $("#show_qrcode > img").css({"margin":"auto"});
-      }
-      
-
-      // switch(row.data()["6"]){
-      //   case "요청사항접수":
-      //     location.href = "/reportForm?rptCd=A";
-      //   break;
-      //   case "청소상태관리":
-      //     location.href = "/reportForm?rptCd=B";
-      //   break;
-      // }
-    } );
-  </script>
-
   <!-- QR 눌렀을 때 표시 -->
   <div class="modal fade" id="myQrModal" role="dialog"> <!-- 사용자 지정 부분① : id명 -->
     <div class="modal-dialog modal-dialog-centered modal-sm">
@@ -242,6 +172,65 @@
       </div>
     </div>
   </div>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin-2.min.js"></script>
+
+  <!-- Page level plugins -->
+  <!-- <script src="vendor/datatables/dataTables.min.js"></script> -->
+  <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="js/demo/datatables-demo.js"></script>
+
+  <script>
+
+    <% for(var i=0; i<data.length; i++){ %>
+      $("#qrcode_<%=i+1%> > img").css({"margin":"auto"});
+    <% } %>
+
+    function rowClick(rowIdx){
+      var f = document.mForm;
+
+      // f.rptCd.value = document.querySelector("#" + obj.id + " .rptCd").textContent;
+      f.rowIdx.value = rowIdx;
+      
+      document.mForm.submit();
+    }
+
+    $("#btnRegi").click(function(){
+      location.href = '/mngPoint/form';
+      // location.href = '/mngPointForm';
+    });
+
+    $("div[id*=qrcode]").click(function(e){
+      var idx = this.id.split("_")[1];
+
+      $("#show_qrcode").children().remove();
+      var temp = $("#myQrModal .modal-title").text("[" + document.querySelector("#row-" + idx + " .mngPointNm").textContent + "]\n" + document.querySelector("#row-" + idx + " .rptNm").textContent);
+      temp.html(temp.html().replace(/\n/g, '<br/>'));
+
+      console.log($("#qrcode_" + idx).attr('title'));
+
+      new QRCode(document.getElementById("show_qrcode"), {
+                          text: $("#qrcode_" + idx).attr('title'),
+                          width: 125,
+                          height: 125,
+                          colorDark : "#000000",
+                          colorLight : "#ffffff",
+                          correctLevel : QRCode.CorrectLevel.H
+                        });
+
+      $("#show_qrcode > img").css({"margin":"auto"});
+    });
+  </script>
 
 </body>
 

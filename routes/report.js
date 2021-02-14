@@ -7,10 +7,12 @@ var mysql = require('mysql');
 router.get('/', function (req, res, next) {
 
   var db = req.con;
+  // var bussCd = req.session.busscd;
+  var bussCd = 'B000000001';
 
   var query = db.query("SELECT * FROM SAS_REPORT_MST WHERE BUSSCD = ?"
     // , [req.session.busscd], function (error, results, fields) {
-    , ['B000000000'], function (error, results, fields) {
+    , ['B000000001'], function (error, results, fields) {
       if (error) {
         console.log(error);
         throw error;
@@ -25,7 +27,7 @@ router.get('/', function (req, res, next) {
 
 });
 
-router.get('/form', function (req, res, next) {
+router.get('/formaa', function (req, res, next) {
 
   var db = req.con;
   var form = "";
@@ -50,23 +52,79 @@ router.get('/form', function (req, res, next) {
 
 });
 
-router.post('/formaa', function (req, res, next) {
+router.get('/form', function (req, res, next) {
 
+  res.render('reportForm', { data: "" });
+
+});
+
+router.post('/delete', function (req, res, next) {
+
+  var db = req.con;
+  // var bussCd = req.session.busscd;
+  // var siteCd = req.session.sitecd;
+  var bussCd = 'B000000001';
+  // var siteCd = 'S0001';
+  var rptCd = req.body.rptCd; 
+
+  var query = db.query("DELETE FROM SAS_REPORT_MST WHERE BUSSCD = ? AND RPTCD = ? "
+    , [bussCd, rptCd], function (error, results, fields) {
+      if (error) {
+        console.log(error);
+        throw error;
+      }
+
+      console.log(query.sql);
+      console.log('deleted ' + results.affectedRows + ' rows');
+
+      query = db.query("DELETE FROM SAS_ITEM_MST WHERE RPTCD = ? "
+        , [rptCd], function (error, results, fields) {
+          if (error) {
+            console.log(error);
+            throw error;
+          }
+
+          console.log(query.sql);
+          console.log('deleted ' + results.affectedRows + ' rows');
+
+          query = db.query("DELETE FROM SAS_ITEM_DTL WHERE RPTCD = ? "
+            , [rptCd], function (error, results, fields) {
+              if (error) {
+                console.log(error);
+                throw error;
+              }
+
+              console.log(query.sql);
+              console.log('deleted ' + results.affectedRows + ' rows');
+
+              res.redirect("/report");
+
+            });
+        });
+    });
+
+});
+
+router.get('/view', function (req, res, next) {
   var db = req.con;
   var form = "";
   var mngPoint = "";
   var data = "";
+  // var bussCd = req.session.busscd;
+  // var rowIdx = req.body.rowIdx;
+  var bussCd = req.query.bussCd;
+  var rptCd = req.query.rptCd;
 
-  mngPoint = {
+  var mngPoint = {
     code: req.query.mngPointCd,
-    name: req.query.mngPointName
+    name: req.query.mngPointNm
   };
 
   var query = db.query("SELECT * \n" +
-    "FROM SAS_REPORT_MST \n" +
+    "FROM SAS_REPORT_MST A \n" +
     "WHERE BUSSCD = ? AND RPTCD = ?"
     // , [req.session.busscd, req.body.rptCd], function (error, results, fields) {
-    , ['B000000000', req.body.rptCd], function (error, results, fields) {
+    , [bussCd, rptCd], function (error, results, fields) {
       if (error) {
         console.log(error);
         throw error;
@@ -84,9 +142,9 @@ router.post('/formaa', function (req, res, next) {
       query = db.query("SELECT A.ITEMCD, A.ITEMNM, A.ITEMTYP \n" +
         "FROM SAS_ITEM_MST A \n" +
         "WHERE A.BUSSCD = ? AND A.RPTCD = ? \n" +
-        "ORDER BY A.ITEMCD"
+        "ORDER BY A.SORTSEQ"
         // , [req.session.busscd, req.body.rptCd], function (error, results, fields) {
-        , ['B000000000', req.body.rptCd], function (error, results, fields) {
+        , [bussCd, rptCd], function (error, results, fields) {
           if (error) {
             console.log(error);
             throw error;
@@ -98,10 +156,10 @@ router.post('/formaa', function (req, res, next) {
           async.forEachOf(results, function (item, key, callback) {
             query = db.query("SELECT A.SEQ, A.KEY, A.VALUE \n" +
               "FROM SAS_ITEM_DTL A \n" +
-              "WHERE A.BUSSCD = ? AND A.ITEMCD = ? \n" +
-              "ORDER BY A.SEQ"
+              "WHERE A.RPTCD = ? AND A.ITEMCD = ? \n" +
+              "ORDER BY A.SORTSEQ"
               // , [req.session.busscd, req.body.rptCd], function (error, results, fields) {
-              , ['B000000000', item.ITEMCD], function (error, results, fields) {
+              , [rptCd, item.ITEMCD], function (error, results, fields) {
                 if (error) {
                   console.log(error);
                   throw error;
@@ -112,10 +170,92 @@ router.post('/formaa', function (req, res, next) {
                 data.itemlist[key].itemkeylist = results;
 
                 callback();
-              }).then(function () {
-                res.render('reportForm', { data: data, mngPoint: mngPoint });
-              });
+              })
+          }, function (err) {
+            res.render('./form/report', { data: data, mngPoint: mngPoint });
+            // res.render('reportForm', { data: data, mngPoint: mngPoint });
+          });
 
+        });
+
+      // if (req.body.rptCd == 'R202011002') {
+      //   form = require("./req_report.json");
+      // } else if (req.body.rptCd == 'R202011003') {
+      //   form = require("./clean_report.json");
+      // }
+
+    });
+});
+
+router.post('/form', function (req, res, next) {
+
+  var db = req.con;
+  var form = "";
+  var mngPoint = "";
+  var data = "";
+  // var bussCd = req.session.busscd;
+  var rowIdx = req.body.rowIdx;
+  var bussCd = req.body.bussCd[rowIdx];
+  var rptCd = req.body.rptCd[rowIdx];
+
+  mngPoint = {
+    code: req.query.mngPointCd,
+    name: req.query.mngPointName
+  };
+
+  var query = db.query("SELECT * \n" +
+    "FROM SAS_REPORT_MST \n" +
+    "WHERE BUSSCD = ? AND RPTCD = ?"
+    // , [req.session.busscd, req.body.rptCd], function (error, results, fields) {
+    , [bussCd, rptCd], function (error, results, fields) {
+      if (error) {
+        console.log(error);
+        throw error;
+      }
+
+      console.log(query.sql);
+      data = results[0];
+
+      // query = db.query("SELECT A.ITEMCD, A.ITEMNM, A.ITEMTYP, B.SEQ, B.KEY, B.VALUE \n" + 
+      //                 "FROM SAS_ITEM_MST A \n" +
+      //                 "LEFT OUTER JOIN SAS_ITEM_DTL B ON A.BUSSCD = B.BUSSCD AND A.SITECD = B.SITECD AND A.ITEMCD = B.ITEMCD \n" +
+      //                 "WHERE A.BUSSCD = ? AND A.RPTCD = ?"
+      //                 // , [req.session.busscd, req.body.rptCd], function (error, results, fields) {
+      //                 , ['B000000000', req.body.rptCd], function (error, results, fields) {
+      query = db.query("SELECT A.ITEMCD, A.ITEMNM, A.ITEMTYP \n" +
+        "FROM SAS_ITEM_MST A \n" +
+        "WHERE A.BUSSCD = ? AND A.RPTCD = ? \n" +
+        "ORDER BY A.SORTSEQ"
+        // , [req.session.busscd, req.body.rptCd], function (error, results, fields) {
+        , [bussCd, rptCd], function (error, results, fields) {
+          if (error) {
+            console.log(error);
+            throw error;
+          }
+
+          console.log(query.sql);
+          data.itemlist = results;
+
+          async.forEachOf(results, function (item, key, callback) {
+            query = db.query("SELECT A.SEQ, A.KEY, A.VALUE \n" +
+              "FROM SAS_ITEM_DTL A \n" +
+              "WHERE A.RPTCD = ? AND A.ITEMCD = ? \n" +
+              "ORDER BY A.SORTSEQ"
+              // , [req.session.busscd, req.body.rptCd], function (error, results, fields) {
+              , [rptCd, item.ITEMCD], function (error, results, fields) {
+                if (error) {
+                  console.log(error);
+                  throw error;
+                }
+
+                console.log(query.sql);
+                // console.log(results);
+                data.itemlist[key].itemkeylist = results;
+
+                callback();
+              })
+          }, function (err) {
+            res.render('reportForm', { data: data, mngPoint: mngPoint });
           });
 
         });
@@ -132,65 +272,41 @@ router.post('/formaa', function (req, res, next) {
 router.post('/save', function (req, res, next) {
   var db = req.con;
 
+  var rptCd = req.body.rptCd;
   var rptTitle = req.body.rptTitle;
   var rptSubtitle = req.body.rptSubtitle;
   var rptDesc = req.body.rptDesc;
-  var rptCd = "";
+
   // var bussCd = req.session.busscd;
   // var siteCd = req.session.sitecd;
   var bussCd = 'B000000001';
   var siteCd = 'S0001';
 
   //RPTCD 추출
-  var query = db.query("SELECT GET_RPTCD('" + bussCd + "', '" + siteCd + "') RPTCD FROM DUAL"
-  , function (error, results, fields) {
-    if (error) {
-      console.log(error);
-      throw error;
-    }
-
-    //RPTCD세팅
-    console.log(query.sql);
-
-    rptCd = results[0].RPTCD;
-
-    post = {
-      RPTCD: rptCd,
-      BUSSCD: bussCd,
-      SITECD: req.session.sitecd,
-      RPTNM: rptTitle,
-      RPTSUBNM: rptSubtitle,
-      DESC: rptDesc
-    };
-
-    //RPT입력
-    query = db.query("INSERT INTO SAS_REPORT_MST SET ?", post
+  var query = db.query("SELECT GET_RPTCD() RPTCD FROM DUAL"
     , function (error, results, fields) {
       if (error) {
         console.log(error);
         throw error;
       }
 
+      //RPTCD세팅
       console.log(query.sql);
 
-      var itemcnt = 1;
-      if (Array.isArray(req.body.itemnm)) {
-        itemcnt = req.body.itemnm.length;
-      }
+      if (rptCd == '')
+        rptCd = results[0].RPTCD;
 
-      var itemnm = req.body.itemnm;
-      var itemtyp = req.body.itemtype;
-      if (typeof req.body.itemnm === 'string') {
-        itemnm = itemnm.split();
-        itemtyp = itemtyp.split();
-      }
+      post = {
+        RPTCD: rptCd,
+        BUSSCD: bussCd,
+        SITECD: siteCd,
+        RPTNM: rptTitle,
+        RPTSUBNM: rptSubtitle,
+        DESC: rptDesc
+      };
 
-      //ITEM순회
-      itemnm.forEach(async function(item, key){
-        //ITEMCD추출
-        var itemCd = "";
-
-        var query = await db.query("SELECT GET_ITEMCD('" + bussCd + "', '" + rptCd + "') ITEMCD FROM DUAL"
+      //RPT입력
+      query = db.query("INSERT INTO SAS_REPORT_MST SET ? ON DUPLICATE KEY UPDATE RPTNM = '" + rptTitle + "', RPTSUBNM = '" + rptSubtitle + "', `DESC` = '" + rptDesc + "'", post
         , function (error, results, fields) {
           if (error) {
             console.log(error);
@@ -198,51 +314,103 @@ router.post('/save', function (req, res, next) {
           }
 
           console.log(query.sql);
+          console.log('inserted ' + results.affectedRows + ' rows');
 
-          itemCd = results[0].ITEMCD;
-          
-        });//ITEMCD추출
-
-        post = { RPTCD: rptCd, ITEMCD: itemCd, BUSSCD: bussCd, ITEMNM: item, ITEMTYP: itemtyp[key]};
-
-        //ITEM입력
-        query = await db.query("INSERT INTO SAS_ITEM_MST SET ? ", post
-        , function (error, results, fields) {
-          if (error) {
-            console.log(error);
-            throw error;
+          var itemCdArr = req.body.itemcd;
+          var itemNmArr = req.body.itemnm;
+          var itemTypArr = req.body.itemtype;
+          if (typeof req.body.itemnm === 'string') {
+            itemCdArr = itemCdArr.split();
+            itemNmArr = itemNmArr.split();
+            itemTypArr = itemTypArr.split();
           }
 
-          console.log(query.sql);
+          //ITEM순회
+          // itemnm.forEach(async function(item, key){
+          async.eachOfSeries(itemCdArr, function (itemCd, key, callback) {
 
-          var itemCd = results.insertId;
-          var itemKeyArr = req.body["itemkey" + (key + 1)];
-          var itemValueArr = req.body["itemvalue" + (key + 1)];
+            var itemCdVal = "";
+            if (itemCd != '')
+              itemCdVal = itemCd;
 
-        });//ITEM입력
+            //ITEMCD추출
+            var query = db.query("SELECT GET_ITEMCD('" + rptCd + "') ITEMCD FROM DUAL"
+              , function (error, results, fields) {
+                if (error) {
+                  console.log(error);
+                  throw error;
+                }
 
-        post = { ITEMCD: itemCd, SEQ: mysql.raw("COALESCE(MAX(SEQ), 0) + 1"), BUSSCD: bussCd, KEY: itemkey, VALUE: itemValueArr[key2] };
+                console.log(query.sql);
 
-        //ITEM KEY,VAUE 순회
-        itemKeyArr.forEach(async function(itemkey, key2){
-          var query = "INSERT INTO SAS_ITEM_DTL SET ? ";
+                if(itemCdVal == "")
+                  itemCdVal = results[0].ITEMCD;
 
-          //ITEM KEY,VALUE 입력
-          query = await db.query(query, post
-            , function (error, results, fields) {
-              if (error) {
-                console.log(error);
-                throw error;
-              }
+                post = { RPTCD: rptCd, ITEMCD: itemCdVal, BUSSCD: bussCd, ITEMNM: itemNmArr[key], ITEMTYP: itemTypArr[key], SORTSEQ: key };
 
-              console.log(query.sql);
+                //ITEM입력
+                query = db.query("INSERT INTO SAS_ITEM_MST SET ? ON DUPLICATE KEY UPDATE ITEMNM = '" + itemNmArr[key] + "', ITEMTYP = '" + itemTypArr[key] + "', SORTSEQ = '" + key + "'", post
+                  , function (error, results, fields) {
+                    if (error) {
+                      console.log(error);
+                      throw error;
+                    }
 
-          });//ITEM KEY,VALUE 입력
-        });//ITEM KEY,VAUE 순회
-      });//ITEM순회
+                    console.log(query.sql);
+                    console.log('inserted ' + results.affectedRows + ' rows');
+                    
+                    var itemSeqArr = req.body["itemseq" + (key+1)];
+                    var itemKeyArr = req.body["itemkey" + (key+1)];
+                    var itemValueArr = req.body["itemvalue" + (key+1)];
 
-    });//RPT입력
-  });//RPTCD추출
+                    //ITEM KEY,VAUE 순회
+                    // itemKeyArr.forEach(async function(itemkey, key2){
+                    async.eachOfSeries(itemSeqArr, function (itemSeq, key2, callback2) {
+
+                      var seq = "";
+                      if (itemSeq != '')
+                        seq = itemSeq;
+
+                      var query = db.query("SELECT GET_ITEMCDSEQ('" + rptCd + "', '" + itemCdVal + "') SEQ FROM DUAL"
+                        , function (error, results, fields) {
+                          if (error) {
+                            console.log(error);
+                            throw error;
+                          }
+
+                          console.log(query.sql);
+
+                          if (seq == "")
+                            seq = results[0].SEQ;
+
+                          post = { RPTCD: rptCd, ITEMCD: itemCdVal, SEQ: seq, BUSSCD: bussCd, KEY: itemKeyArr[key2], VALUE: itemValueArr[key2], SORTSEQ: key2 };
+
+                          //ITEM KEY,VALUE 입력
+                          query = db.query("INSERT INTO SAS_ITEM_DTL SET ? ON DUPLICATE KEY UPDATE `KEY` = '" + itemKeyArr[key2] + "', VALUE = '" + itemValueArr[key2] + "', SORTSEQ = '" + key2 + "'", post
+                            , function (error, results, fields) {
+                              if (error) {
+                                console.log(error);
+                                throw error;
+                              }
+
+                              console.log(query.sql);
+                              console.log('inserted ' + results.affectedRows + ' rows');
+
+                              callback2();
+
+                            });//ITEM KEY,VALUE 입력
+
+                        });
+                    }, function (err) {
+                      callback();
+                    });//ITEM KEY,VAUE 순회
+                  });//ITEM입력
+              });//ITEMCD추출
+          }, function (err) {
+            res.redirect('/report');
+          });//ITEM순회
+        });//RPT입력
+    });//RPTCD추출
 
 });
 
@@ -286,6 +454,7 @@ router.post('/savedfdf', function (req, res, next) {
         itemtyp = itemtyp.split();
       }
 
+      // async.eachOf(itemnm, function (item, key, callback) {
       async.eachOf(itemnm, function (item, key, callback) {
         var itemnm = req.body.itemnm;
         var itemtyp = req.body.itemtype;
@@ -383,7 +552,7 @@ router.post('/update', function (req, res, next) {
               throw error;
             }
 
-            var itemCd = results.insertId;
+            // var itemCd = results.insertId;
             var itemKeyArr = req.body["itemkey" + (key + 1)];
             var itemValueArr = req.body["itemvalue" + (key + 1)];
 
@@ -391,7 +560,7 @@ router.post('/update', function (req, res, next) {
             async.eachOf(itemKeyArr, function (itemkey, key2, callback) {
               var query = "INSERT INTO SAS_ITEM_DTL SET ? ";
 
-              post = { ITEMCD: itemCd, SEQ: key2, BUSSCD: req.session.busscd, KEY: itemkey, VALUE: itemValueArr[key2] };
+              post = { ITEMCD: itemCdVal, SEQ: key2, BUSSCD: req.session.busscd, KEY: itemkey, VALUE: itemValueArr[key2] };
 
               var query = db.query(query, post
                 , function (error, results, fields) {

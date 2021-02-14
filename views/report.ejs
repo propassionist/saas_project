@@ -59,70 +59,71 @@
               <button type="button" class="btn btn-info" id="btnRegi">등록</button>
               <!-- </div>               -->
             </div>
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
-                  <thead>
-                    <tr>
-                      <th>No</th>                                            
-                      <th>사업장코드</th>
-                      <th>사업장명</th>
-                      <th>보고서코드</th>
-                      <th>보고서명</th>
-                      <th>부제</th>
-                      <th>설명</th>
-                      <th>QR</th>
-                    </tr>
-                  </thead>
-                  <tfoot>
-                    <tr>
-                      <th>No</th>                                            
-                      <th>사업장코드</th>
-                      <th>사업장명</th>
-                      <th>보고서코드</th>
-                      <th>보고서명</th>
-                      <th>부제</th>
-                      <th>설명</th>
-                      <th>QR</th>
-                    </tr>
-                  </tfoot>
-                  <tbody>
-                    <%
-                      
-                      for(var i=0; i<data.length; i++){                    
-                        console.log(data[i].RPTCD); 
-                    %>
-                    <tr id="row-<%=i+1%>" onclick="rowClick(this)">
-                      <td><%=i+1%></td>
-                      <!-- <td><%=data[i].SITECD == undefined ? '' : data[i].SITECD%></td> -->
-                      <td><%=data[i].SITECD%></td>
-                      <td><%=data[i].SITENM%></td>
-                      <td class="rptCd"><%=data[i].RPTCD%></td>
-                      <td><%=data[i].RPTNM%></td>
-                      <td><%=data[i].RPTSUBNM%></td>
-                      <td><%=data[i].DESC%></td>
-                      <td>
-                        <div id="qrcode_<%=i+1%>" data-toggle="modal" data-target="#myQrModal"></div>
-                        <script>
-                          var qrcode = new QRCode(document.getElementById("qrcode_<%=i+1%>"), {
-                            text: window.location.href + "/report/form?rptCd=<%=data[i].RPTCD%>",
-                            width: 30,
-                            height: 30,
-                            colorDark : "#000000",
-                            colorLight : "#ffffff",
-                            correctLevel : QRCode.CorrectLevel.H
-                          });
-                        </script>
-                      </td>
-                    </tr>
-                    <% } %>                    
-                    <form name="mForm" method="post" action="/report/form">
-                      <input type="hidden" name="rptCd">
-                    </form>
-                  </tbody>
-                </table>
+            <form name="mForm" method="post" action="/report/form">
+              <input type="hidden" name="rowIdx">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                      <tr>
+                        <th>No</th>                                            
+                        <th>사업장코드</th>
+                        <th>사업장명</th>
+                        <th>보고서코드</th>
+                        <th>보고서명</th>
+                        <th>부제</th>
+                        <th>설명</th>
+                        <th>QR</th>
+                      </tr>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <th>No</th>                                            
+                        <th>사업장코드</th>
+                        <th>사업장명</th>
+                        <th>보고서코드</th>
+                        <th>보고서명</th>
+                        <th>부제</th>
+                        <th>설명</th>
+                        <th>QR</th>
+                      </tr>
+                    </tfoot>
+                    <tbody>
+                      <%
+                        for(var i=0; i<data.length; i++){
+                      %>
+                        <tr id="row-<%=i+1%>">
+                          
+                          <input type="hidden" name="bussCd" value="<%=data[i].BUSSCD%>">
+                          <input type="hidden" name="rptCd" value="<%=data[i].RPTCD%>">
+                          <td><%=i+1%></td>
+                          <!-- <td><%=data[i].SITECD == undefined ? '' : data[i].SITECD%></td> -->
+                          <td><%=data[i].SITECD%></td>
+                          <td><%=data[i].SITENM%></td>
+                          <td class="rptCd" onclick="rowClick(<%=i%>)"><%=data[i].RPTCD%></td>
+                          <td class="rptNm" onclick="rowClick(<%=i%>)"><%=data[i].RPTNM%></td>
+                          <td onclick="rowClick(<%=i%>)"><%=data[i].RPTSUBNM%></td>
+                          <td onclick="rowClick(<%=i%>)"><%=data[i].DESC%></td>
+                          <td>
+                            <div id="qrcode_<%=i+1%>" data-toggle="modal" data-target="#myQrModal"></div>
+                            <script>
+                              var qrcode = new QRCode(document.getElementById("qrcode_<%=i+1%>"), {
+                                text: window.location.href + "/view?bussCd=<%=data[i].BUSSCD%>&rptCd=<%=data[i].RPTCD%>",
+                                width: 30,
+                                height: 30,
+                                colorDark : "#000000",
+                                colorLight : "#ffffff",
+                                correctLevel : QRCode.CorrectLevel.H
+                              });
+                            </script>
+                          </td>
+                        </tr>
+                      <% } %>
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
+            </form>
           </div>
 
         </div>
@@ -143,6 +144,27 @@
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
+
+  <!-- QR 눌렀을 때 표시 -->
+  <div class="modal fade" id="myQrModal" role="dialog"> <!-- 사용자 지정 부분① : id명 -->
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"></h4> <!-- 사용자 지정 부분② : 타이틀 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+        </div>
+        <div class="modal-body">
+         <!-- <p>여기에 필요한 텍스트 메시지 넣기</p>    // 사용자 지정 부분③ : 텍스트 메시지 -->
+          <div id="show_qrcode">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   
 
@@ -167,87 +189,41 @@
 
   <script>
 
-    $("#qrcode_1 > img, #qrcode_2 > img").css({"margin":"auto"});
-
     $("#btnRegi").click(function(){
-      location.href = '/report/form';
+      location.href = "/report/form";
     });
 
-    function rowClick(obj){
+    $("div[id*=qrcode]").click(function(e){
+
+      console.log('wegweg');
+
+      var idx = this.id.split("_")[1];
+
+      $("#show_qrcode").children().remove();
+      $("#myQrModal .modal-title").text(document.querySelector("#row-" + idx + " .rptNm").textContent);
+
+      new QRCode(document.getElementById("show_qrcode"), {
+                          text: $("#qrcode_" + idx).attr('title'),
+                          width: 125,
+                          height: 125,
+                          colorDark : "#000000",
+                          colorLight : "#ffffff",
+                          correctLevel : QRCode.CorrectLevel.H
+                        });
+
+      $("#show_qrcode > img").css({"margin":"auto"});
+    });
+
+    function rowClick(rowIdx){
       var f = document.mForm;
 
-      f.rptCd.value = document.querySelector("#" + obj.id + " .rptCd").textContent;
+      // f.rptCd.value = document.querySelector("#" + obj.id + " .rptCd").textContent;
+      f.rowIdx.value = rowIdx;
       
       document.mForm.submit();
     }
 
-    var table = $("#dataTable").DataTable();
-
-    $(table.table().container()).on( 'click', 'td', function () {
-      var row = table.row( this );
-      var column = table.column( this );
-      var cell = table.cell( this );
-
-      var idx = row.index() + 1;
-      
-      if(column.index() != 7){
-        switch(row.data()["4"]){
-          case "요청사항접수":
-            location.href = "/report/form?rptCd=A";
-          break;
-          case "청소상태관리":
-            location.href = "/report/form?rptCd=B";
-          break;
-        }
-      }else{
-
-        $("#show_qrcode").children().remove();
-        $("#myQrModal .modal-title").text(row.data()["4"]);
-
-        new QRCode(document.getElementById("show_qrcode"), {
-                            text: $("#qrcode_" + idx).attr('title'),
-                            width: 125,
-                            height: 125,
-                            colorDark : "#000000",
-                            colorLight : "#ffffff",
-                            correctLevel : QRCode.CorrectLevel.H
-                          });
-
-        $("#show_qrcode > img").css({"margin":"auto"});
-      }
-      
-
-      // switch(row.data()["6"]){
-      //   case "요청사항접수":
-      //     location.href = "/report/form?rptCd=A";
-      //   break;
-      //   case "청소상태관리":
-      //     location.href = "/report/form?rptCd=B";
-      //   break;
-      // }
-    } );
   </script>
-
-  <!-- QR 눌렀을 때 표시 -->
-  <div class="modal fade" id="myQrModal" role="dialog"> <!-- 사용자 지정 부분① : id명 -->
-    <div class="modal-dialog modal-dialog-centered modal-sm">
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title"></h4> <!-- 사용자 지정 부분② : 타이틀 -->
-          <button type="button" class="close" data-dismiss="modal">×</button>
-        </div>
-        <div class="modal-body">
-         <!-- <p>여기에 필요한 텍스트 메시지 넣기</p>    // 사용자 지정 부분③ : 텍스트 메시지 -->
-          <div id="show_qrcode">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
 </body>
 

@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SB Admin 2 - Tables</title>
+  <title>보고서 관리</title>
 
   <!-- Custom fonts for this template -->
   <link href="/vendor/fontawesome-free//css/all.min.css" rel="stylesheet" type="text/css">
@@ -63,12 +63,7 @@
                 <div class="col-md-12">
               <!-- Tabs -->
                   <form class="form-horizontal" id="mForm" name="mForm" method="post" action="/report/save">
-                    <%
-                      console.log(data);
-                      console.log(data.RPTCD);
-                    %>
                     <input type="hidden" name="rptCd" value="<%=data.RPTCD%>">
-                    <input type="hidden" name="itemcnt" value="0">
                     <div class="card">
                         <div class="card-body">
                           <div class="form-group row">                              
@@ -109,21 +104,26 @@
                     
                     <div class="card">                      
                         <div class="card-body" id="mcardbody">
+                          <ul id="sortable">
                           <%
+                            var itemcd = "";
                             var itemnm = "";
                             var itemtype = "";
                             var itemkeylist = "";
 
-                            console.log(data);
+                            <!-- console.log(data); -->
 
                             if(data.itemlist != undefined){
 
                               for(var i=0; i<data.itemlist.length; i++){
+                                itemcd = data.itemlist[i].ITEMCD;
                                 itemnm = data.itemlist[i].ITEMNM;
                                 itemtype = data.itemlist[i].ITEMTYP;
                                 itemkeylist = data.itemlist[i].itemkeylist;
                             %>
+                            <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
                               <div class="form-group row" id="row_<%=i+1%>">
+                                <input type="hidden" class="form-control is-invalid" name="itemcd" value="<%=itemcd%>">
                                 <div class="col-sm-2">
                                   <input type="text" class="form-control is-invalid" id="itemnm_<%=i+1%>" name="itemnm" value="<%=itemnm%>">
                                 </div>
@@ -138,18 +138,16 @@
                                   </select>
                                 </div>
                                 <% if(itemkeylist != undefined && itemkeylist.length > 0){ %>
-                                  <%
-                                    console.log(itemkeylist);
-                                  %>
                                   <div class='col-sm-1' id='itemsize_<%=i+1%>'>
-                                    <input type='text' class='form-control is-invalid' value="<%=itemkeylist.length%>" onchange='f2(this.value, "<%=i+1%>")'>
+                                    <input type='text' class='form-control is-invalid' value="<%=itemkeylist.length%>" onfocus='this.oldvalue = this.value;'  onchange='f2(this, "<%=i+1%>")'>
                                   </div>
-                                  <div class='card' id='card_<%=i%>'>
-                                    <div class='card-body' id='cardbody_<%=i%>'>
+                                  <div class='card' id='card_<%=i+1%>'>
+                                    <div class='card-body' id='cardbody_<%=i+1%>'>
                                     <%
                                         for(var j=0; j<itemkeylist.length; j++){
                                     %>                                  
                                         <div class='form-group row' id='itemkeylist_<%=i+1%><%=j+1%>'>
+                                          <input type="hidden" name="itemseq<%=i+1%>" value="<%=itemkeylist[j].SEQ%>">
                                           <div class='col-sm-5' id='itemkey_<%=i+1%><%=j+1%>'>
                                             KEY<%=j+1%>
                                             <input type='text' class='form-control is-invalid' name="itemkey<%=i+1%>" value="<%=itemkeylist[j].KEY%>">
@@ -167,16 +165,19 @@
                                 <%
                                   }
                                 %>                                
-                              </div>                                                                    
+                              </div>
+                            </li>                                                                    
                             <% 
                                 }
                               }
                             %>
+                            </ul>
                         </div>
                         <div class="border-top">
                             <div class="card-body" style="text-align: center;">
                               <button type="button" class="btn btn-info" id="mPreView">미리보기</button>
                                 <button type="submit" class="btn btn-info" id="mSave">저장</button>
+                                <button type="submit" class="btn btn-info" id="mDelete" style="display:none;">삭제</button>
                                 <button type="button" class="btn btn-info" onclick="location.href='/report'">목록</button>
                             </div>
                         </div>
@@ -232,7 +233,69 @@
   <!-- Page level custom scripts -->
   <script src="/js/demo/datatables-demo.js"></script>
 
+  <!-- JQuery UI : Sortable 기능 사용 -->
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+
+  <style>
+  #sortable { list-style-type: none; margin: 0; padding: 0;}
+  /* #sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; } */
+  #sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em;}
+  #sortable li span { position: absolute; margin-left: -1.3em; }
+  </style>
+
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
   <script>
+
+    $( "#sortable" ).sortable({
+      stop: function(event, ui){
+        var totalCnt = ui.item.parent().children().length;
+        var elemts = ui.item.parent().children();
+        var strtIdx = ui.item.index();
+        // console.log(ui.item.parent().children().length);
+        // console.log(ui.item.index());
+        // console.log(ui.item.attr("class"));
+        // console.log(ui.item.find("input[name*=itemseq]"));
+        // elemts.forEach(function(elemt, idx, array){
+        for(var i=0; i<totalCnt; i++){
+          // console.log(i);
+          // console.log(elemts[i]);
+          // elemts[i].querySelector("input[name*=itemseq]").attr("name", "itemseq" + (i+1));
+          // elemts[i].querySelector("input[name*=itemseq]").attr("name", "itemseq" + (i+1));
+          // console.log(elemts[i].querySelectorAll("input[name*=itemseq]").length);
+          
+          var itemSeqElemts = elemts[i].querySelectorAll("input[name*=itemseq]");
+          var itemKeyElemts = elemts[i].querySelectorAll("input[name*=itemkey]");
+          var itemValueElemts = elemts[i].querySelectorAll("input[name*=itemvalue]");
+
+          // console.log('--------------' + i + '--------------');
+          // console.log(itemKeyElemts.length);
+          // console.log(itemKeyElemts);
+          // console.log(itemValueElemts);
+          // if(itemSeqElemts != undefined){
+          for(var j=0; j<itemSeqElemts.length; j++){
+            itemSeqElemts[j].setAttribute('name', 'itemseq' + (i+1));
+          }
+          // }
+          for(var j=0; j<itemKeyElemts.length; j++){
+            itemKeyElemts[j].setAttribute('name', 'itemkey' + (i+1));
+          }
+          for(var j=0; j<itemValueElemts.length; j++){
+            itemValueElemts[j].setAttribute('name', 'itemvalue' + (i+1));
+          }
+          
+          // elemts[i].querySelectorAll("input[name*=itemseq]")
+          // console.log(elemts[i].querySelectors("input[name*=itemseq]"));
+        }
+      }
+    });
+    $( "#sortable" ).disableSelection();
+
+    $(".ui-state-default").on("dragend", function(event, ui){
+      console.log('wegweg');
+    });
 
     // var submitAction = function() {
     //     /* do something with Error */
@@ -245,14 +308,33 @@
     // $('#mSave').click(function(){
     //   submitAction();
     // });
+
+    if(document.mForm.rptCd.value != ""){
+      $("#mDelete").show();
+    }
+
+    $("#mDelete").click(function(){
+      var f = document.mForm;
+
+      if(!confirm('삭제 하시겠습니까?'))
+        return false;
+      
+      f.action = '/report/delete';
+      f.submit();
+    });
     
     $("#btnAdd").click(function(){
 
-      var mcardbody = $("#mcardbody");
-      var nextSeq = $("#mcardbody").children().length + 1;
+      // var mcardbody = $("#mcardbody");
+      // var nextSeq = $("#mcardbody").children().length + 1;
+
+      var rootElem = $("#sortable");
+      var nextSeq = $("div[id*=row]").length + 1;
       
-      mcardbody.append(
-          " <div class='form-group row' id='row_" + nextSeq + "'>"
+      rootElem.append(
+        "   <li class='ui-state-default'><span class='ui-icon ui-icon-arrowthick-2-n-s'></span>"
+        +  " <div class='form-group row' id='row_" + nextSeq + "'>"
+        + "   <input type='hidden' class='form-control is-invalid' name='itemcd'>"
         + "   <div class='col-sm-2'>"
         + "     <input type='text' class='form-control is-invalid' id='itemnm_" + nextSeq + "' name='itemnm'>"
         + "   </div>"
@@ -266,18 +348,14 @@
         + "       <option value='radio'>라디오버튼</option>"
         + "     </select>"
         + "   </div>"
-        + " </div>"        
+        + " </div>"
+        + "</li>"
       )
-
-      document.mForm.itemcnt.value++;
     });
 
     $("#btnDel").click(function(){
       var form = $("#mcardbody").children('.form-group.row').last();
       form.remove();
-
-      if(document.mForm.itemcnt.value > 0)
-        document.mForm.itemcnt.value--;
     });
 
     function f1(a){
@@ -308,7 +386,7 @@
         case 'radio':
           $("#row_" + seq).append(        
             "   <div class='col-sm-1' id='itemsize_" + seq + "'>"
-            + "     <input type='text' class='form-control is-invalid' onchange='f2(this.value, " + seq + ")'>"
+            + "     <input type='text' class='form-control is-invalid' onfocus='this.oldvalue = this.value;' onchange='f2(this, " + seq + ")'>"
             + "   </div>"
             );          
         
@@ -318,47 +396,68 @@
       }
     }
 
-    function f2(cnt, seq){
+    function f2(obj, seq){
 
-      $("#card_" + seq).children().remove();
-      $("#card_" + seq).remove();
+      // console.log($("#cardbody_" + seq).children().length);
+      var elemCnt = $("#cardbody_" + seq).children().length;
+      var preSize = Number(obj.oldvalue);
+      var aftSize = Number(obj.value);
 
-      console.log($("#itemtype_" + seq).val());
-      
-      $("#row_" + seq).append(
-            "<div class='card' id='card_" + seq + "'>"
-          + " <div class='card-body' id='cardbody_" + seq + "'>"
-          + " </div>"
-          + "</div>"
-      );
+      console.log(preSize);
+      console.log(aftSize);
+
+      // console.log($("#itemtype_" + seq).val());
+
+      if($("#card_" + seq).length == 0){
+        $("#row_" + seq).append(
+              "<div class='card' id='card_" + seq + "'>"
+            + " <div class='card-body' id='cardbody_" + seq + "'>"
+            + " </div>" 
+            + "</div>"
+        );
+      }
 
       var result = "";
       var colspan = 5;
 
-      for(var i=1; i<=cnt; i++){
+      if(preSize > aftSize){
+        // console.log((aftSize + 1) + " : " + (preSize));
+        for(var i=aftSize+1; i<=preSize; i++){
+          // console.log("itemlist_" + seq + i);
+          $("#itemkeylist_" + seq + i).hide();
+        }
+      }else{
+        // $("#card_" + seq).children().remove();
+        // $("#card_" + seq).remove();
 
-        result += "<div class='form-group row' id='itemlist_" + seq + i + "'>";
+        console.log((preSize + 1) + " : " + (aftSize));
+        for(var i=preSize+1; i<=aftSize; i++){
 
-        // if($("#itemtype_" + seq).val() == 'select'){
-        //   result += " <div class='col-sm-" + colspan + "' id='itemkey_" + seq + i + "'>"
-        //           + "   KEY" + i + " : "
-        //           + "   <input type='text' class='form-control is-invalid'>"
-        //           + " </div>";
-        // }
+          console.log("itemkeylist_" + seq + i);
+          if($("#itemkeylist_" + seq + i).length > 0){
+            console.log('wegweg');
+            $("#itemkeylist_" + seq + i).show();
+          }else{
 
-        result += " <div class='col-sm-" + colspan + "' id='itemkey_" + seq + i + "'>"
-                  + "   KEY" + i + " : "
-                  + "   <input type='text' class='form-control is-invalid' name='itemkey" + seq + "'>"
-                  + " </div>";
+            result += "<div class='form-group row' id='itemkeylist_" + seq + i + "'>"
+                    + "<input type='hidden' name='itemseq" + seq +"' value=" + i + ">";
+              
+            result += "  <div class='col-sm-" + colspan + "' id='itemkey_" + seq + i + "'>"
+                    + "    KEY" + i + " : "
+                    + "    <input type='text' class='form-control is-invalid' name='itemkey" + seq + "'>"
+                    + "  </div>";
 
-        result += " <div class='col-sm-" + colspan + "' id='itemvalue_" + seq + i + "'>"
-                + "   VALUE" + i + " : "
-                + "   <input type='text' class='form-control is-invalid' name='itemvalue" + seq + "'>"
-                + " </div>"
-                + "</div>";
+            result += "  <div class='col-sm-" + colspan + "' id='itemvalue_" + seq + i + "'>"
+                    + "    VALUE" + i + " : "
+                    + "    <input type='text' class='form-control is-invalid' name='itemvalue" + seq + "'>"
+                    + "  </div>"
+                    + " </div>";
+          }
+        }
+
+        if(result !="")
+          $("#cardbody_" + seq).append(result);
       }
-
-      $("#cardbody_" + seq).append(result);
     }
 
     $("#mPreView").click(function(){
@@ -396,7 +495,8 @@
       
       // 보고서 항목 구성
 
-      var cnt = $("#mcardbody").children().length;      
+      // var cnt = $("#mcardbody").children().length;
+      var cnt = $("div[id*=row]").length;
       if(cnt == 0){
         $("#rptPrint").html("표시할 내용이 없습니다.");
       }

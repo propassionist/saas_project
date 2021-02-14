@@ -32,22 +32,28 @@
       <div id="content">
         <!-- Begin Page Content -->
         <!-- <div class="container-fluid font-16"> -->
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-12">
-            <!-- Tabs -->
-                  <div class="card">
-                      <div class="card-body" id="rptPrint" style="text-align: center;"></div>                    
-                  </div>
-                  <div class="border-top">
-                    <div class="card-body" style="text-align: center;">
-                        <button type="button" class="btn btn-info" id="mConfirm">확인</button>                        
+          
+          <form action="/report/reportEnd" method="post" name="mForm">
+            <input type="hidden" name="bussCd" value="<%=data == undefined ? '' : data.BUSSCD%>">
+            <input type="hidden" name="siteCd" value="<%=data == undefined ? '' : data.SITECD%>">
+            <input type="hidden" name="rptCd" value="<%=data == undefined ? '' : data.RPTCD%>">
+            <input type="hidden" name="mngPointCd" value="<%=mngPoint == undefined ? '' : mngPoint.code%>">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-12">
+              <!-- Tabs -->
+                    <div class="card">
+                        <div class="card-body" id="rptPrint" style="text-align: center;"></div>
                     </div>
-                    <input type="hidden" id="mngpPointCd" value="<%=mngPoint.code%>">
+                    <div class="border-top">
+                      <div class="card-body" style="text-align: center;">
+                          <button type="button" class="btn btn-info" id="mConfirm">확인</button>
+                      </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </form>
           <!-- ============================================================== -->
           <!-- Recent comment and chats -->
           <!-- ============================================================== -->
@@ -102,7 +108,7 @@
       }
     }    
 
-    title.textContent = "<%=data.rptTitle%>";
+    title.textContent = "<%=data.RPTNM%>";
     // divTitle.style.fontSize = "4vw";    
     // divTitle.append(strong);
     // font.size = "20px";
@@ -110,13 +116,13 @@
     var subtitle = document.createElement("h5");    
 
     subtitle.className = "card-subtitle";
-    subtitle.textContent = "<%=data.rptSubtitle%>";
+    subtitle.textContent = "<%=data.RPTSUBNM%>";
     // divSubtitle.style.fontSize = "3vw";
     
     var desc = document.createElement("h6");
 
     desc.className = "card-text";
-    desc.textContent = "<%=data.rptDesc%>";
+    desc.textContent = "<%=data.DESC%>";
     // divDesc.style.fontSize = "2vw";
 
     var hr = document.createElement("hr");
@@ -152,10 +158,10 @@
 
       var label<%=i%> = document.createElement("label");
       label<%=i%>.className = "col-sm-2 col-form-label-sm font-weight-bold";
-      label<%=i%>.textContent = "<%=data.itemlist[i-1].itemnm%>";
+      label<%=i%>.textContent = "<%=data.itemlist[i-1].ITEMNM%>";
       // label<%=i%>.style.fontSize = "1vw";
 
-      if("<%=data.itemlist[i-1].itemtype%>" == 'text'){
+      if("<%=data.itemlist[i-1].ITEMTYP%>" == 'text'){
           var divChild<%=i%> = document.createElement("div");
           divChild<%=i%>.className = "col-sm-5";
 
@@ -169,7 +175,7 @@
           div<%=i%>.append(label<%=i%>);
           div<%=i%>.append(divChild<%=i%>);
 
-      }else if("<%=data.itemlist[i-1].itemtype%>" == 'textarea'){
+      }else if("<%=data.itemlist[i-1].ITEMTYP%>" == 'textarea'){
 
           var divChild<%=i%> = document.createElement("div");
           divChild<%=i%>.className = "col-sm-10";
@@ -183,7 +189,7 @@
           div<%=i%>.append(label<%=i%>);
           div<%=i%>.append(divChild<%=i%>);
 
-        }else if("<%=data.itemlist[i-1].itemtype%>" == 'select'){
+        }else if("<%=data.itemlist[i-1].ITEMTYP%>" == 'select'){
           var divChild<%=i%> = document.createElement("div");
           divChild<%=i%>.className = "col-sm-2";
 
@@ -209,8 +215,8 @@
           %>
             
             var option<%=i%><%=j%> = document.createElement("option");
-            option<%=i%><%=j%>.value = "<%=itemkeylist[j-1].key%>";
-            option<%=i%><%=j%>.text = "<%=itemkeylist[j-1].value%>";
+            option<%=i%><%=j%>.value = "<%=itemkeylist[j-1].KEY%>";
+            option<%=i%><%=j%>.text = "<%=itemkeylist[j-1].VALUE%>";
             // option<%=i%><%=j%>.style.fontSize = "1vw";
             
             select<%=i%>.append(option<%=i%><%=j%>);
@@ -222,8 +228,8 @@
           div<%=i%>.append(label<%=i%>);
           div<%=i%>.append(divChild<%=i%>);
 
-        }else if("<%=data.itemlist[i-1].itemtype%>" == 'checkbox'
-                || "<%=data.itemlist[i-1].itemtype%>" == 'radio'){   
+        }else if("<%=data.itemlist[i-1].ITEMTYP%>" == 'checkbox'
+                || "<%=data.itemlist[i-1].ITEMTYP%>" == 'radio'){   
           var divChild<%=i%> = document.createElement("div");
           divChild<%=i%>.className = "d-flex flex-wrap justify-content-center col-sm-10";
           // divChild<%=i%>.style.minWidth = "286px";
@@ -249,12 +255,12 @@
             // divChild<%=i%><%=j%>.className = "d-flex flex-wrap justify-content-center";
 
             var input<%=i%><%=j%> = document.createElement("input");
-            input<%=i%><%=j%>.type = "<%=data.itemlist[i-1].itemtype%>";
-            input<%=i%><%=j%>.className = "flex-shrink-1 mr-1 custom-" + "<%=data.itemlist[i-1].itemtype%>";
+            input<%=i%><%=j%>.type = "<%=data.itemlist[i-1].ITEMTYP%>";
+            input<%=i%><%=j%>.className = "flex-shrink-1 mr-1 custom-" + "<%=data.itemlist[i-1].ITEMTYP%>";
             input<%=i%><%=j%>.style.width = "100%";            
             
             input<%=i%><%=j%>.name = "item_<%=i%>";
-            input<%=i%><%=j%>.value = "<%=itemkeylist[j-1].key%>";            
+            input<%=i%><%=j%>.value = "<%=itemkeylist[j-1].KEY%>";            
 
             input<%=i%><%=j%>.addEventListener('click', event => {
               // $("input[name='itemlabel_<%=i%>'").css('color', "");
@@ -262,7 +268,7 @@
               // var labelItems = document.getElementsByName("itemlabel_<%=i%>");
               // labelItems.style.color = "";
 
-              if("<%=data.itemlist[i-1].itemtype%>" == "radio"){
+              if("<%=data.itemlist[i-1].ITEMTYP%>" == "radio"){
                 <% for(var k=1; k<=keyCnt; k++){ %>
                   label<%=i%><%=k%>.style.color = "";
                 <% } %>
@@ -279,7 +285,7 @@
             
             var label<%=i%><%=j%> = document.createElement("label");
             label<%=i%><%=j%>.className = "flex-shrink-1 col-form-label-sm";
-            label<%=i%><%=j%>.textContent = "<%=itemkeylist[j-1].value%>";
+            label<%=i%><%=j%>.textContent = "<%=itemkeylist[j-1].VALUE%>";
             input<%=i%><%=j%>.name = "itemlabel_<%=i%>";
 
             label<%=i%><%=j%>.style.width = "100%";            
@@ -315,6 +321,9 @@
 
 
   $("#mConfirm").click(function(){
+
+    var f = document.mForm;
+
     if(confirm('제출 하시겠습니까?')){
       // alert('제출 완료.');
       // alert(window);
@@ -323,7 +332,7 @@
       // window.close();
       // window.open("about:blank","_self").close().close();
 
-      location.href = '/report/reportEnd';
+      f.submit();
     }
   });
 
