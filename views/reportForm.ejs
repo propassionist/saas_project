@@ -64,6 +64,7 @@
               <!-- Tabs -->
                   <form class="form-horizontal" id="mForm" name="mForm" method="post" action="/report/save">
                     <input type="hidden" name="rptCd" value="<%=data.RPTCD%>">
+                    <!-- <input type="hidden" name="delList" value="">                     -->
                     <div class="card">
                         <div class="card-body">
                           <div class="form-group row">                              
@@ -87,7 +88,7 @@
                         </div>
                     </div>
 
-                    <div class="card-body" style="text-align: right;">              
+                    <div class="card-body" style="text-align: right;">
                       <a href="#" class="btn btn-primary btn-icon-split" id="btnAdd">
                         <span class="icon text-white-50">
                           <i class="fas fa-plus"></i>
@@ -123,7 +124,8 @@
                             %>
                             <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
                               <div class="form-group row" id="row_<%=i+1%>">
-                                <input type="hidden" class="form-control is-invalid" name="itemcd" value="<%=itemcd%>">
+                                <input type="hidden" name="itemcd" value="<%=itemcd%>">
+                                <input type="hidden" name="itemcd_delstatus" value="">
                                 <div class="col-sm-2">
                                   <input type="text" class="form-control is-invalid" id="itemnm_<%=i+1%>" name="itemnm" value="<%=itemnm%>">
                                 </div>
@@ -148,6 +150,7 @@
                                     %>                                  
                                         <div class='form-group row' id='itemkeylist_<%=i+1%><%=j+1%>'>
                                           <input type="hidden" name="itemseq<%=i+1%>" value="<%=itemkeylist[j].SEQ%>">
+                                          <input type="hidden" name="itemseq_delstatus<%=i+1%>" value="">
                                           <div class='col-sm-5' id='itemkey_<%=i+1%><%=j+1%>'>
                                             KEY<%=j+1%>
                                             <input type='text' class='form-control is-invalid' name="itemkey<%=i+1%>" value="<%=itemkeylist[j].KEY%>">
@@ -249,6 +252,37 @@
 
   <script>
 
+    // $("#mForm").submit(function(){
+
+    //   var f = document.mForm;
+
+    //   var $delItemCdList = $("#sortable").find("li:hidden");
+    //   var $delItemKeyList = $("#sortable").find("div[id*=itemkeylist]:hidden");
+    //   var data = new Object();
+
+    //   data.itemlist = new Array();
+    //   for(var i=0; i<$delItemCdList.length; i++){
+    //     var itemCd = $($delItemCdList[i]).find("input[name*=itemcd]").val();
+
+    //     if(itemCd != "")
+    //       data.itemlist.push(itemCd);
+    //   }
+
+      
+    //   data.itemkeylist = new Array();
+    //   for(var i=0; i<$delItemKeyList.length; i++){
+    //     var itemCd = $($delItemKeyList[i]).parents("div[id*=row_]").children("input[name*=itemcd]").val();
+    //     var seq = $($delItemKeyList[i]).find("input[name*=itemseq]").val();
+
+    //     if(itemCd != "")
+    //       data.itemkeylist.push({itemcd : itemCd, seq : seq});
+        
+    //   }
+
+    //   f.delList.value = JSON.stringify(data);
+
+    // });
+
     $( "#sortable" ).sortable({
       stop: function(event, ui){
         var totalCnt = ui.item.parent().children().length;
@@ -334,7 +368,8 @@
       rootElem.append(
         "   <li class='ui-state-default'><span class='ui-icon ui-icon-arrowthick-2-n-s'></span>"
         +  " <div class='form-group row' id='row_" + nextSeq + "'>"
-        + "   <input type='hidden' class='form-control is-invalid' name='itemcd'>"
+        + "   <input type='hidden' name='itemcd'>"
+        + "   <input type='hidden' name='itemcd_delstatus'>"
         + "   <div class='col-sm-2'>"
         + "     <input type='text' class='form-control is-invalid' id='itemnm_" + nextSeq + "' name='itemnm'>"
         + "   </div>"
@@ -354,12 +389,14 @@
     });
 
     $("#btnDel").click(function(){
-      var form = $("#mcardbody").children('.form-group.row').last();
-      form.remove();
+      var form = $("#sortable").children(":visible").last();
+      console.log(form.find("input[name*=delstatus]"));
+      form.find("input[name*=delstatus]").val('Y');
+      form.hide();
+      // form[0].classList.add('d-none');
     });
 
     function f1(a){
-      
       var seq = a.id.split('_')[1];
 
       $("#itemvalue_" + seq).children().remove();
@@ -424,6 +461,7 @@
         // console.log((aftSize + 1) + " : " + (preSize));
         for(var i=aftSize+1; i<=preSize; i++){
           // console.log("itemlist_" + seq + i);
+          $($("input[name=itemseq_delstatus" + seq + "]")[i-1]).val('Y');
           $("#itemkeylist_" + seq + i).hide();
         }
       }else{
@@ -436,12 +474,14 @@
           console.log("itemkeylist_" + seq + i);
           if($("#itemkeylist_" + seq + i).length > 0){
             console.log('wegweg');
+            $($("input[name=itemseq_delstatus" + seq + "]")[i-1]).val('');
             $("#itemkeylist_" + seq + i).show();
           }else{
 
             result += "<div class='form-group row' id='itemkeylist_" + seq + i + "'>"
                     + "<input type='hidden' name='itemseq" + seq +"' value=" + i + ">";
-              
+                    + "<input type='hidden' name='itemseq_delstatus" + seq +"' value=''>";
+
             result += "  <div class='col-sm-" + colspan + "' id='itemkey_" + seq + i + "'>"
                     + "    KEY" + i + " : "
                     + "    <input type='text' class='form-control is-invalid' name='itemkey" + seq + "'>"

@@ -84,8 +84,6 @@
                                       <select name="site" class="form-control is-invalid">
                                       <%
                                         for(var i=0; i<site.length; i++){
-                                          console.log(data);
-                                          console.log(site[i].SITECD == data.SITECD);
                                       %>
                                         <option value="<%=site[i].SITECD%>" <%=data != undefined ? (site[i].SITECD == data.SITECD ? 'selected' : '') : ''%>><%=site[i].SITENM%></option>
                                         <!-- <option value="<%=site[i].SITECD%>" <%=site[i].SITECD == data.SITECD ? 'selected' : ''%>><%=site[i].SITENM%></option> -->
@@ -98,7 +96,7 @@
                                   <div class="form-group row">
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">관리포인트코드</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control is-invalid" id="title" value="<%=data != undefined && data == "" ? data.MNGPOINTCD : '자동생성'%>" readonly>
+                                        <input type="text" class="form-control is-invalid" id="mngPointCd" name="mngPointCd" value="<%=data.MNGPOINTCD != "" ? data.MNGPOINTCD : ''%>" readonly>
                                     </div>
                                   </div>
                                   <div class="form-group row">

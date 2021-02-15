@@ -12,14 +12,14 @@
   <title>SB Admin 2 - Tables</title>
 
   <!-- Custom fonts for this template -->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
   <!-- Custom styles for this template -->
-  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+  <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
   <!-- Custom styles for this page -->
-  <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -63,64 +63,71 @@
                   <div class="col-md-12">
                 <!-- Tabs -->
                       <div class="card">
-                          <form class="form-horizontal" id="mform">
+                          <form class="form-horizontal" id="mform" method="post" action="/work/save">
                               <div class="card-body">
                                   <div class="form-group row">
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">회사명 *</label>
                                     <div class="col-sm-10">           
-                                        <select name="buss" class="form-control is-invalid">
-                                            <option value="">회사명</option>
-                                            <option value="C001">한화시스템</option>
-                                            <option value="C002">한화리조트</option>
-                                        </select>
+                                      <%=data.BUSSNM%>
+                                      <input type="hidden" name="bussCd" value="<%=data.BUSSCD%>">
                                     </div>
                                   </div>
                                   <div class="form-group row">
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">사업장 *</label>
                                     <div class="col-sm-10">
-                                        <select name="site" class="form-control is-invalid">
-                                            <option value="">사업장명</option>
-                                            <option value="S0001">설악쏘라노</option>
-                                            <option value="S0002">해운대</option>
-                                        </select>
+                                      <select name="site" class="form-control is-invalid">
+                                        <%
+                                          for(var i=0; i<site.length; i++){
+                                            console.log(data);
+                                            console.log(site[i].SITECD == data.SITECD);
+                                        %>
+                                          <option value="<%=site[i].SITECD%>" <%=data != undefined ? (site[i].SITECD == data.SITECD ? 'selected' : '') : ''%>><%=site[i].SITENM%></option>
+                                          <!-- <option value="<%=site[i].SITECD%>" <%=site[i].SITECD == data.SITECD ? 'selected' : ''%>><%=site[i].SITENM%></option> -->
+                                        <%
+                                          }
+                                        %>
+                                      </select>
                                     </div>
                                   </div>
                                   <div class="form-group row">
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">관리포인트</label>
                                     <div class="col-sm-10" style="display: inline-block;">
-                                      <input type="text" class="form-control" style="display:inline-block;width:20%;" id="regUser" readonly>
+                                      <input type="text" class="form-control" style="display:inline-block;width:20%;" id="mngPointNm" name="mngPointNm" value="<%=data.MNGPOINTNM%>" readonly>
+                                      <input type="hidden" id="mngPointCd" name="mngPointCd" value="<%=data.MNGPOINTCD%>">
                                       <button type="button" class="btn btn-info" style="width:100px;" data-toggle="modal" data-target="#mngPointModal">선택
                                     </div>
                                   </div>
                                   <div class="form-group row">
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">제목 *</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control is-invalid" id="title">
+                                        <input type="text" class="form-control is-invalid" id="title" name="title" value="<%=data.WORKNM%>">
+                                        <input type="hidden" id="workCd" name="workCd" value="<%=data.WORKCD%>">
                                     </div>
                                   </div>
                                   <div class="form-group row">
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">내용 *</label>
                                     <div class="col-sm-10">
-                                        <textarea name="content" class="form-control is-invalid" rows="10"></textarea>
+                                        <textarea name="remark" class="form-control is-invalid" rows="10"><%=data.REMARK%></textarea>
                                     </div>
                                   </div>
                                   <div class="form-group row">
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">보고서</label>
                                     <div class="col-sm-10" style="display: inline-block;">
-                                      <input type="text" class="form-control" style="display:inline-block;width:60%;" id="regUser" readonly>
+                                      <input type="text" class="form-control" style="display:inline-block;width:60%;" id="rptNm" name="rptNm" value="<%=data.RPTNM%>" readonly>
+                                      <input type="hidden" id="rptCd" name="rptCd" value="<%=data.RPTCD%>">
                                       <button type="button" class="btn btn-info" style="width:100px;" data-toggle="modal" data-target="#reportModal">선택
                                     </div>
                                   </div>
                                   <div class="form-group row">
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">요청자 *</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control is-invalid" id="regUser">
+                                        <input type="text" class="form-control is-invalid" id="regUser" name="regUser">
                                     </div>
                                   </div>
                                   <div class="form-group row">
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">연락처 *</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control is-invalid" id="contact">
+                                        <input type="text" class="form-control is-invalid" id="contact" name="contact">
                                     </div>
                                   </div>
                                   <div class="form-group row">
@@ -152,7 +159,7 @@
                               </div>
                               <div class="border-top">
                                   <div class="card-body" style="text-align: center;">
-                                      <button type="button" class="btn btn-info" id="mSubmit">저장</button>
+                                      <button type="submit" class="btn btn-info" id="mSubmit">저장</button>
                                       <button type="button" class="btn btn-info" onclick="location.href='/work'">목록</button>
                                   </div>
                               </div>
@@ -197,8 +204,7 @@
         </div>
         <div class="modal-body">
           <div class="col-sm-10" style="display: inline-block;">
-            <input type="text" class="form-control" style="display:inline-block;width:60%;" id="regUser">
-            <button type="button" class="btn btn-info" style="width:100px;">검색
+            <input type="text" class="form-control" style="display:inline-block;width:60%;" id="mngPointModalFilterText" onkeyup="mngPointModalFilter()">
           </div>
           <hr>
           <div class="card-body">
@@ -217,14 +223,17 @@
                     </tr>
                   </tfoot>
                   <tbody>
-                    <tr>
-                      <td>202호</td>
-                      <td align="center"><button type="button" class="btn btn-dark" style="width:70px;">선택</td>
+                    <%
+                    for(var i=0; i<mngPoint.length; i++){
+                    %>
+                    <tr id="modal-row-<%=i+1%>">
+                      <td style="display:none;"><%=mngPoint[i].MNGPOINTCD%></td>
+                      <td><%=mngPoint[i].MNGPOINTNM%></td>
+                      <td align="center"><button type="button" class="btn btn-dark" style="width:70px;" onclick="mngPointModalClick('<%=mngPoint[i].MNGPOINTCD%>', '<%=mngPoint[i].MNGPOINTNM%>')">선택</td>
                     </tr>
-                    <tr>
-                      <td>203호</td>
-                      <td align="center"><button type="button" class="btn btn-dark" style="width:70px;">선택</td>
-                    </tr>
+                    <%
+                    }
+                    %>
                   </tbody>
                 </table>
               </div>
@@ -249,8 +258,7 @@
         </div>
         <div class="modal-body">
           <div class="col-sm-10" style="display: inline-block;">
-            <input type="text" class="form-control" style="display:inline-block;width:60%;" id="regUser">
-            <button type="button" class="btn btn-info" style="width:100px;">검색
+            <input type="text" class="form-control" style="display:inline-block;width:60%;" id="reportModalFilterText" onkeyup="reportModalFilter()">
           </div>
           <hr>
           <div class="card-body">
@@ -269,14 +277,17 @@
                     </tr>
                   </tfoot>
                   <tbody>
-                    <tr>
-                      <td>요청사항접수</td>
-                      <td align="center"><button type="button" class="btn btn-dark" style="width:70px;">선택</td>
+                    <%
+                    for(var i=0; i<rpt.length; i++){
+                    %>
+                    <tr id="modal-row-<%=i+1%>">
+                      <td style="display:none;"><%=rpt[i].RPTCD%></td>
+                      <td><%=rpt[i].RPTNM%></td>
+                      <td align="center"><button type="button" class="btn btn-dark" style="width:70px;" onclick="reportModalClick('<%=rpt[i].RPTCD%>', '<%=rpt[i].RPTNM%>')">선택</td>
                     </tr>
-                    <tr>
-                      <td>청소상태관리</td>
-                      <td align="center"><button type="button" class="btn btn-dark" style="width:70px;">선택</td>
-                    </tr>
+                    <%
+                    }
+                    %>
                   </tbody>
                 </table>
               </div>
@@ -290,21 +301,77 @@
   </div>
 
   <!-- Bootstrap core JavaScript-->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <!-- Core plugin JavaScript-->
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
   <!-- Custom scripts for all pages-->
-  <script src="js/sb-admin-2.min.js"></script>
+  <script src="/js/sb-admin-2.min.js"></script>
 
   <!-- Page level plugins -->
-  <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-  <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+  <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
   <!-- Page level custom scripts -->
-  <script src="js/demo/datatables-demo.js"></script>
+  <script src="/js/demo/datatables-demo.js"></script>
+
+  <script>
+    function mngPointModalFilter(){
+      var input = $("#mngPointModalFilterText").val();
+      var filter = input.toUpperCase();
+      var modalList = $("#mngPointModal").find("tr[id*=modal-row]");
+      // console.log(modalList);
+      // console.log(modalList.get(0));
+      
+      for(let i=0; i<modalList.length; i++){
+        let temp = $(modalList[i]).contents()[3];
+        let textValue = temp.textContent || temp.innerText;
+        if(textValue.toUpperCase().indexOf(filter) > -1){
+          modalList[i].style.display = "";
+        }else{
+          modalList[i].style.display = "none";
+        }
+      }
+    }
+
+    function mngPointModalClick(mngPointCd, mngPointNm){
+      $("#mngPointCd").val(mngPointCd);
+      $("#mngPointNm").val(mngPointNm);
+      // $("reportModal .close").click();
+      $('#mngPointModal').modal('hide');
+    }
+
+    function reportModalFilter(){
+      var input = $("#reportModalFilterText").val();
+      var filter = input.toUpperCase();
+      var modalList = $("#reportModal").find("tr[id*=modal-row]");
+      // console.log(modalList);
+      // console.log(modalList.get(0));
+      
+      for(let i=0; i<modalList.length; i++){
+        let temp = $(modalList[i]).contents()[3];
+        let textValue = temp.textContent || temp.innerText;
+        // console.log($(modalList[i]));
+        // console.log($(modalList[i]).contents());
+        // console.log(textValue);
+        if(textValue.toUpperCase().indexOf(filter) > -1){
+          modalList[i].style.display = "";
+        }else{
+          modalList[i].style.display = "none";
+        }
+      }
+    }
+
+    function reportModalClick(rptCd, rptNm){
+      $("#rptCd").val(rptCd);
+      $("#rptNm").val(rptNm);
+      // $("reportModal .close").click();
+      $('#reportModal').modal('hide');
+    }
+
+  </script>
 
 </body>
 

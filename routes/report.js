@@ -65,7 +65,7 @@ router.post('/delete', function (req, res, next) {
   // var siteCd = req.session.sitecd;
   var bussCd = 'B000000001';
   // var siteCd = 'S0001';
-  var rptCd = req.body.rptCd; 
+  var rptCd = req.body.rptCd;
 
   var query = db.query("DELETE FROM SAS_REPORT_MST WHERE BUSSCD = ? AND RPTCD = ? "
     , [bussCd, rptCd], function (error, results, fields) {
@@ -316,77 +316,70 @@ router.post('/save', function (req, res, next) {
           console.log(query.sql);
           console.log('inserted ' + results.affectedRows + ' rows');
 
+          var itemCdDelStatusArr = req.body.itemcd_delstatus;
           var itemCdArr = req.body.itemcd;
           var itemNmArr = req.body.itemnm;
           var itemTypArr = req.body.itemtype;
           if (typeof req.body.itemnm === 'string') {
+            itemCdDelStatusArr = itemCdDelStatusArr.split();
             itemCdArr = itemCdArr.split();
             itemNmArr = itemNmArr.split();
             itemTypArr = itemTypArr.split();
           }
 
           //ITEM순회
-          // itemnm.forEach(async function(item, key){
+          // itemnm.forEach(async function(item, key)
           async.eachOfSeries(itemCdArr, function (itemCd, key, callback) {
 
             var itemCdVal = "";
             if (itemCd != '')
               itemCdVal = itemCd;
 
-            //ITEMCD추출
-            var query = db.query("SELECT GET_ITEMCD('" + rptCd + "') ITEMCD FROM DUAL"
-              , function (error, results, fields) {
-                if (error) {
-                  console.log(error);
-                  throw error;
-                }
+            //ITEM삭제 여부 체크 (삭제 상태값 'Y' => 쿼리 수행 제외)
+            if (itemCdDelStatusArr[key] != "Y") {
+              //ITEMCD추출
+              var query = db.query("SELECT GET_ITEMCD('" + rptCd + "') ITEMCD FROM DUAL"
+                , function (error, results, fields) {
+                  if (error) {
+                    console.log(error);
+                    throw error;
+                  }
 
-                console.log(query.sql);
+                  console.log(query.sql);
 
-                if(itemCdVal == "")
-                  itemCdVal = results[0].ITEMCD;
+                  if (itemCdVal == "")
+                    itemCdVal = results[0].ITEMCD;
 
-                post = { RPTCD: rptCd, ITEMCD: itemCdVal, BUSSCD: bussCd, ITEMNM: itemNmArr[key], ITEMTYP: itemTypArr[key], SORTSEQ: key };
+                  post = { RPTCD: rptCd, ITEMCD: itemCdVal, BUSSCD: bussCd, ITEMNM: itemNmArr[key], ITEMTYP: itemTypArr[key], SORTSEQ: key };
 
-                //ITEM입력
-                query = db.query("INSERT INTO SAS_ITEM_MST SET ? ON DUPLICATE KEY UPDATE ITEMNM = '" + itemNmArr[key] + "', ITEMTYP = '" + itemTypArr[key] + "', SORTSEQ = '" + key + "'", post
-                  , function (error, results, fields) {
-                    if (error) {
-                      console.log(error);
-                      throw error;
-                    }
+                  //ITEM입력
+                  query = db.query("INSERT INTO SAS_ITEM_MST SET ? ON DUPLICATE KEY UPDATE ITEMNM = '" + itemNmArr[key] + "', ITEMTYP = '" + itemTypArr[key] + "', SORTSEQ = '" + key + "'", post
+                    , function (error, results, fields) {
+                      if (error) {
+                        console.log(error);
+                        throw error;
+                      }
 
-                    console.log(query.sql);
-                    console.log('inserted ' + results.affectedRows + ' rows');
-                    
-                    var itemSeqArr = req.body["itemseq" + (key+1)];
-                    var itemKeyArr = req.body["itemkey" + (key+1)];
-                    var itemValueArr = req.body["itemvalue" + (key+1)];
+                      console.log(query.sql);
+                      console.log('inserted ' + results.affectedRows + ' rows');
 
-                    //ITEM KEY,VAUE 순회
-                    // itemKeyArr.forEach(async function(itemkey, key2){
-                    async.eachOfSeries(itemSeqArr, function (itemSeq, key2, callback2) {
+                      var itemSeqDelStatusArr = req.body["itemseq_delstatus" + (key + 1)];
+                      console.log((key + 1) + " : " + itemSeqDelStatusArr);
+                      var itemSeqArr = req.body["itemseq" + (key + 1)];
+                      var itemKeyArr = req.body["itemkey" + (key + 1)];
+                      var itemValueArr = req.body["itemvalue" + (key + 1)];
 
-                      var seq = "";
-                      if (itemSeq != '')
-                        seq = itemSeq;
+                      //ITEM KEY,VAUE 순회
+                      // itemKeyArr.forEach(async function(itemkey, key2){
+                      async.eachOfSeries(itemSeqArr, function (itemSeq, key2, callback2) {
 
-                      var query = db.query("SELECT GET_ITEMCDSEQ('" + rptCd + "', '" + itemCdVal + "') SEQ FROM DUAL"
-                        , function (error, results, fields) {
-                          if (error) {
-                            console.log(error);
-                            throw error;
-                          }
+                        var seq = "";
+                        if (itemSeq != '')
+                          seq = itemSeq;
 
-                          console.log(query.sql);
-
-                          if (seq == "")
-                            seq = results[0].SEQ;
-
-                          post = { RPTCD: rptCd, ITEMCD: itemCdVal, SEQ: seq, BUSSCD: bussCd, KEY: itemKeyArr[key2], VALUE: itemValueArr[key2], SORTSEQ: key2 };
-
-                          //ITEM KEY,VALUE 입력
-                          query = db.query("INSERT INTO SAS_ITEM_DTL SET ? ON DUPLICATE KEY UPDATE `KEY` = '" + itemKeyArr[key2] + "', VALUE = '" + itemValueArr[key2] + "', SORTSEQ = '" + key2 + "'", post
+                        if (itemSeqDelStatusArr == undefined || itemSeqDelStatusArr[key2] != "Y") {
+                          //ITEM SEQ 추출
+                          var query = db.query("SELECT GET_ITEMCDSEQ('" + rptCd + "', '" + itemCdVal + "') SEQ FROM DUAL"
                             , function (error, results, fields) {
                               if (error) {
                                 console.log(error);
@@ -394,18 +387,74 @@ router.post('/save', function (req, res, next) {
                               }
 
                               console.log(query.sql);
-                              console.log('inserted ' + results.affectedRows + ' rows');
+
+                              if (seq == "")
+                                seq = results[0].SEQ;
+
+                              post = { RPTCD: rptCd, ITEMCD: itemCdVal, SEQ: seq, BUSSCD: bussCd, KEY: itemKeyArr[key2], VALUE: itemValueArr[key2], SORTSEQ: key2 };
+
+                              //ITEM KEY,VALUE 입력
+                              query = db.query("INSERT INTO SAS_ITEM_DTL SET ? ON DUPLICATE KEY UPDATE `KEY` = '" + itemKeyArr[key2] + "', VALUE = '" + itemValueArr[key2] + "', SORTSEQ = '" + key2 + "'", post
+                                , function (error, results, fields) {
+                                  if (error) {
+                                    console.log(error);
+                                    throw error;
+                                  }
+
+                                  console.log(query.sql);
+                                  console.log('inserted ' + results.affectedRows + ' rows');
+
+                                  callback2();
+
+                                });//ITEM KEY,VALUE 입력
+
+                            });//ITEM SEQ 추출
+                        } else {// ITEM_DTL KEY, VALUE 삭제
+                          var query = db.query("DELETE FROM SAS_ITEM_DTL WHERE RPTCD = ? AND ITEMCD = ? AND SEQ = ?", [rptCd, itemCdVal, seq]
+                            , function (error, results, fields) {
+                              if (error) {
+                                console.log(error);
+                                throw error;
+                              }
+
+                              console.log(query.sql);
+                              console.log('deleted ' + results.affectedRows + ' rows');
 
                               callback2();
+                            });
+                        }// ITEM_DTL KEY, VALUE 삭제
+                      }, function (err) {
+                        callback();
+                      });//ITEM KEY,VAUE 순회
+                    });//ITEM입력
+                });//ITEMCD추출
+            } else { //ITEM 삭제 수행
+              //ITEM_MST 삭제
+              var query = db.query("DELETE FROM SAS_ITEM_MST WHERE RPTCD = ? AND ITEMCD = ?", [rptCd, itemCdVal]
+                , function (error, results, fields) {
+                  if (error) {
+                    console.log(error);
+                    throw error;
+                  }
 
-                            });//ITEM KEY,VALUE 입력
+                  console.log(query.sql);
+                  console.log('deleted ' + results.affectedRows + ' rows');
 
-                        });
-                    }, function (err) {
+                  //ITEM_DTL 숙제
+                  query = db.query("DELETE FROM SAS_ITEM_DTL WHERE RPTCD = ? AND ITEMCD = ?", [rptCd, itemCdVal]
+                    , function (error, results, fields) {
+                      if (error) {
+                        console.log(error);
+                        throw error;
+                      }
+
+                      console.log(query.sql);
+                      console.log('deleted ' + results.affectedRows + ' rows');
+
                       callback();
-                    });//ITEM KEY,VAUE 순회
-                  });//ITEM입력
-              });//ITEMCD추출
+                    });//ITEM_DTL 삭제
+                });//ITEM_MST 삭제
+            }//ITEM 삭제 수행
           }, function (err) {
             res.redirect('/report');
           });//ITEM순회

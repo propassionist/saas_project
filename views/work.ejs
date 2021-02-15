@@ -59,7 +59,7 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                   <!-- <div class="dropdown-header">Dropdown Header:</div> -->
-                  <a class="dropdown-item" href="/workForm">등록</a>
+                  <a class="dropdown-item" href="/work/form">등록</a>
                   <!-- <a class="dropdown-item" href="#">Another action</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="#">Something else here</a> -->
@@ -67,70 +67,61 @@
               </div>
             </div>
 
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                  <thead>
-                    <tr>
-                      <th>회사명</th>
-                      <th>사업장</th>
-                      <th>관리포인트</th>
-                      <th>제목</th>
-                      <th>요청자</th>
-                      <th>요청일</th>                      
-                      <th>보고서</th>
-                      <th>진행상태</th>
-                    </tr>
-                  </thead>
-                  <tfoot>
-                    <tr>
-                      <th>회사명</th>
-                      <th>사업장</th>
-                      <th>관리포인트</th>
-                      <th>제목</th>
-                      <th>요청자</th>
-                      <th>요청일</th>                      
-                      <th>보고서</th>
-                      <th>진행상태</th>
-                    </tr>
-                  </tfoot>
-                  <tbody>
-                    <tr>
-                      <td>한화시스템</td>
-                      <td>데이터센터</td>
-                      <td></td>
-                      <td>화장실 휴지 부족</td>
-                      <td>김한화</td>
-                      <td>2020/11/01</td>
-                      <td><a data-toggle="modal" data-target="#myReqModal">요청사항접수</a></td>
-                      <td>처리완료</td>
-                    </tr>
-                    <tr>
-                      <td>한화리조트</td>
-                      <td>설악쏘라노</td>
-                      <td></td>
-                      <td>301호 객실청소 불량</td>
-                      <td>이강원</td>
-                      <td>2020/11/02</td>                      
-                      <td><a data-toggle="modal" data-target="#myCleanModal">청소상태관리</a></td>
-                      <!-- <td><a data-toggle="modal" href="#myModal" onclick="getReport('B');return false;">청소상태관리</a></td> -->
-                      <td>등록</td>
-                    </tr>
-                    <tr>
-                      <td>한화리조트</td>
-                      <td>설악쏘라노</td>
-                      <td>202호</td>
-                      <td>301호 객실청소 불량</td>
-                      <td>이강원</td>
-                      <td>2020/11/02</td>
-                      <td><a data-toggle="modal" data-target="#myCleanModal2">청소상태관리</a></td>
-                      <!-- <td><a data-toggle="modal" href="#myModal" onclick="getReport('B');return false;">청소상태관리</a></td> -->
-                      <td>등록</td>
-                    </tr>
-                  </tbody>
-                </table>
+            <form action="/work/form" method="post" name="mForm">
+              <input type="hidden" name="rowIdx">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                      <tr>
+                        <th>회사명</th>
+                        <th>사업장</th>
+                        <th>관리포인트</th>
+                        <th>제목</th>
+                        <th>요청자</th>
+                        <th>요청일</th>                      
+                        <th>보고서</th>
+                        <th>진행상태</th>
+                      </tr>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <th>회사명</th>
+                        <th>사업장</th>
+                        <th>관리포인트</th>
+                        <th>제목</th>
+                        <th>요청자</th>
+                        <th>요청일</th>                      
+                        <th>보고서</th>
+                        <th>진행상태</th>
+                      </tr>
+                    </tfoot>
+                    <tbody>
+                      <%
+                        for(var i=0; i<data.length; i++){
+                      %>
+                      <tr id="row-<%=i+1%>">
+                        <input type="hidden" name="bussCd" value="<%=data[i].BUSSCD%>">
+                        <input type="hidden" name="siteCd" value="<%=data[i].SITECD%>">
+                        <input type="hidden" name="workCd" value="<%=data[i].WORKCD%>">
+
+                        <td onclick="rowClick(<%=i%>)"><%=data[i].BUSSNM%></td>
+                        <td onclick="rowClick(<%=i%>)"><%=data[i].SITENM%></td>
+                        <td onclick="rowClick(<%=i%>)"><%=data[i].MNGPOINTNM%></td>
+                        <td onclick="rowClick(<%=i%>)"><%=data[i].WORKNM%></td>
+                        <td onclick="rowClick(<%=i%>)"><%=data[i].WORKERNM%></td>
+                        <td><%=data[i].WORKDTE%></td>
+                        <td><a data-toggle="modal" data-target="#myReqModal"><%=data[i].RPTNM%></a></td>
+                        <td><%=data[i].STATUS%></td>
+                      </tr>
+                      <%
+                        }
+                      %>                    
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
+            </form>
           </div>
         </div>
         <!-- /.container-fluid -->
@@ -363,17 +354,26 @@
   <script src="js/demo/datatables-demo.js"></script>
 
   <script>
-              
-    function getReport(rptType){      
-      switch(rptType){
-        case "A": // 요청사항접수          
-          location.href = "#myModal";
-        break;
-        case "B": //청소상태관리
-          location.href = "#myModal";
-        break;
-      }
+
+  function rowClick(rowIdx){
+    var f = document.mForm;
+
+    // f.rptCd.value = document.querySelector("#" + obj.id + " .rptCd").textContent;
+    f.rowIdx.value = rowIdx;
+    
+    document.mForm.submit();
+  }
+            
+  function getReport(rptType){      
+    switch(rptType){
+      case "A": // 요청사항접수          
+        location.href = "#myModal";
+      break;
+      case "B": //청소상태관리
+        location.href = "#myModal";
+      break;
     }
+  }
 
   </script>
 
