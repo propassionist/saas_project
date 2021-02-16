@@ -13,7 +13,9 @@
 
   <!-- Custom fonts for this template -->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
 
   <!-- Custom styles for this template -->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -31,299 +33,144 @@
 
     <!-- Sidebar -->
     <% include ./sidebar %>
-    <!-- End of Sidebar -->
+      <!-- End of Sidebar -->
 
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
 
-      <!-- Main Content -->
-      <div id="content">
+        <!-- Main Content -->
+        <div id="content">
 
-        <% include ./topbar %>
+          <% include ./topbar %>
 
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
 
-          <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">업무 관리</h1>
-          <!-- <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p> -->
-          <p class="mb-4">업무를 관리하는 메뉴 입니다.</p>
+              <!-- Page Heading -->
+              <h1 class="h3 mb-2 text-gray-800">업무 관리</h1>
+              <!-- <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p> -->
+              <p class="mb-4">업무를 관리하는 메뉴 입니다.</p>
 
-          <!-- DataTales Example -->
-          <div class="card shadow mb-4">
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-              <h6 class="m-0 font-weight-bold text-primary">업무 관리 - 목록</h6>
-              <div class="dropdown no-arrow">
-                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                  <!-- <div class="dropdown-header">Dropdown Header:</div> -->
-                  <a class="dropdown-item" href="/work/form">등록</a>
-                  <!-- <a class="dropdown-item" href="#">Another action</a>
+              <!-- DataTales Example -->
+              <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">업무 관리 - 목록</h6>
+                  <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                      aria-labelledby="dropdownMenuLink">
+                      <!-- <div class="dropdown-header">Dropdown Header:</div> -->
+                      <a class="dropdown-item" href="/work/form">등록</a>
+                      <!-- <a class="dropdown-item" href="#">Another action</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="#">Something else here</a> -->
+                    </div>
+                  </div>
+                </div>
+
+                <form action="/work/form" method="post" name="mForm2">
+                  <input type="hidden" name="rowIdx">
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                          <tr>
+                            <th>회사명</th>
+                            <th>사업장</th>
+                            <th>관리포인트</th>
+                            <th>제목</th>
+                            <th>요청자</th>
+                            <th>요청일</th>
+                            <th>보고서</th>
+                            <th>진행상태</th>
+                          </tr>
+                        </thead>
+                        <tfoot>
+                          <tr>
+                            <th>회사명</th>
+                            <th>사업장</th>
+                            <th>관리포인트</th>
+                            <th>제목</th>
+                            <th>요청자</th>
+                            <th>요청일</th>
+                            <th>보고서</th>
+                            <th>진행상태</th>
+                          </tr>
+                        </tfoot>
+                        <tbody>
+                          <% for(var i=0; i<data.length; i++){ %>
+                            <tr id="row-<%=i+1%>">
+                              <input type="hidden" name="bussCd" value="<%=data[i].BUSSCD%>">
+                              <input type="hidden" name="siteCd" value="<%=data[i].SITECD%>">
+                              <input type="hidden" name="workCd" value="<%=data[i].WORKCD%>">
+                              <input type="hidden" name="rptCd" value="<%=data[i].RPTCD%>">
+
+                              <td onclick="rowClick(<%=i%>)">
+                                <%=data[i].BUSSNM%>
+                              </td>
+                              <td onclick="rowClick(<%=i%>)">
+                                <%=data[i].SITENM%>
+                              </td>
+                              <td onclick="rowClick(<%=i%>)">
+                                <%=data[i].MNGPOINTNM%>
+                              </td>
+                              <td onclick="rowClick(<%=i%>)">
+                                <%=data[i].WORKNM%>
+                              </td>
+                              <td onclick="rowClick(<%=i%>)">
+                                <%=data[i].WORKERNM%>
+                              </td>
+                              <td>
+                                <%=data[i].WORKDTE%>
+                              </td>
+                              <td><a data-toggle="modal" data-target="#reportViewModal">
+                                  <%=data[i].RPTNM%>
+                                </a></td>
+                              <td>
+                                <%=data[i].STATUS%>
+                              </td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- /.container-fluid -->
+
+            <!-- 변경 버튼 눌렀을 때 표시 데이터 -->
+            <div class="modal fade" id="reportViewModal" role="dialog">
+              <!-- 사용자 지정 부분① : id명 -->
+              <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title">보고서</h4> <!-- 사용자 지정 부분② : 타이틀 -->
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                  </div>
+                  <div class="modal-body">
+                    <!-- <p>여기에 필요한 텍스트 메시지 넣기</p>    // 사용자 지정 부분③ : 텍스트 메시지 -->
+                    <div class="card-body" id="rptPrintModal" style="text-align: center;">
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <form action="/work/form" method="post" name="mForm">
-              <input type="hidden" name="rowIdx">
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                      <tr>
-                        <th>회사명</th>
-                        <th>사업장</th>
-                        <th>관리포인트</th>
-                        <th>제목</th>
-                        <th>요청자</th>
-                        <th>요청일</th>                      
-                        <th>보고서</th>
-                        <th>진행상태</th>
-                      </tr>
-                    </thead>
-                    <tfoot>
-                      <tr>
-                        <th>회사명</th>
-                        <th>사업장</th>
-                        <th>관리포인트</th>
-                        <th>제목</th>
-                        <th>요청자</th>
-                        <th>요청일</th>                      
-                        <th>보고서</th>
-                        <th>진행상태</th>
-                      </tr>
-                    </tfoot>
-                    <tbody>
-                      <%
-                        for(var i=0; i<data.length; i++){
-                      %>
-                      <tr id="row-<%=i+1%>">
-                        <input type="hidden" name="bussCd" value="<%=data[i].BUSSCD%>">
-                        <input type="hidden" name="siteCd" value="<%=data[i].SITECD%>">
-                        <input type="hidden" name="workCd" value="<%=data[i].WORKCD%>">
-
-                        <td onclick="rowClick(<%=i%>)"><%=data[i].BUSSNM%></td>
-                        <td onclick="rowClick(<%=i%>)"><%=data[i].SITENM%></td>
-                        <td onclick="rowClick(<%=i%>)"><%=data[i].MNGPOINTNM%></td>
-                        <td onclick="rowClick(<%=i%>)"><%=data[i].WORKNM%></td>
-                        <td onclick="rowClick(<%=i%>)"><%=data[i].WORKERNM%></td>
-                        <td><%=data[i].WORKDTE%></td>
-                        <td><a data-toggle="modal" data-target="#myReqModal"><%=data[i].RPTNM%></a></td>
-                        <td><%=data[i].STATUS%></td>
-                      </tr>
-                      <%
-                        }
-                      %>                    
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </form>
-          </div>
         </div>
-        <!-- /.container-fluid -->
+        <!-- End of Main Content -->
 
-        <!-- 변경 버튼 눌렀을 때 표시 데이터 -->
-      <div class="modal fade" id="myReqModal" role="dialog"> <!-- 사용자 지정 부분① : id명 -->
-        <div class="modal-dialog modal-lg">
-          <!-- Modal content-->
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">보고서</h4> <!-- 사용자 지정 부분② : 타이틀 -->
-              <button type="button" class="close" data-dismiss="modal">×</button>
-            </div>
-            <div class="modal-body">
-             <!-- <p>여기에 필요한 텍스트 메시지 넣기</p>    // 사용자 지정 부분③ : 텍스트 메시지 -->
-             <div class="card-body" id="rptPrint" style="text-align: center;">
-              <div class="card-title">
-                 <strong><font size="20px">요청사항접수</font></strong>
-                 <div class="card-subtitle">
-                    <font size="5px">고객 요청사항 접수</font>
-                    <div class="card-text">
-                       <font>객실 내 비품 요청, 청결 상태 등 서비스 이용 시 필요 및 불편 사항을 가감없이 기재해 주십시오.</font>
-                       <div class="form-group row">
-                          <label class="col-sm-2 control-label col-form-label">제목</label>
-                          <div class="col-sm-5"><input type="text" class="form-control is-invalid" value="물 2개 추가 요청" readonly></div>
-                       </div>
-                       <div class="form-group row">
-                          <label class="col-sm-2 control-label col-form-label">내용</label>
-                          <div class="col-sm-10"><textarea class="form-control is-invalid" readonly>물 2개 부탁드려요</textarea></div>
-                       </div>
-                       <div class="form-group row">
-                          <label class="col-sm-2 control-label col-form-label">요청자</label>
-                          <div class="col-sm-5"><input type="text" class="form-control is-invalid" value="김한화" readonly></div>
-                       </div>
-                       <div class="form-group row">
-                          <label class="col-sm-2 control-label col-form-label">연락처</label>
-                          <div class="col-sm-5"><input type="text" class="form-control is-invalid" value="010-1234-5678" readonly></div>
-                       </div>
-                    </div>
-                 </div>
-              </div>
-            </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal fade" id="myCleanModal" role="dialog"> <!-- 사용자 지정 부분① : id명 -->
-        <div class="modal-dialog modal-lg">
-          <!-- Modal content-->
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">보고서</h4> <!-- 사용자 지정 부분② : 타이틀 -->
-              <button type="button" class="close" data-dismiss="modal">×</button>
-            </div>
-            <div class="modal-body">
-             <!-- <p>여기에 필요한 텍스트 메시지 넣기</p>    // 사용자 지정 부분③ : 텍스트 메시지 -->
-             <div class="card-body" id="rptPrint" style="text-align: center;">
-              <div class="card-title">
-                 <strong><font size="20px">청소상태관리</font></strong>
-                 <div class="card-subtitle">
-                    <font size="5px">객실 청소 상태 점검 리스트</font>
-                    <div class="card-text">
-                       <font>각 항목별 청소 상태를 확인해 주십시오.</font>
-                       <div class="form-group row">
-                          <label class="col-sm-2 control-label col-form-label">1. 소등 여부</label>
-                          <div class="col-sm-5">
-                             <select class="form-control custom-select" style="width: 100%;" disabled>
-                                <option value="Y">예</option>
-                                <option value="N">아니오</option>
-                             </select>
-                          </div>
-                       </div>
-                       <div class="form-group row">
-                          <label class="col-sm-2 control-label col-form-label">2. 화장실 청소 상태</label>
-                          <div class="col-sm-10" style="display: inline;">
-                            <input type="checkbox" class="custom-checkbox" value="5" checked disabled><label class="col-sm-2 control-label col-form-label">매우양호</label>
-                            <input type="checkbox" class="custom-checkbox" value="4" disabled><label class="col-sm-2 control-label col-form-label">양호</label>
-                            <input type="checkbox" class="custom-checkbox" value="3" disabled><label class="col-sm-2 control-label col-form-label">보통</label>
-                            <input type="checkbox" class="custom-checkbox" value="2" disabled><label class="col-sm-2 control-label col-form-label">불량</label>
-                            <input type="checkbox" class="custom-checkbox" value="1" disabled><label class="col-sm-2 control-label col-form-label">매우불량</label>
-                          </div>
-                       </div>
-                       <div class="form-group row">
-                          <label class="col-sm-2 control-label col-form-label">3. 침구류 정리 정돈 상태</label>
-                          <div class="col-sm-10" style="display: inline;">
-                            <input type="checkbox" class="custom-checkbox" value="5" disabled><label class="col-sm-2 control-label col-form-label">매우양호</label>
-                            <input type="checkbox" class="custom-checkbox" value="4" disabled><label class="col-sm-2 control-label col-form-label">양호</label>
-                            <input type="checkbox" class="custom-checkbox" value="3" checked disabled><label class="col-sm-2 control-label col-form-label">보통</label>
-                            <input type="checkbox" class="custom-checkbox" value="2" disabled><label class="col-sm-2 control-label col-form-label">불량</label>
-                            <input type="checkbox" class="custom-checkbox" value="1" disabled><label class="col-sm-2 control-label col-form-label">매우불량</label>
-                          </div>
-                       </div>
-                       <div class="form-group row">
-                          <label class="col-sm-2 control-label col-form-label">4. 쓰레기 수거 상태</label>
-                          <div class="col-sm-10" style="display: inline;">
-                            <input type="radio" class="custom-radio" value="5" disabled><label class="col-sm-2 control-label col-form-label">매우양호</label>
-                            <input type="radio" class="custom-radio" value="4" checked disabled><label class="col-sm-2 control-label col-form-label">양호</label>
-                            <input type="radio" class="custom-radio" value="3" disabled><label class="col-sm-2 control-label col-form-label">보통</label>
-                            <input type="radio" class="custom-radio" value="2" disabled><label class="col-sm-2 control-label col-form-label">불량</label>
-                            <input type="radio" class="custom-radio" value="1" disabled><label class="col-sm-2 control-label col-form-label">매우불량</label>
-                          </div>
-                       </div>
-                       <div class="form-group row">
-                        <label class="col-sm-2 control-label col-form-label">5. 기타</label>
-                        <div class="col-sm-10"><textarea width="100%" class="form-control is-invalid" readonly>분실물이 수거되어 프론트에 맡겼습니다. 확인 부탁 드립니다.</textarea></div>
-                     </div>
-                    </div>
-                 </div>
-              </div>
-            </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal fade" id="myCleanModal2" role="dialog"> <!-- 사용자 지정 부분① : id명 -->
-        <div class="modal-dialog modal-lg">
-          <!-- Modal content-->
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">보고서</h4> <!-- 사용자 지정 부분② : 타이틀 -->
-              <button type="button" class="close" data-dismiss="modal">×</button>
-            </div>
-            <div class="modal-body">
-             <!-- <p>여기에 필요한 텍스트 메시지 넣기</p>    // 사용자 지정 부분③ : 텍스트 메시지 -->
-             <div class="card-body" id="rptPrint" style="text-align: center;">
-              <div class="card-title">
-                 <strong><font size="20px">202호</font></strong><br>
-                 <strong><font size="20px">청소상태관리</font></strong>
-                 <div class="card-subtitle">
-                    <font size="5px">객실 청소 상태 점검 리스트</font>
-                    <div class="card-text">
-                       <font>각 항목별 청소 상태를 확인해 주십시오.</font>
-                       <div class="form-group row">
-                          <label class="col-sm-2 control-label col-form-label">1. 소등 여부</label>
-                          <div class="col-sm-5">
-                             <select class="form-control custom-select" style="width: 100%;" disabled>
-                                <option value="Y">예</option>
-                                <option value="N" selected>아니오</option>
-                             </select>
-                          </div>
-                       </div>
-                       <div class="form-group row">
-                          <label class="col-sm-2 control-label col-form-label">2. 화장실 청소 상태</label>
-                          <div class="col-sm-10" style="display: inline;">
-                            <input type="checkbox" class="custom-checkbox" value="5" disabled><label class="col-sm-2 control-label col-form-label">매우양호</label>
-                            <input type="checkbox" class="custom-checkbox" value="4" checked disabled><label class="col-sm-2 control-label col-form-label">양호</label>
-                            <input type="checkbox" class="custom-checkbox" value="3" disabled><label class="col-sm-2 control-label col-form-label">보통</label>
-                            <input type="checkbox" class="custom-checkbox" value="2" disabled><label class="col-sm-2 control-label col-form-label">불량</label>
-                            <input type="checkbox" class="custom-checkbox" value="1" disabled><label class="col-sm-2 control-label col-form-label">매우불량</label>
-                          </div>
-                       </div>
-                       <div class="form-group row">
-                          <label class="col-sm-2 control-label col-form-label">3. 침구류 정리 정돈 상태</label>
-                          <div class="col-sm-10" style="display: inline;">
-                            <input type="checkbox" class="custom-checkbox" value="5" checked disabled><label class="col-sm-2 control-label col-form-label">매우양호</label>
-                            <input type="checkbox" class="custom-checkbox" value="4" disabled><label class="col-sm-2 control-label col-form-label">양호</label>
-                            <input type="checkbox" class="custom-checkbox" value="3" disabled><label class="col-sm-2 control-label col-form-label">보통</label>
-                            <input type="checkbox" class="custom-checkbox" value="2" disabled><label class="col-sm-2 control-label col-form-label">불량</label>
-                            <input type="checkbox" class="custom-checkbox" value="1" disabled><label class="col-sm-2 control-label col-form-label">매우불량</label>
-                          </div>
-                       </div>
-                       <div class="form-group row">
-                          <label class="col-sm-2 control-label col-form-label">4. 쓰레기 수거 상태</label>
-                          <div class="col-sm-10" style="display: inline;">
-                            <input type="radio" class="custom-radio" value="5" checked disabled><label class="col-sm-2 control-label col-form-label">매우양호</label>
-                            <input type="radio" class="custom-radio" value="4" disabled><label class="col-sm-2 control-label col-form-label">양호</label>
-                            <input type="radio" class="custom-radio" value="3" disabled><label class="col-sm-2 control-label col-form-label">보통</label>
-                            <input type="radio" class="custom-radio" value="2" disabled><label class="col-sm-2 control-label col-form-label">불량</label>
-                            <input type="radio" class="custom-radio" value="1" disabled><label class="col-sm-2 control-label col-form-label">매우불량</label>
-                          </div>
-                       </div>
-                       <div class="form-group row">
-                        <label class="col-sm-2 control-label col-form-label">5. 기타</label>
-                        <div class="col-sm-10"><textarea width="100%" class="form-control is-invalid" readonly>없음.</textarea></div>
-                     </div>
-                    </div>
-                 </div>
-              </div>
-            </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
+        <% include ./footer %>
 
       </div>
-      <!-- End of Main Content -->
-
-      <% include ./footer %>
-
-    </div>
-    <!-- End of Content Wrapper -->
+      <!-- End of Content Wrapper -->
 
   </div>
   <!-- End of Page Wrapper -->
@@ -333,7 +180,7 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  
+
 
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
@@ -355,25 +202,46 @@
 
   <script>
 
-  function rowClick(rowIdx){
-    var f = document.mForm;
+    function rowClick(rowIdx) {
+      var f = document.mForm2;
 
-    // f.rptCd.value = document.querySelector("#" + obj.id + " .rptCd").textContent;
-    f.rowIdx.value = rowIdx;
-    
-    document.mForm.submit();
-  }
-            
-  function getReport(rptType){      
-    switch(rptType){
-      case "A": // 요청사항접수          
-        location.href = "#myModal";
-      break;
-      case "B": //청소상태관리
-        location.href = "#myModal";
-      break;
+      // f.rptCd.value = document.querySelector("#" + obj.id + " .rptCd").textContent;
+      f.rowIdx.value = rowIdx;
+
+      document.mForm2.submit();
     }
-  }
+
+    $('#reportViewModal').on('shown.bs.modal', function (e) {
+      var f = document.mForm2;
+
+      var idx = Number(e.relatedTarget.parentElement.parentElement.id.split('-')[1]) - 1;
+
+      console.log(idx);
+
+      $.get("/report/view", {
+        viewType : "modal",
+        bussCd: f.bussCd[idx].value,
+        workCd: f.workCd[idx].value,
+        rptCd: f.rptCd[idx].value
+      }, function (data) {
+        $( "#rptPrintModal" ).html( data );
+        // alert("Load was performed.");
+      });
+      // $('#myInput').trigger('focus')
+    })
+
+    function getReport(rptCd) {
+
+      
+      // switch(rptType){
+      //   case "A": // 요청사항접수          
+      //     location.href = "#myModal";
+      //   break;
+      //   case "B": //청소상태관리
+      //     location.href = "#myModal";
+      //   break;
+      // }
+    }
 
   </script>
 

@@ -112,8 +112,17 @@ router.get('/view', function (req, res, next) {
   var data = "";
   // var bussCd = req.session.busscd;
   // var rowIdx = req.body.rowIdx;
+
   var bussCd = req.query.bussCd;
   var rptCd = req.query.rptCd;
+  
+  var modalData = new Object();
+  var viewType = req.query.viewType;
+  var workCd = req.query.workCd;
+  var isWorkCd = !(req.query.workCd == undefined || req.query.workCd == "");
+
+  modalData.viewType = viewType;
+  modalData.workCd = workCd;
 
   var mngPoint = {
     code: req.query.mngPointCd,
@@ -133,16 +142,15 @@ router.get('/view', function (req, res, next) {
       console.log(query.sql);
       data = results[0];
 
-      // query = db.query("SELECT A.ITEMCD, A.ITEMNM, A.ITEMTYP, B.SEQ, B.KEY, B.VALUE \n" + 
-      //                 "FROM SAS_ITEM_MST A \n" +
-      //                 "LEFT OUTER JOIN SAS_ITEM_DTL B ON A.BUSSCD = B.BUSSCD AND A.SITECD = B.SITECD AND A.ITEMCD = B.ITEMCD \n" +
-      //                 "WHERE A.BUSSCD = ? AND A.RPTCD = ?"
-      //                 // , [req.session.busscd, req.body.rptCd], function (error, results, fields) {
-      //                 , ['B000000000', req.body.rptCd], function (error, results, fields) {
-      query = db.query("SELECT A.ITEMCD, A.ITEMNM, A.ITEMTYP \n" +
-        "FROM SAS_ITEM_MST A \n" +
-        "WHERE A.BUSSCD = ? AND A.RPTCD = ? \n" +
-        "ORDER BY A.SORTSEQ"
+      var sqlStr = "SELECT A.ITEMCD, A.ITEMNM, A.ITEMTYP"+ (isWorkCd ? ", B.RESULT" : "") +"  \n" +
+                          "FROM SAS_ITEM_MST A \n";
+            if(isWorkCd){
+                sqlStr += "LEFT OUTER JOIN (SELECT WORKCD, RPTCD, ITEMCD, MAX(RESULT) RESULT FROM SAS_WORK_RPT GROUP BY WORKCD, RPTCD, ITEMCD) B ON B.WORKCD = '" + workCd + "' AND A.RPTCD = B.RPTCD AND A.ITEMCD = B.ITEMCD \n";
+            }
+            sqlStr +=    "WHERE A.BUSSCD = ? AND A.RPTCD = ? \n" +
+                          "ORDER BY A.SORTSEQ";
+
+      query = db.query(sqlStr
         // , [req.session.busscd, req.body.rptCd], function (error, results, fields) {
         , [bussCd, rptCd], function (error, results, fields) {
           if (error) {
@@ -154,10 +162,14 @@ router.get('/view', function (req, res, next) {
           data.itemlist = results;
 
           async.forEachOf(results, function (item, key, callback) {
-            query = db.query("SELECT A.SEQ, A.KEY, A.VALUE \n" +
-              "FROM SAS_ITEM_DTL A \n" +
-              "WHERE A.RPTCD = ? AND A.ITEMCD = ? \n" +
-              "ORDER BY A.SORTSEQ"
+            sqlStr = "SELECT A.SEQ, A.KEY, A.VALUE"+ (isWorkCd ? ", B.RESULT" : "") +"  \n" +
+                          "FROM SAS_ITEM_DTL A \n";
+            if(isWorkCd){
+                sqlStr += "LEFT OUTER JOIN SAS_WORK_RPT B ON B.WORKCD = '" + workCd + "' AND A.RPTCD = B.RPTCD AND A.ITEMCD = B.ITEMCD AND A.KEY = B.RESULT \n";
+            }
+            sqlStr +=    "WHERE A.RPTCD = ? AND A.ITEMCD = ? \n" +
+                          "ORDER BY A.SORTSEQ";
+            query = db.query(sqlStr
               // , [req.session.busscd, req.body.rptCd], function (error, results, fields) {
               , [rptCd, item.ITEMCD], function (error, results, fields) {
                 if (error) {
@@ -172,7 +184,14 @@ router.get('/view', function (req, res, next) {
                 callback();
               })
           }, function (err) {
-            res.render('./form/report', { data: data, mngPoint: mngPoint });
+
+            var url = "./form/report";
+
+            if(viewType == "modal"){
+              url = "./form/reportBody"  
+            }
+
+            res.render(url, { data: data, mngPoint: mngPoint, modalData: modalData });
             // res.render('reportForm', { data: data, mngPoint: mngPoint });
           });
 
@@ -638,9 +657,109 @@ router.post('/update', function (req, res, next) {
 
 });
 
-router.get('/reportEnd', function (req, res, next) {
+router.post('/reportEnd', function (req, res, next) {
 
-  res.render('form/reportEnd');
+  var db = req.con;
+
+  // if (true) {
+  //   res.end();
+  // }
+
+  var d = new Date();
+  var today = "" + d.getFullYear() + (d.getMonth() + 1 < 10 ? "0" + (d.getMonth() + 1) : d.getMonth() + 1) + d.getDate();
+  var time = d.toLocaleString();
+
+  var viewType = req.body.viewType;
+  var bussCd = req.body.bussCd;
+  var siteCd = req.body.siteCd;
+  var workCd = req.body.workCd;
+  var workDte = today;
+  var workNm = req.body.rptNm + "(" + time + ")";
+  var mngPointCd = req.body.mngPointCd;
+  var rptCd = req.body.rptCd;
+  var itemCdList = req.body.itemCdList;
+  var itemCdListArr = itemCdList.split(",");
+
+  var query = db.query("SELECT GET_WORKCD() WORKCD FROM DUAL"
+    , function (error, results, fields) {
+      if (error) {
+        console.log(error);
+        throw error;
+      }
+
+      console.log(query.sql);
+
+      var sqlStr = "";
+      var post = new Object();
+
+      if(workCd == undefined || workCd == ""){
+        workCd = results[0].WORKCD;
+
+        sqlStr = "INSERT INTO SAS_WORK SET ? ";
+        post = {
+          BUSSCD: bussCd,
+          SITECD: siteCd,
+          WORKCD: workCd,
+          WORKDTE: workDte,
+          WORKNM: workNm,
+          MNGPOINTCD: mngPointCd,
+          RPTCD: rptCd
+        };
+      }else{
+        sqlStr = "DELETE FROM SAS_WORK_RPT WHERE ? ";
+        post = {
+          WORKCD: workCd
+        };
+      }
+
+      query = db.query(sqlStr, post
+        , function (error, results, fields) {
+          if (error) {
+            console.log(error);
+            throw error;
+          }
+
+          console.log('inserted ' + results.affectedRows + ' rows');
+
+          // if(itemKeyArr){              
+          async.eachOf(itemCdListArr, function (itemCd, key, callback) {
+
+            var itemKeyArr = req.body["item_" + itemCd];
+            if(typeof itemKeyArr == "string")
+              itemKeyArr = itemKeyArr.split();
+
+            async.eachOf(itemKeyArr, function (itemKey, key, callback2) {
+
+              post = { WORKCD: workCd, RPTCD: rptCd, ITEMCD: itemCd, RESULT: itemKey };
+
+              query = db.query("INSERT INTO SAS_WORK_RPT SET ? ", post
+                , function (error, results, fields) {
+                  if (error) {
+                    console.log(error);
+                    throw error;
+                  }
+
+                  console.log('inserted ' + results.affectedRows + ' rows');
+
+                  callback2();
+
+                });
+            }, function (err, results) {
+              callback();
+            });
+          }, function (err, results) {
+
+            if(viewType == "modal"){
+              res.redirect('/work');
+            }else{
+              res.render('form/reportEnd');
+            }
+
+          });
+
+        });
+
+    });
 
 });
 

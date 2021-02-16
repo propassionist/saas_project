@@ -4,7 +4,9 @@ var router = express.Router();
 router.get('/', function (req, res, next) {
 
   var db = req.con;
+  var data = new Object();
   var bussCd = req.session.bussCd;
+
   bussCd = "B000000001";
 
   var query = db.query("SELECT A.BUSSCD, B.BUSSNM, A.SITECD, C.SITENM, A.WORKCD, A.WORKDTE, A.WORKNM, A.WORKERCD, F.NAME WORKERNM \n" +
@@ -24,6 +26,9 @@ router.get('/', function (req, res, next) {
       }
 
       console.log(query.sql);
+
+      data = results;
+      data.BUSSCD = bussCd;
 
       res.render('work', { data: results });
     });
@@ -107,6 +112,7 @@ router.post('/form', function (req, res, next) {
 
   var rowIdx = req.body.rowIdx;
   var bussCd = req.body.bussCd[rowIdx];
+  // var bussCd = req.body.bussCd;
   var siteCd = req.body.siteCd[rowIdx];
   var workCd = req.body.workCd[rowIdx];
   if (typeof req.body.bussCd == "string") {

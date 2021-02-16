@@ -293,24 +293,21 @@
         // console.log(ui.item.attr("class"));
         // console.log(ui.item.find("input[name*=itemseq]"));
         // elemts.forEach(function(elemt, idx, array){
+          console.log("totalCnt : " + totalCnt);
         for(var i=0; i<totalCnt; i++){
-          // console.log(i);
-          // console.log(elemts[i]);
-          // elemts[i].querySelector("input[name*=itemseq]").attr("name", "itemseq" + (i+1));
-          // elemts[i].querySelector("input[name*=itemseq]").attr("name", "itemseq" + (i+1));
-          // console.log(elemts[i].querySelectorAll("input[name*=itemseq]").length);
           
+          // var itemSeqElemts = elemts[i].querySelectorAll("input[name*=itemseq]").not("input[name*=itemseq_delstatus]");
           var itemSeqElemts = elemts[i].querySelectorAll("input[name*=itemseq]");
+          var itemSeqDelStatusElemts = elemts[i].querySelectorAll("input[name*=itemseq_delstatus]");
           var itemKeyElemts = elemts[i].querySelectorAll("input[name*=itemkey]");
           var itemValueElemts = elemts[i].querySelectorAll("input[name*=itemvalue]");
 
-          // console.log('--------------' + i + '--------------');
-          // console.log(itemKeyElemts.length);
-          // console.log(itemKeyElemts);
-          // console.log(itemValueElemts);
-          // if(itemSeqElemts != undefined){
           for(var j=0; j<itemSeqElemts.length; j++){
             itemSeqElemts[j].setAttribute('name', 'itemseq' + (i+1));
+          }
+
+          for(var j=0; j<itemSeqDelStatusElemts.length; j++){
+            itemSeqDelStatusElemts[j].setAttribute('name', 'itemseq_delstatus' + (i+1));
           }
           // }
           for(var j=0; j<itemKeyElemts.length; j++){
@@ -319,9 +316,6 @@
           for(var j=0; j<itemValueElemts.length; j++){
             itemValueElemts[j].setAttribute('name', 'itemvalue' + (i+1));
           }
-          
-          // elemts[i].querySelectorAll("input[name*=itemseq]")
-          // console.log(elemts[i].querySelectors("input[name*=itemseq]"));
         }
       }
     });
@@ -397,7 +391,7 @@
     });
 
     function f1(a){
-      var seq = a.id.split('_')[1];
+      var seq = Number(a.id.split('_')[1]);
 
       $("#itemvalue_" + seq).children().remove();
       $("#itemsize_" + seq).children().remove();
@@ -460,8 +454,9 @@
       if(preSize > aftSize){
         // console.log((aftSize + 1) + " : " + (preSize));
         for(var i=aftSize+1; i<=preSize; i++){
-          // console.log("itemlist_" + seq + i);
-          $($("input[name=itemseq_delstatus" + seq + "]")[i-1]).val('Y');
+          // console.log($("#itemkeylist_" + seq + i).parent().find("input[name*=itemseq_delstatus]"));
+          // console.log($("#cardbody_" + seq).find("input[name*=itemseq_delstatus]"));
+          $($("#cardbody_" + seq).find("input[name*=itemseq_delstatus]")[i-1]).val('Y');
           $("#itemkeylist_" + seq + i).hide();
         }
       }else{
@@ -473,14 +468,16 @@
 
           console.log("itemkeylist_" + seq + i);
           if($("#itemkeylist_" + seq + i).length > 0){
-            console.log('wegweg');
-            $($("input[name=itemseq_delstatus" + seq + "]")[i-1]).val('');
+            // console.log($("#itemkeylist_" + seq + i).parent().find("input[name*=itemseq_delstatus]"));
+            // console.log($("#cardbody_" + seq).find("input[name*=itemseq_delstatus]"));
+            // cardbody_
+            $($("#cardbody_" + seq).find("input[name*=itemseq_delstatus]")[i-1]).val('');
             $("#itemkeylist_" + seq + i).show();
           }else{
 
             result += "<div class='form-group row' id='itemkeylist_" + seq + i + "'>"
-                    + "<input type='hidden' name='itemseq" + seq +"' value=" + i + ">";
-                    + "<input type='hidden' name='itemseq_delstatus" + seq +"' value=''>";
+                    + "<input type='hidden' name='itemseq" + seq +"' value=" + i + ">"
+                    + "<input type='hidden' name='itemseq_delstatus" + seq + "'>";
 
             result += "  <div class='col-sm-" + colspan + "' id='itemkey_" + seq + i + "'>"
                     + "    KEY" + i + " : "

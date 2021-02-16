@@ -1,0 +1,339 @@
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+  <!-- Content Wrapper -->
+  <div id="content-wrapper" class="d-flex flex-column">
+
+    <!-- Main Content -->
+    <div id="content">
+      <!-- Begin Page Content -->
+      <!-- <div class="container-fluid font-16"> -->
+        <form action="/report/reportEnd" method="post" id="mForm" name="mForm">
+          <input type="hidden" name="bussCd" value="<%=data == undefined ? '' : data.BUSSCD%>">
+          <input type="hidden" name="siteCd" value="<%=data == undefined ? '' : data.SITECD%>">
+          <input type="hidden" name="rptCd" value="<%=data == undefined ? '' : data.RPTCD%>">
+          <input type="hidden" name="rptNm" value="<%=data == undefined ? '' : data.RPTNM%>">
+          <input type="hidden" name="itemCdList">
+          <input type="hidden" name="mngPointCd" value="<%=mngPoint == undefined ? '' : mngPoint.code%>">
+
+          <input type="hidden" name="viewType" value="<%=modalData == undefined || modalData == "" ? '' : modalData.viewType%>">
+          <input type="hidden" name="workCd" value="<%=modalData == undefined || modalData == "" ? '' : modalData.workCd%>">
+          
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-12">
+            <!-- Tabs -->
+                  <div class="card">
+                      <div class="card-body" id="rptPrint" style="text-align: center;"></div>
+                  </div>
+                  <div class="border-top">
+                    <div class="card-body" style="text-align: center;">
+                        <button type="button" class="btn btn-info" id="mConfirm">확인</button>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <!-- ============================================================== -->
+        <!-- Recent comment and chats -->
+        <!-- ============================================================== -->
+    <!-- </div> -->
+      <!-- /.container-fluid -->
+
+    </div>
+    <!-- End of Main Content -->
+    
+  </div>
+  <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+  <i class="fas fa-angle-up"></i>
+</a>
+
+<script>
+  
+  // window.target
+  // window.open('', '_self', '');
+
+  // 보고서 타이틀 구성
+  var f = document.mForm;
+
+  var preTitle;
+  var title = document.createElement("h1");        
+  
+  title.className = "card-title";
+  // divTitle.append(strong);
+  // font.textContent = $("#rptTitle").val();
+  // strong.textContent = "<%=data.rptTitle%>";
+  
+  if("<%=mngPoint%>" != undefined){
+    if("<%=mngPoint.name%>" != ''){
+      preTitle = document.createElement("h1");        
+      preTitle.textContent = "<%=mngPoint.name%>";
+      $("#rptPrint").append(preTitle);
+    }
+  }    
+
+  title.textContent = "<%=data.RPTNM%>";
+  // divTitle.style.fontSize = "4vw";    
+  // divTitle.append(strong);
+  // font.size = "20px";
+
+  var subtitle = document.createElement("h5");    
+
+  subtitle.className = "card-subtitle";
+  subtitle.textContent = "<%=data.RPTSUBNM%>";
+  // divSubtitle.style.fontSize = "3vw";
+  
+  var desc = document.createElement("h6");
+
+  desc.className = "card-text";
+  desc.textContent = "<%=data.DESC%>";
+  // divDesc.style.fontSize = "2vw";
+
+  var hr = document.createElement("hr");
+  var hr2 = document.createElement("hr");
+
+  $("#rptPrint").append(title);
+  $("#rptPrint").append(subtitle);
+  $("#rptPrint").append(hr);
+  $("#rptPrint").append(desc);
+  $("#rptPrint").append(hr2);
+  
+  // 보고서 항목 구성
+  
+
+  // alert(cnt);
+
+  // divSubtitle.append(hr);    
+  // divDesc.append(hr2);
+  
+  <%
+    var cnt = 0;
+    if(data.itemlist != undefined){
+      cnt = data.itemlist.length;
+    }
+
+    for(var i=1; i<=cnt; i++){
+  %>
+
+    var itemCd = '<%=data.itemlist[i-1].ITEMCD%>';
+
+    if(<%=i%>==1){
+      f.itemCdList.value += itemCd;
+    }else{
+      f.itemCdList.value += "," + itemCd;
+    }
+  
+    // alert(i);
+    var div<%=i%> = document.createElement("div");
+    div<%=i%>.className = "form-group row";
+
+    var label<%=i%> = document.createElement("label");
+    label<%=i%>.className = "col-sm-2 col-form-label-sm font-weight-bold";
+    label<%=i%>.textContent = "<%=data.itemlist[i-1].ITEMNM%>";
+    // label<%=i%>.style.fontSize = "1vw";
+
+    if("<%=data.itemlist[i-1].ITEMTYP%>" == 'text'){
+        var divChild<%=i%> = document.createElement("div");
+        divChild<%=i%>.className = "col-sm-5";
+
+        var input<%=i%> = document.createElement("input");
+        input<%=i%>.type = "text";
+        input<%=i%>.className = "form-control is-invalid";
+        input<%=i%>.name = "item_" + itemCd;
+        input<%=i%>.value = "<%=data.itemlist[i-1].RESULT%>";
+        // input<%=i%>.style.fontSize = "1vw";
+        
+        divChild<%=i%>.append(input<%=i%>);
+
+        div<%=i%>.append(label<%=i%>);
+        div<%=i%>.append(divChild<%=i%>);
+
+    }else if("<%=data.itemlist[i-1].ITEMTYP%>" == 'textarea'){
+
+        var divChild<%=i%> = document.createElement("div");
+        divChild<%=i%>.className = "col-sm-10";
+
+        var textarea<%=i%> = document.createElement("textarea");            
+        textarea<%=i%>.className = "form-control is-invalid";
+        textarea<%=i%>.name = "item_" + itemCd;
+        textarea<%=i%>.value = "<%=data.itemlist[i-1].RESULT%>";
+        // textarea<%=i%>.style.fontSize = "1vw";
+        
+        divChild<%=i%>.append(textarea<%=i%>);
+
+        div<%=i%>.append(label<%=i%>);
+        div<%=i%>.append(divChild<%=i%>);
+
+      }else if("<%=data.itemlist[i-1].ITEMTYP%>" == 'select'){
+
+        var divChild<%=i%> = document.createElement("div");
+        divChild<%=i%>.className = "col-sm-2";
+
+        var select<%=i%> = document.createElement("select");
+        select<%=i%>.className = "form-control custom-select";
+        // select<%=i%>.style.fontSize = "1vw";
+        select<%=i%>.style.minHeight = "25px";
+
+        select<%=i%>.name = "item_" + itemCd;
+        
+        // console.log();
+        // select<%=i%>.style.width = "1vw";
+        // select<%=i%>.style.height = "1vh";          
+        
+        <%
+          var itemkeylist = data.itemlist[i-1].itemkeylist;
+
+          var keyCnt = 0;
+
+          if(itemkeylist != undefined){              
+            keyCnt = itemkeylist.length;
+          }
+
+          for(var j=1; j<=keyCnt; j++){            
+        %>
+          
+          var option<%=i%><%=j%> = document.createElement("option");
+          option<%=i%><%=j%>.value = "<%=itemkeylist[j-1].KEY%>";
+          option<%=i%><%=j%>.text = "<%=itemkeylist[j-1].VALUE%>";
+          // option<%=i%><%=j%>.style.fontSize = "1vw";
+
+          if(option<%=i%><%=j%>.value == "<%=itemkeylist[j-1].RESULT%>")
+            option<%=i%><%=j%>.selected = true;
+          
+          select<%=i%>.append(option<%=i%><%=j%>);
+        <%
+          }
+        %>
+
+        divChild<%=i%>.append(select<%=i%>);
+        div<%=i%>.append(label<%=i%>);
+        div<%=i%>.append(divChild<%=i%>);
+
+      }else if("<%=data.itemlist[i-1].ITEMTYP%>" == 'checkbox'
+              || "<%=data.itemlist[i-1].ITEMTYP%>" == 'radio'){
+        var divChild<%=i%> = document.createElement("div");
+        divChild<%=i%>.className = "d-flex flex-wrap justify-content-center col-sm-10";
+        // divChild<%=i%>.style.minWidth = "286px";
+        
+        // divChild<%=i%>.style.width = "20px";
+        // divChild<%=i%>.style.display = "inline";
+
+        <%
+          var itemkeylist = data.itemlist[i-1].itemkeylist;
+
+          var keyCnt = 0;
+
+          if(itemkeylist != undefined){
+            keyCnt = itemkeylist.length;
+          }
+
+          for(var j=1; j<=keyCnt; j++){            
+        %>
+          
+          var divChild<%=i%><%=j%> = document.createElement("div");
+          divChild<%=i%><%=j%>.style.width = "20%";
+
+          // divChild<%=i%><%=j%>.className = "d-flex flex-wrap justify-content-center";
+
+          var input<%=i%><%=j%> = document.createElement("input");
+          input<%=i%><%=j%>.type = "<%=data.itemlist[i-1].ITEMTYP%>";
+          input<%=i%><%=j%>.className = "flex-shrink-1 mr-1 custom-" + "<%=data.itemlist[i-1].ITEMTYP%>";
+          input<%=i%><%=j%>.style.width = "100%";            
+          
+          input<%=i%><%=j%>.name = "item_" + itemCd;
+          input<%=i%><%=j%>.value = "<%=itemkeylist[j-1].KEY%>";
+
+          input<%=i%><%=j%>.addEventListener('click', event => {
+            // $("input[name='itemlabel_<%=i%>'").css('color', "");
+
+            // var labelItems = document.getElementsByName("itemlabel_<%=i%>");
+            // labelItems.style.color = "";
+
+            if("<%=data.itemlist[i-1].ITEMTYP%>" == "radio"){
+              <% for(var k=1; k<=keyCnt; k++){ %>
+                label<%=i%><%=k%>.style.color = "";
+              <% } %>
+            }              
+
+            if(input<%=i%><%=j%>.checked){
+              label<%=i%><%=j%>.style.color = "red";
+            }else{
+              label<%=i%><%=j%>.style.color = "";
+            }
+          });
+          
+          // input.textContent = $("#itemValue_" + i + j + " input").val();            
+          
+          var label<%=i%><%=j%> = document.createElement("label");
+          label<%=i%><%=j%>.className = "flex-shrink-1 col-form-label-sm";
+          label<%=i%><%=j%>.textContent = "<%=itemkeylist[j-1].VALUE%>";
+          // input<%=i%><%=j%>.name = "itemlabel_<%=i%>";
+
+          label<%=i%><%=j%>.style.width = "100%";            
+          // label<%=i%><%=j%>.style.fontSize = "1vw";
+
+          if(f.workCd.value == ""){
+            if(<%=j-1%> == 0){
+              input<%=i%><%=j%>.checked = true;
+              label<%=i%><%=j%>.style.color = "red";
+            }
+          }else{
+            if(input<%=i%><%=j%>.value == "<%=itemkeylist[j-1].RESULT%>"){
+              input<%=i%><%=j%>.checked = true;
+              label<%=i%><%=j%>.style.color = "red";
+            }
+          }
+          
+          // label2.append(input);
+          divChild<%=i%><%=j%>.append(input<%=i%><%=j%>);
+          divChild<%=i%><%=j%>.append(label<%=i%><%=j%>);
+
+          divChild<%=i%>.append(divChild<%=i%><%=j%>);
+
+          // divChild.append(input);
+        <%
+          }
+        %>
+
+        div<%=i%>.append(label<%=i%>);
+        div<%=i%>.append(divChild<%=i%>);
+        
+      }
+
+      $("#rptPrint").append(div<%=i%>);
+    <%
+      }
+    %>        
+
+    // $("#mConfirm").css("fontSize", "1vw");
+
+
+$("#mConfirm").click(function(){
+
+  var f = document.mForm;
+
+  // console.log($("#mForm").find("input[name*=item_]"));
+
+  // f.itemCdList.value = ;
+
+  if(confirm('제출 하시겠습니까?')){
+    // alert('제출 완료.');
+    // alert(window);
+    // window.opener = null;
+    // window.open('','_self', '');
+    // window.close();
+    // window.open("about:blank","_self").close().close();
+
+    f.submit();
+  }
+});
+
+  
+</script>
