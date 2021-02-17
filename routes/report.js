@@ -657,7 +657,11 @@ router.post('/update', function (req, res, next) {
 
 });
 
-router.post('/reportEnd', function (req, res, next) {
+router.get('/end', function (req, res, next) {
+  res.render("./form/reportEnd");
+});
+
+router.post('/submit', function (req, res, next) {
 
   var db = req.con;
 
@@ -749,11 +753,13 @@ router.post('/reportEnd', function (req, res, next) {
             });
           }, function (err, results) {
 
-            if(viewType == "modal"){
-              res.redirect('/work');
-            }else{
-              res.render('form/reportEnd');
-            }
+            res.json(req.body);
+
+            // if(viewType == "modal"){
+            //   res.json('/work');
+            // }else{
+            //   res.render('form/reportEnd');
+            // }
 
           });
 

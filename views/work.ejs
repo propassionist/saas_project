@@ -106,6 +106,8 @@
                               <input type="hidden" name="bussCd" value="<%=data[i].BUSSCD%>">
                               <input type="hidden" name="siteCd" value="<%=data[i].SITECD%>">
                               <input type="hidden" name="workCd" value="<%=data[i].WORKCD%>">
+                              <input type="hidden" name="mngPointCd" value="<%=data[i].MNGPOINTCD%>">
+                              <input type="hidden" name="mngPointNm" value="<%=data[i].MNGPOINTNM%>">
                               <input type="hidden" name="rptCd" value="<%=data[i].RPTCD%>">
 
                               <td onclick="rowClick(<%=i%>)">
@@ -222,6 +224,8 @@
         viewType : "modal",
         bussCd: f.bussCd[idx].value,
         workCd: f.workCd[idx].value,
+        mngPointCd: f.mngPointCd[idx].value,
+        mngPointNm: f.mngPointNm[idx].value,
         rptCd: f.rptCd[idx].value
       }, function (data) {
         $( "#rptPrintModal" ).html( data );
