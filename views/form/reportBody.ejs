@@ -8,7 +8,7 @@
     <div id="content">
       <!-- Begin Page Content -->
       <!-- <div class="container-fluid font-16"> -->
-        <form action="/report/reportEnd" method="post" id="mForm" name="mForm">
+        <form action="/report/reportEnd" method="post" id="mRptViewForm" name="mRptViewForm">
           <input type="hidden" name="bussCd" value="<%=data == undefined ? '' : data.BUSSCD%>">
           <input type="hidden" name="siteCd" value="<%=data == undefined ? '' : data.SITECD%>">
           <input type="hidden" name="rptCd" value="<%=data == undefined ? '' : data.RPTCD%>">
@@ -61,7 +61,7 @@
   // window.open('', '_self', '');
 
   // 보고서 타이틀 구성
-  var f = document.mForm;
+  var f = document.mRptViewForm;
 
   var preTitle;
   var title = document.createElement("h1");        
@@ -317,9 +317,10 @@
 
 $("#mConfirm").click(function(){
 
-  var f = document.mForm;
+  var f = document.mRptViewForm;
+  console.log(f.id);
 
-  // console.log($("#mForm").find("input[name*=item_]"));
+  // console.log($("#mRptViewForm").find("input[name*=item_]"));
 
   // f.itemCdList.value = ;
 
@@ -332,6 +333,14 @@ $("#mConfirm").click(function(){
     // window.open("about:blank","_self").close().close();
 
     f.submit();
+
+    let myForm = document.getElementById('myForm');
+    let formData = new FormData(myForm);
+
+    $.post({
+    },function(data){
+
+    });
   }
 });
 

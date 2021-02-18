@@ -71,7 +71,7 @@
                   </div>
                 </div>
 
-                <form action="/work/form" method="post" name="mForm2">
+                <form action="/work/form" method="post" name="mForm">
                   <input type="hidden" name="rowIdx">
                   <div class="card-body">
                     <div class="table-responsive">
@@ -203,16 +203,16 @@
   <script>
 
     function rowClick(rowIdx) {
-      var f = document.mForm2;
+      var f = document.mForm;
 
       // f.rptCd.value = document.querySelector("#" + obj.id + " .rptCd").textContent;
       f.rowIdx.value = rowIdx;
 
-      document.mForm2.submit();
+      document.mForm.submit();
     }
 
     $('#reportViewModal').on('shown.bs.modal', function (e) {
-      var f = document.mForm2;
+      var f = document.mForm;
 
       var idx = Number(e.relatedTarget.parentElement.parentElement.id.split('-')[1]) - 1;
 
