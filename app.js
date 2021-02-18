@@ -130,20 +130,20 @@ app.use(function(req, res, next) {
 app.use('/users', usersRouter);
 
 // 회사관리
-app.use('/buss', bussRouter);
-app.use('/bussForm', bussFormRouter);
+// app.use('/buss', bussRouter);
+// app.use('/bussForm', bussFormRouter);
 
 // 사업장관리
-app.use('/site', siteRouter);
-app.use('/siteForm', siteFormRouter);
+// app.use('/site', siteRouter);
+// app.use('/siteForm', siteFormRouter);
 
 // 근무조관리
-app.use('/workGroup', workGroupRouter);
+// app.use('/workGroup', workGroupRouter);
 app.use('/workGroupForm', workGroupFormRouter);
 
 // 근무자관리
-app.use('/worker', workerRouter);
-app.use('/workerForm', workerFormRouter);
+// app.use('/worker', workerRouter);
+// app.use('/workerForm', workerFormRouter);
 
 // 근무스케줄관리
 app.use('/workPlan', workPlanRouter);

@@ -12,14 +12,15 @@
   <title>SB Admin 2 - Tables</title>
 
   <!-- Custom fonts for this template -->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
   <!-- Custom styles for this template -->
-  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+  <!-- 절대경로로 하는게 편함_채기모 -->
+  <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
   <!-- Custom styles for this page -->
-  <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -63,63 +64,82 @@
                   <div class="col-md-12">
                 <!-- Tabs -->
                       <div class="card">
-                          <form class="form-horizontal" id="mform">
+                          <form class="form-horizontal" id="mform" method="POST">
                               <div class="card-body">
                                   <div class="form-group row">
                                       <label for="carNm" class="col-sm-2 control-label col-form-label">회사코드</label>
                                       <div class="col-sm-10">
-                                          <input type="text" class="form-control" id="bussCd" value="C003" readonly>
+                                        <% if(data != null && data.length > 0) { %>
+                                          <input type="text" class="form-control" id="bussCd" name="bussCd" value=<%= data[0].BUSSCD %>>
+                                        <% } else { %>
+                                          <input type="text" class="form-control" id="bussCd" name="bussCd">
+                                        <% } %>
                                       </div>
                                   </div>
                                   <div class="form-group row">
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">회사명 *</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control is-invalid" id="bussNm">
+                                      <% if(data != null && data.length > 0) { %>
+                                        <input type="text" class="form-control is-invalid" id="bussNm" name="bussNm" value=<%= data[0].BUSSCD %>>
+                                      <% } else { %>
+                                        <input type="text" class="form-control is-invalid" id="bussNm" name="bussNm">
+                                      <% } %>
                                     </div>
                                   </div>
                                   <div class="form-group row">
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">사업자번호 *</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control is-invalid" id="bussNo">
+                                      <% if(data != null && data.length > 0) { %>
+                                        <input type="text" class="form-control is-invalid" id="bussNo" name="bussNo" value=<%= data[0].BUSSNO %>>
+                                      <% } else { %>
+                                        <input type="text" class="form-control is-invalid" id="bussNo" name="bussNo">
+                                      <% } %>
                                     </div>
                                   </div>
                                   <div class="form-group row">
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">주소 *</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control is-invalid" id="addr">
+                                      <% if(data != null && data.length > 0) { %>
+                                        <input type="text" class="form-control is-invalid" id="addr" name="addr" value=<%= data[0].ADDR %>>
+                                      <% } else { %>
+                                        <input type="text" class="form-control is-invalid" id="addr" name="addr">
+                                      <% } %>
                                     </div>
                                   </div>
                                   <div class="form-group row">
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">대표자명 *</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control is-invalid" id="bossNm">
+                                      <% if(data != null && data.length > 0) { %>
+                                        <input type="text" class="form-control is-invalid" id="chief" name="chief" value = <%= data[0].CHIEF %>>
+                                      <% } else { %>
+                                        <input type="text" class="form-control is-invalid" id="chief" name="chief">
+                                      <% } %>
                                     </div>
                                   </div>
                                   <div class="form-group row">
                                       <label for="useDte" class="col-sm-2 control-label col-form-label">설립일자 *</label>
                                       <div class="col-sm-10">
-                                          <input type="date" class="form-control" id="useDte" placeholder="yyyy/mm/dd">
+                                        <% if(data != null && data.length > 0) { %>
+                                          <input type="date" class="form-control" id="publymd" name="publymd" placeholder="yyyy/mm/dd" value = <%= data[0].PUBLYMD %>>
+                                        <% } else { %>
+                                          <input type="date" class="form-control" id="publymd" name="publymd" placeholder="yyyy/mm/dd">
+                                        <% } %>
                                       </div>
                                   </div>
-                                  <!-- <div class="form-group row">
-                                      <label for="userId" class="col-sm-2 control-label col-form-label">사용자 *</label>
-                                      <div class="col-sm-10">
-                                          <select class="select2 form-control custom-select" style="width: 100%;" id="userId">
-                                              <option value="">임직원 검색</option>
-                                              <option value="테스트" selected>테스트</option>                                          
-                                          </select>
-                                      </div>
-                                  </div>                                   -->
                                   <div class="form-group row">
                                       <label for="remark" class="col-sm-2 control-label col-form-label">비고</label>
                                       <div class="col-sm-10">
-                                          <input type="text" class="form-control" id="remark">
+                                        <% if(data != null && data.length > 0) { %>
+                                          <input type="text" class="form-control" id="remark" name="remark" value=<%= data[0].REMARK %>>
+                                        <% } else { %>
+                                          <input type="text" class="form-control" id="remark" name="remark">
+                                        <% } %>
                                       </div>
                                   </div>
                               </div>
                               <div class="border-top">
                                   <div class="card-body" style="text-align: center;">
-                                      <button type="button" class="btn btn-info" id="mSubmit">저장</button>
+                                      <button type="submit" class="btn btn-info" id="mSubmit">저장</button>
                                       <button type="button" class="btn btn-info" onclick="location.href='/buss'">목록</button>
                                   </div>
                               </div>
@@ -155,14 +175,14 @@
   
 
   <!-- Bootstrap core JavaScript-->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <!-- Core plugin JavaScript-->
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
   <!-- Custom scripts for all pages-->
-  <script src="js/sb-admin-2.min.js"></script>
+  <script src="/js/sb-admin-2.min.js"></script>
 
   <!-- Page level plugins -->
   <script src="vendor/datatables/jquery.dataTables.min.js"></script>

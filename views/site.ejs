@@ -12,14 +12,14 @@
   <title>SB Admin 2 - Tables</title>
 
   <!-- Custom fonts for this template -->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
   <!-- Custom styles for this template -->
-  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+  <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
   <!-- Custom styles for this page -->
-  <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -78,49 +78,21 @@
                       <th>주소</th>                      
                     </tr>
                   </thead>
-                  <tfoot>
-                    <tr>
-                      <th>회사코드</th>
-                      <th>회사명</th>
-                      <th>사업장코드</th>
-                      <th>사업장명</th>
-                      <th>사업장번호</th>
-                      <th>주소</th>
-                    </tr>
-                  </tfoot>
                   <tbody>
+                    <%
+                      for(var i=0; i<data.length; i++){
+                    %>
                     <tr>
-                      <td>C001</td>
-                      <td>한화시스템</td>
-                      <td>S0001</td>
-                      <td>한화데이터센터</td>
-                      <td></td>
-                      <td>죽전</td>                      
+                      <td><%= data[i].BUSSCD %></td>
+                      <td><%=data[i].BUSSNM%></td>
+                      <td><%=data[i].SITECD%></td>
+                      <td><%=data[i].SITENM%></td>
+                      <td><%=data[i].SITENO%></td>
+                      <td><%=data[i].SITEADDR%></td>
                     </tr>
-                    <tr>
-                      <td>C002</td>
-                      <td>한화에스테이트</td>
-                      <td>S0002</td>
-                      <td>한화리조트(수안보)</td>
-                      <td></td>
-                      <td>수안보</td>                      
-                    </tr>
-                    <tr>
-                      <td>C002</td>
-                      <td>한화에스테이트</td>
-                      <td>S0003</td>
-                      <td>한화손해보험</td>
-                      <td></td>
-                      <td>여의도</td>                      
-                    </tr>
-                    <tr>
-                      <td>C002</td>
-                      <td>한화에스테이트</td>
-                      <td>S0004</td>
-                      <td>리조트_설악</td>
-                      <td></td>
-                      <td>강원도</td>                      
-                    </tr>
+                    <%
+                      }
+                    %>
                   </tbody>
                 </table>
               </div>

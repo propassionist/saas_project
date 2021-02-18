@@ -12,14 +12,14 @@
   <title>SB Admin 2 - Tables</title>
 
   <!-- Custom fonts for this template -->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
   <!-- Custom styles for this template -->
-  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+  <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
   <!-- Custom styles for this page -->
-  <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -63,52 +63,75 @@
                   <div class="col-md-12">
                 <!-- Tabs -->
                       <div class="card">
-                          <form class="form-horizontal" id="mform">
+                          <form class="form-horizontal" id="mform" method="POST">
                               <div class="card-body">
                                   <div class="form-group row">
                                       <label for="userId" class="col-sm-2 control-label col-form-label">회사 *</label>
                                       <div class="col-sm-10">
-                                          <select class="select form-control custom-select" style="width: 100%;" id="bussCd">
+                                          <select class="select form-control custom-select" style="width: 100%;" id="bussCd" name="bussCd">
                                               <option value="">선택</option>
-                                              <option value="C001">한화시스템</option>
-                                              <option value="C002">한화에스테이트</option>
+                                              <!-- <option value="C001">한화시스템</option>
+                                              <option value="C002">한화에스테이트</option> -->
+                                            <%
+                                              for(var i=0; i<data.length; i++){
+                                            %>
+                                              <option value=<%=data[i].BUSSCD%>><%=data[i].BUSSNM%></option>
+                                            <%
+                                              }
+                                            %>
                                           </select>
                                       </div>
                                   </div>
                                   <div class="form-group row">
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">사업장코드</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="bussCd" value="S0005" readonly>
+                                      <% if(data != null && data.length > 0) { %>
+                                        <input type="text" class="form-control" id="siteCd" name="siteCd" value=<%= data[0].SITECD %>>
+                                      <% } else { %>
+                                        <input type="text" class="form-control" id="siteCd" name="siteCd">
+                                      <% } %>
                                     </div>
                                   </div>
                                   <div class="form-group row">
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">사업장명 *</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control is-invalid" id="siteNm">
+                                      <% if(data != null && data.length > 0) { %>
+                                        <input type="text" class="form-control is-invalid" id="siteNm" name="siteNm" value=<%= data[0].SITENM %>>
+                                      <% } else { %>
+                                        <input type="text" class="form-control is-invalid" id="siteNm" name="siteNm">
+                                      <% } %>
                                     </div>
                                   </div>
                                   <div class="form-group row">
-                                    <label for="carNm" class="col-sm-2 control-label col-form-label">사업자번호</label>
+                                    <label for="carNm" class="col-sm-2 control-label col-form-label">사업장번호</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="siteBussNo">
+                                      <% if(data != null && data.length > 0) { %>
+                                        <input type="text" class="form-control" id="siteNo" name="siteNo" value=<%= data[0].SITENO %>>
+                                      <% } else { %>
+                                        <input type="text" class="form-control" id="siteNo" name="siteNo">
+                                      <% } %>
                                     </div>
                                   </div>
                                   <div class="form-group row">
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">주소 *</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control is-invalid" id="siteAddr">
+                                      <% if(data != null && data.length > 0) { %>
+                                        <input type="text" class="form-control is-invalid" id="siteAddr" name="siteAddr" value=<%= data[0].SITEADDR %>>
+                                      <% } else { %>
+                                        <input type="text" class="form-control is-invalid" id="siteAddr" name="siteAddr">
+                                      <% } %>
                                     </div>
                                   </div>                                  
                                   <div class="form-group row">
                                       <label for="remark" class="col-sm-2 control-label col-form-label">비고</label>
                                       <div class="col-sm-10">
-                                          <input type="text" class="form-control" id="remark">
+                                          <input type="text" class="form-control" id="remark" name="remark">
                                       </div>
                                   </div>
                               </div>
                               <div class="border-top">
                                   <div class="card-body" style="text-align: center;">
-                                      <button type="button" class="btn btn-info" id="mSubmit">저장</button>
+                                      <button type="submit" class="btn btn-info" id="mSubmit">저장</button>
                                       <button type="button" class="btn btn-info" onclick="location.href='/site'">목록</button>
                                   </div>
                               </div>

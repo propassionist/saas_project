@@ -12,14 +12,14 @@
   <title>SB Admin 2 - Tables</title>
 
   <!-- Custom fonts for this template -->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
   <!-- Custom styles for this template -->
-  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+  <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
   <!-- Custom styles for this page -->
-  <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -63,37 +63,48 @@
                   <div class="col-md-12">
                 <!-- Tabs -->
                       <div class="card">
-                          <form class="form-horizontal" id="mform">
+                          <form class="form-horizontal" id="mform" method="POST">
                               <div class="card-body">
                                   <div class="form-group row">
                                     <label for="userId" class="col-sm-2 control-label col-form-label">회사 *</label>
                                     <div class="col-sm-10">
-                                        <select class="select form-control custom-select" style="width: 100%;" id="bussCd">
+                                        <select class="select form-control custom-select" style="width: 100%;" id="bussCd" name="bussCd">
                                             <option value="">선택</option>
-                                            <option value="C001">한화시스템</option>
-                                            <option value="C002">한화에스테이트</option>
+                                            <%
+                                              for(var i=0; i<bussList.length; i++){
+                                            %>
+                                              <option value=<%=bussList[i].BUSSCD%>><%=bussList[i].BUSSNM%></option>
+                                            <%
+                                              }
+                                            %>
                                         </select>
                                     </div>
                                   </div>
                                   <div class="form-group row">
                                     <label for="userId" class="col-sm-2 control-label col-form-label">사업장 *</label>
                                     <div class="col-sm-10">
-                                        <select class="select form-control custom-select" style="width: 100%;" id="siteCd">
+                                        <select class="select form-control custom-select" style="width: 100%;" id="siteCd" name="siteCd">
                                             <option value="">선택</option>
-                                            <option value="S0001">한화데이터센터</option>                                            
+                                            <%
+                                              for(var i=0; i<siteList.length; i++){
+                                            %>
+                                              <option value=<%=siteList[i].SITECD%>><%=siteList[i].SITENM%></option>
+                                            <%
+                                              }
+                                            %>
                                         </select>
                                     </div>
                                   </div>
                                   <div class="form-group row">
                                       <label for="carNm" class="col-sm-2 control-label col-form-label">근무자코드</label>
                                       <div class="col-sm-10">
-                                          <input type="text" class="form-control" id="empCd" value="E20200104" readonly>
+                                          <input type="text" class="form-control" id="workerCd" name="workerCd" value="E20200104" readonly>
                                       </div>
                                   </div>
                                   <div class="form-group row">
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">근무자명 *</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control is-invalid" id="empNm">
+                                        <input type="text" class="form-control is-invalid" id="name" name="name">
                                     </div>
                                   </div>
                                   <!-- <div class="form-group row">
@@ -109,7 +120,7 @@
                                   <div class="form-group row">
                                     <label for="userId" class="col-sm-2 control-label col-form-label">근무조 *</label>
                                     <div class="col-sm-10">
-                                        <select class="select form-control custom-select" style="width: 100%;" id="siteCd">
+                                        <select class="select form-control custom-select" style="width: 100%;" id="workTyp" name="workTyp">
                                             <option value="">선택</option>
                                             <option value="B01">A</option>
                                             <option value="B02">B</option>
@@ -119,31 +130,31 @@
                                   <div class="form-group row">
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">전화번호 *</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control is-invalid" placeholder="ex) 010-0000-0000" id="addr">
+                                        <input type="text" class="form-control is-invalid" placeholder="ex) 010-0000-0000" id="telNo" name="telNo">
                                     </div>
                                   </div>
                                   <div class="form-group row">
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">이메일 *</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control is-invalid" placeholder="ex) aaa@bbb.com" id="addr">
+                                        <input type="text" class="form-control is-invalid" placeholder="ex) aaa@bbb.com" id="email" name="email">
                                     </div>
                                   </div>
                                   <div class="form-group row">
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">주소 *</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control is-invalid" id="addr">
+                                        <input type="text" class="form-control is-invalid" id="addr" name="addr">
                                     </div>
                                   </div>                                  
                                   <div class="form-group row">
                                       <label for="useDte" class="col-sm-2 control-label col-form-label">생년월일 *</label>
                                       <div class="col-sm-10">
-                                          <input type="date" class="form-control" id="useDte" placeholder="yyyy/mm/dd">
+                                          <input type="date" class="form-control" id="birthDay" name="birthDay" placeholder="yyyy/mm/dd">
                                       </div>
                                   </div>
                                   <div class="form-group row">
                                     <label for="useDte" class="col-sm-2 control-label col-form-label">입사일자 *</label>
                                     <div class="col-sm-10">
-                                        <input type="date" class="form-control" id="useDte" placeholder="yyyy/mm/dd">
+                                        <input type="date" class="form-control" id="startYmd" name="startYmd" placeholder="yyyy/mm/dd">
                                     </div>
                                   </div>
                                   <!-- <div class="form-group row">
@@ -155,16 +166,16 @@
                                           </select>
                                       </div>
                                   </div>                                   -->
-                                  <div class="form-group row">
+                                  <!-- <div class="form-group row">
                                       <label for="remark" class="col-sm-2 control-label col-form-label">비고</label>
                                       <div class="col-sm-10">
                                           <input type="text" class="form-control" id="remark">
                                       </div>
-                                  </div>
+                                  </div> -->
                               </div>
                               <div class="border-top">
                                   <div class="card-body" style="text-align: center;">
-                                      <button type="button" class="btn btn-info" id="mSubmit">저장</button>
+                                      <button type="submit" class="btn btn-info" id="mSubmit">저장</button>
                                       <button type="button" class="btn btn-info" onclick="location.href='/worker'">목록</button>
                                   </div>
                               </div>
@@ -219,3 +230,8 @@
 </body>
 
 </html>
+
+
+<script>
+
+</script>

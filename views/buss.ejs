@@ -59,12 +59,14 @@
                 <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                   <!-- <div class="dropdown-header">Dropdown Header:</div> -->
                   <a class="dropdown-item" href="/bussForm">등록</a>
+                  <a class="dropdown-item" href="/buss">불러오기</a>
                   <!-- <a class="dropdown-item" href="#">Another action</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="#">Something else here</a> -->
                 </div>
               </div>
             </div>
+            
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -78,33 +80,21 @@
                       <th>설립년월</th>
                     </tr>
                   </thead>
-                  <tfoot>
-                    <tr>
-                      <th>회사코드</th>
-                      <th>회사명</th>
-                      <th>회사번호</th>
-                      <th>주소</th>
-                      <th>대표자</th>
-                      <th>설립년월</th>
-                    </tr>
-                  </tfoot>
                   <tbody>
+                    <%
+                      for(var i=0; i<data.length; i++){
+                    %>
                     <tr>
-                      <td>C001</td>
-                      <td>한화시스템</td>
-                      <td>123-45-67890</td>
-                      <td>서울시</td>
-                      <td>김연철</td>
-                      <td>2011/04/25</td>
+                      <td><a href="/bussForm/<%= data[i].BUSSCD %>" name="editBussCd"><%= data[i].BUSSCD %></a></td>
+                      <td><%=data[i].BUSSNM%></td>
+                      <td><%=data[i].BUSSNO%></td>
+                      <td><%=data[i].ADDR%></td>
+                      <td><%=data[i].CHIEF%></td>
+                      <td><%=data[i].PUBLYMD%></td>
                     </tr>
-                    <tr>
-                      <td>C002</td>
-                      <td>한화에스테이트</td>
-                      <td>222-44-55555</td>
-                      <td>서울시 63로</td>
-                      <td>이강만</td>
-                      <td>2011/07/25</td>
-                    </tr>
+                    <%
+                      }
+                    %>
                   </tbody>
                 </table>
               </div>

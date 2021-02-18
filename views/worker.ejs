@@ -12,15 +12,15 @@
   <title>SB Admin 2 - Tables</title>
 
   <!-- Custom fonts for this template -->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
   <!-- Custom styles for this template -->
-  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+  <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
   <!-- Custom styles for this page -->
   <!-- <link href="vendor/datatables/dataTables.min.css" rel="stylesheet"> -->
-  <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -76,103 +76,28 @@
                       <th>사업장명</th>
                       <th>사원번호</th>
                       <th>사원명</th>
-                      <!-- <th>근무구분</th> -->
                       <th>근무조</th>                      
                       <th>생년월일</th>
                       <th>입사일자</th>
                     </tr>
                   </thead>
-                  <tfoot>
-                    <tr>
-                      <th>No</th>
-                      <th>사업장명</th>
-                      <th>사원번호</th>
-                      <th>사원번호</th>
-                      <th>사원명</th>
-                      <!-- <th>근무구분</th> -->
-                      <th>근무조</th>                      
-                      <th>생년월일</th>
-                      <th>입사일자</th>
-                    </tr>
-                  </tfoot>
                   <tbody>
+                    <%
+                      for(var i=0; i<data.length; i++){
+                    %>
                     <tr>
-                      <td>1</td>
-                      <td>S0001</td>
-                      <td>한화데이터센터</td>
-                      <td>E20200101</td>
-                      <td>홍길동</td>
-                      <!-- <td>정직원</td> -->
-                      <td>A</td>                      
-                      <td>1990.01.01</td>
-                      <td>2019.10.13</td>
+                      <td><%= data[i].ROWNUM %></td>
+                      <td><%=data[i].SITECD%></td>
+                      <td><%=data[i].SITENM%></td>
+                      <td><%=data[i].WORKERCD%></td>
+                      <td><%=data[i].NAME%></td>
+                      <td><%=data[i].WORKTYP%></td>
+                      <td><%=data[i].BIRTHDAY%></td>
+                      <td><%=data[i].STARTYMD%></td>
                     </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>S0001</td>
-                      <td>한화데이터센터</td>
-                      <td>E20200102</td>
-                      <td>김사원</td>
-                      <!-- <td>파트타임</td> -->
-                      <td>B</td>                      
-                      <td>1993.07.12</td>
-                      <td>2020.10.01</td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>S0002</td>
-                      <td>한화리조트(수안보)</td>
-                      <td>E20200103</td>
-                      <td>김필중</td>
-                      <!-- <td>정직원</td> -->
-                      <td>A</td>                      
-                      <td>1995.12.31</td>
-                      <td>2020.10.01</td>
-                    </tr>
-                    <tr>
-                      <td>4</td>
-                      <td>S0003</td>
-                      <td>한화손해보험</td>
-                      <td>E20200104</td>
-                      <td>홍길동</td>
-                      <!-- <td>정직원</td> -->
-                      <td>A</td>                      
-                      <td>1995.12.31</td>
-                      <td>2020.10.01</td>
-                    </tr>
-                    <tr>
-                      <td>5</td>
-                      <td>S0004</td>
-                      <td>리조트_설악</td>
-                      <td>E20200105</td>
-                      <td>김사원</td>
-                      <!-- <td>정직원</td> -->
-                      <td>B</td>                      
-                      <td>1995.12.31</td>
-                      <td>2020.10.01</td>
-                    </tr>
-                    <tr>
-                      <td>6</td>
-                      <td>S0004</td>
-                      <td>리조트_설악</td>
-                      <td>E20200106</td>
-                      <td>김설악</td>
-                      <!-- <td>정직원</td> -->
-                      <td>A</td>                      
-                      <td>1991.12.01</td>
-                      <td>2020.11.01</td>
-                    </tr>
-                    <tr>
-                      <td>7</td>
-                      <td>S0004</td>
-                      <td>리조트_설악</td>
-                      <td>E20200107</td>
-                      <td>최근무</td>
-                      <!-- <td>정직원</td> -->
-                      <td>B</td>                      
-                      <td>1988.01.31</td>
-                      <td>2020.11.01</td>
-                    </tr>
+                    <%
+                      }
+                    %>
                   </tbody>
                 </table>
               </div>
