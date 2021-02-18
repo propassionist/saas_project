@@ -8,11 +8,7 @@
     <div id="content">
       <!-- Begin Page Content -->
       <!-- <div class="container-fluid font-16"> -->
-<<<<<<< HEAD
-        <form action="/report/reportEnd" method="post" id="mRptViewForm" name="mRptViewForm">
-=======
         <form action="/report/submit" method="post" id="mRptViewForm" name="mRptViewForm">
->>>>>>> 11c6897fdf73cf0dc082c1c3da455a0eda4a8b5c
           <input type="hidden" name="bussCd" value="<%=data == undefined ? '' : data.BUSSCD%>">
           <input type="hidden" name="siteCd" value="<%=data == undefined ? '' : data.SITECD%>">
           <input type="hidden" name="rptCd" value="<%=data == undefined ? '' : data.RPTCD%>">
@@ -321,12 +317,7 @@
 
 $("#mConfirm").click(function(){
 
-<<<<<<< HEAD
-  var f = document.mRptViewForm;
-  console.log(f.id);
-=======
   var formData = new FormData(document.mRptViewForm);
->>>>>>> 11c6897fdf73cf0dc082c1c3da455a0eda4a8b5c
 
   // console.log($("#mRptViewForm").find("input[name*=item_]"));
 
@@ -340,16 +331,6 @@ $("#mConfirm").click(function(){
     // window.close();
     // window.open("about:blank","_self").close().close();
 
-<<<<<<< HEAD
-    f.submit();
-
-    let myForm = document.getElementById('myForm');
-    let formData = new FormData(myForm);
-
-    $.post({
-    },function(data){
-
-=======
     // f.submit();
 
     $.post("/report/submit", $("#mRptViewForm").serialize(), function(data){
@@ -362,7 +343,6 @@ $("#mConfirm").click(function(){
       }else{
         location.href = "/report/end"
       }
->>>>>>> 11c6897fdf73cf0dc082c1c3da455a0eda4a8b5c
     });
   }
 });
