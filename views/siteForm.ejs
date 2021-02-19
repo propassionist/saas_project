@@ -68,14 +68,14 @@
                                   <div class="form-group row">
                                       <label for="userId" class="col-sm-2 control-label col-form-label">회사 *</label>
                                       <div class="col-sm-10">
-                                          <select class="select form-control custom-select" style="width: 100%;" id="bussCd" name="bussCd">
+                                          <select class="select form-control custom-select" style="width: 100%;" id="bussCd" name="bussCd" disabled>
                                               <option value="">선택</option>
                                               <!-- <option value="C001">한화시스템</option>
                                               <option value="C002">한화에스테이트</option> -->
                                             <%
                                               for(var i=0; i<data.length; i++){
                                             %>
-                                              <option value=<%=data[i].BUSSCD%>><%=data[i].BUSSNM%></option>
+                                              <option value=<%=data[i].BUSSCD%> <%=data != null && data[i].BUSSCD == data.BUSSCD ? 'selected' : '' %>><%=data[i].BUSSNM%></option>
                                             <%
                                               }
                                             %>
