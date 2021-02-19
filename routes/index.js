@@ -333,7 +333,6 @@ router.get('/siteForm', function(req, res, next) {
 
   var db = req.con;
   var data = new Object();
-  data.BUSSCD = req.session.bussCd;
   const sql = "SELECT * \n" +
               "  FROM HWHNR.SAS_BUSS";
 
@@ -345,6 +344,7 @@ router.get('/siteForm', function(req, res, next) {
           }
 
           data = results;
+          data.BUSSCD = req.session.bussCd;
           console.log(data);
           res.render('siteForm', {data: data});
       });
