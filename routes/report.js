@@ -7,12 +7,12 @@ var mysql = require('mysql');
 router.get('/', function (req, res, next) {
 
   var db = req.con;
-  // var bussCd = req.session.busscd;
-  var bussCd = 'B000000001';
+  var bussCd = req.session.busscd;
+  // bussCd = 'B000000001';
 
   var query = db.query("SELECT * FROM SAS_REPORT_MST WHERE BUSSCD = ?"
     // , [req.session.busscd], function (error, results, fields) {
-    , ['B000000001'], function (error, results, fields) {
+    , [bussCd], function (error, results, fields) {
       if (error) {
         console.log(error);
         throw error;
@@ -61,9 +61,9 @@ router.get('/form', function (req, res, next) {
 router.post('/delete', function (req, res, next) {
 
   var db = req.con;
-  // var bussCd = req.session.busscd;
-  // var siteCd = req.session.sitecd;
-  var bussCd = 'B000000001';
+  var bussCd = req.session.busscd;
+  var siteCd = req.session.sitecd;
+  // bussCd = 'B000000001';
   // var siteCd = 'S0001';
   var rptCd = req.body.rptCd;
 
@@ -296,10 +296,10 @@ router.post('/save', function (req, res, next) {
   var rptSubtitle = req.body.rptSubtitle;
   var rptDesc = req.body.rptDesc;
 
-  // var bussCd = req.session.busscd;
-  // var siteCd = req.session.sitecd;
-  var bussCd = 'B000000001';
-  var siteCd = 'S0001';
+  var bussCd = req.session.busscd;
+  var siteCd = req.session.sitecd;
+  // bussCd = 'B000000001';
+  // siteCd = 'S0001';
 
   //RPTCD 추출
   var query = db.query("SELECT GET_RPTCD() RPTCD FROM DUAL"

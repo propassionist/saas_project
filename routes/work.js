@@ -7,7 +7,7 @@ router.get('/', function (req, res, next) {
   var data = new Object();
   var bussCd = req.session.bussCd;
 
-  bussCd = "B000000001";
+  // bussCd = "B000000001";
 
   var query = db.query("SELECT A.BUSSCD, B.BUSSNM, A.SITECD, C.SITENM, A.WORKCD, A.WORKDTE, A.WORKNM, A.WORKERCD, F.NAME WORKERNM \n" +
     ", A.MNGPOINTCD, E.MNGPOINTNM, A.REMARK, A.RPTCD, D.RPTNM, A.STATUS \n" +
@@ -45,7 +45,7 @@ router.get('/form', function (req, res, next) {
   var rpt = "";
 
   var bussCd = req.session.bussCd;
-  bussCd = "B000000001";
+  // bussCd = "B000000001";
   data.BUSSCD = bussCd;
 
   var query = db.query("SELECT SITECD, SITENM \n" +
