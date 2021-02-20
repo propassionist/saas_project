@@ -190,21 +190,11 @@ router.get('/buss', function(req, res, next) {
               console.log(error);
               throw error;
           }
-	  
-					 
-						
 
           data = results;
-          // console.log(data);
-																							 
-										  
-										  
+          // console.log(data);					  
 										
           res.render('buss', {data: data});
-							   
-			
-																				
-						  
 	   
       });
 });
@@ -344,7 +334,7 @@ router.get('/siteForm', function(req, res, next) {
           }
 
           data = results;
-          data.BUSSCD = req.session.bussCd;
+          data.BUSSCD = req.session.busscd;
           console.log(data);
           res.render('siteForm', {data: data});
       });
