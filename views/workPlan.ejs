@@ -14,190 +14,10 @@
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link href='fullcalendar/main.css' rel='stylesheet' />
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
-
-  <link href='fullcalendar/main.css' rel='stylesheet' />
-  <script src='fullcalendar/main.js'></script>
-  <script>
-
-    document.addEventListener('DOMContentLoaded', function() {
-      
-      let draggableEl = document.getElementById('mydraggable');      
-
-      var calendarEl = document.getElementById('calendar');
-      var calendar = new FullCalendar.Calendar(calendarEl, {
-        // plugins: [ interactionPlugin ],
-        droppable: true,
-        eventClick: function(info) {
-          // alert('Event: ' + info.event.title);
-          // alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
-          // alert('View: ' + info.view.type);
-
-          // change the border color just for fun
-          
-          if(info.el.style.borderColor == 'red'){
-            info.el.style.borderColor = 'white';
-          }else{
-            info.el.style.borderColor = 'red';
-          }
-          
-        },
-        initialView: 'dayGridMonth',
-        // initialDate: '2020-10-07',
-    headerToolbar: {
-      left: 'prev,next today',
-      center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay'
-    },
-    events: [
-      {
-        title: '홍길동-근무A',
-        start: '2020-10-01',
-        end: '2020-10-03'
-      },
-      {
-        title: '홍길동-근무A',
-        start: '2020-10-05',
-        end: '2020-10-10'
-      },
-      {
-        title: '홍길동-근무A',
-        start: '2020-10-12',
-        end: '2020-10-17'
-      },
-      {
-        title: '홍길동-근무A',
-        start: '2020-10-19',
-        end: '2020-10-24'
-      },
-      {
-        title: '홍길동-근무A',
-        start: '2020-10-26',
-        end: '2020-10-31'
-      },
-      {
-        title: '김사원-근무B',
-        start: '2020-10-01',
-        end: '2020-10-02'
-      },
-      {
-        title: '김사원-근무B',
-        start: '2020-10-07',
-        end: '2020-10-10'
-      },
-      {
-        title: '김사원-근무B',
-        start: '2020-10-13',
-        end: '2020-10-15'
-      },
-      {
-        title: '김사원-근무B',
-        start: '2020-10-20',
-        end: '2020-10-23'
-      },
-      {
-        title: '김사원-근무B',
-        start: '2020-10-26',
-        end: '2020-10-31'
-      },
-      {
-        title: '홍길동-근무A',
-        start: '2020-11-02',
-        end: '2020-11-07'
-      },
-      {
-        title: '홍길동-근무A',
-        start: '2020-11-09',
-        end: '2020-11-14'
-      },
-      {
-        title: '홍길동-근무A',
-        start: '2020-11-17',
-        end: '2020-11-20'
-      },
-      {
-        title: '홍길동-근무A',
-        start: '2020-11-25',
-        end: '2020-11-29'
-      },
-      {
-        title: '홍길동-근무A',
-        start: '2020-11-30',
-        end: '2020-11-30'
-      },
-      {
-        title: '김사원-근무B',
-        start: '2020-11-03',
-        end: '2020-11-07'
-      },
-      {
-        title: '김사원-근무B',
-        start: '2020-11-10',
-        end: '2020-11-13'
-      },
-      {
-        title: '김사원-근무B',
-        start: '2020-11-16',
-        end: '2020-11-19'
-      },
-      {
-        title: '김사원-근무B',
-        start: '2020-11-23',
-        end: '2020-11-28'
-      },
-      {
-        title: '김사원-근무B',
-        start: '2020-11-30',
-        end: '2020-11-30'
-      },
-      // {
-      //   groupId: '999',
-      //   title: 'Repeating Event',
-      //   start: '2020-10-09T16:00:00'
-      // },
-      // {
-      //   groupId: '999',
-      //   title: 'Repeating Event',
-      //   start: '2020-10-16T16:00:00'
-      // },
-      // {
-      //   title: 'Conference',
-      //   start: '2020-10-11',
-      //   end: '2020-10-13'
-      // },
-      // {
-      //   title: 'Meeting',
-      //   start: '2020-10-12T10:30:00',
-      //   end: '2020-10-12T12:30:00'
-      // },
-      // {
-      //   title: 'Lunch',
-      //   start: '2020-10-12T12:00:00'
-      // },
-      // {
-      //   title: 'Meeting',
-      //   start: '2020-10-12T14:30:00'
-      // },
-      // {
-      //   title: 'Birthday Party',
-      //   start: '2020-10-13T07:00:00'
-      // },
-      // {
-      //   title: 'Click for Google',
-      //   url: 'http://google.com/',
-      //   start: '2020-10-28'
-      // }
-    ]
-      });
-      calendar.render();
-
-      new Draggable(draggableEl);
-
-    });
-
-  </script>
 
 </head>
 
@@ -250,8 +70,41 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                  <div id='calendar'></div>
-                </div>
+                  <form action="" name="mForm">
+                    <input type="hidden" name="srcWork">
+                    <input type="hidden" name="destWork">
+                    <div id='external-events'>
+                      <p>
+                        <strong>Draggable Events</strong>
+                      </p>
+                    
+                      <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+                        <div class='fc-event-main'>My Event 1</div>
+                      </div>
+                      <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+                        <div class='fc-event-main'>My Event 2</div>
+                      </div>
+                      <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+                        <div class='fc-event-main'>My Event 3</div>
+                      </div>
+                      <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+                        <div class='fc-event-main'>My Event 4</div>
+                      </div>
+                      <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+                        <div class='fc-event-main'>My Event 5</div>
+                      </div>
+                    
+                      <p>
+                        <input type='checkbox' id='drop-remove' />
+                        <label for='drop-remove'>remove after drop</label>
+                      </p>
+                    </div>
+                    
+                    <div id='calendar-container'>
+                      <div id='calendar'></div>
+                    </div>
+                  </form>
+                </div>'
               </div>
             </div>
             
@@ -294,6 +147,157 @@
   <!-- Page level custom scripts -->
   <script src="js/demo/chart-area-demo.js"></script>
   <script src="js/demo/chart-pie-demo.js"></script>
+
+  <script src='fullcalendar/main.js'></script>
+
+  <script>
+
+document.addEventListener('DOMContentLoaded', function() {
+  var Calendar = FullCalendar.Calendar;
+  var Draggable = FullCalendar.Draggable;
+
+  var containerEl = document.getElementById('external-events');
+  var calendarEl = document.getElementById('calendar');
+  var checkbox = document.getElementById('drop-remove');
+
+  // initialize the external events
+  // -----------------------------------------------------------------
+
+  new Draggable(containerEl, {
+    itemSelector: '.fc-event',
+    selectLongPressDelay: 0,
+    eventResizableFromStart: false,
+    eventData: function(eventEl) {
+      return {
+        title: eventEl.innerText
+      };
+    }
+  });
+
+  // initialize the calendar
+  // -----------------------------------------------------------------
+
+  var calendar = new Calendar(calendarEl, {
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      // right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      right: 'dayGridMonth'
+    },
+    // editable: true,
+    eventStartEditable: true,
+    droppable: true, // this allows things to be dropped onto the calendar
+    selectable: true,
+    eventResizableFromStart: false,
+    select: function(info){
+      console.log(info);
+      // window.open('https://google.com', "_blank");
+    },
+    eventClickEx: function(jsEvent,ev,view,cellDate){
+      alert(cellDate);
+    },
+    dayClick: function(date, jsEvent, view) { 
+            alert('Clicked on: ' + date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear());  
+    },
+    dateClick: function(info) {
+      alert('Clicked on: ' + info.dateStr);
+      alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
+      alert('Current view: ' + info.view.type);
+      // change the day's background color just for fun
+      info.dayEl.style.backgroundColor = 'red';
+    },
+    eventClick: function(info) {
+      var eventObj = info.event;
+      var f = document.mForm;
+
+      // alert('Event: ' + info.event.title);
+    // alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
+    // alert('View: ' + info.view.type);
+    console.log(info.el.parentNode);
+    // console.log(document.elementsFromPoint(info.jsEvent.pageX, info.jsEvent.pageY));
+
+      // console.log(eventObj);
+
+      if (eventObj.url) {
+        alert(
+          'Clicked ' + eventObj.title + '.\n' +
+          'Will open ' + eventObj.url + ' in a new tab'
+        );
+
+        window.open(eventObj.url);
+
+        info.jsEvent.preventDefault(); // prevents browser from following link in current tab.
+      } else {
+        var msg = "변경 대상으로 지정하시겠습니까?";
+        var target = "srcWork";
+
+        if(f.srcWork.value != ""){
+          msg = "변경 요청 하시겠습니까? [" + f.srcWork.value + "] => [" + eventObj.title + "]";
+          target = "destWork"
+        }else if(f.srcWork.value == eventObj.title){
+          msg = "변경 요청을 초기화 하시겠습니까?";
+          target = "destWork"
+        }
+
+        if(confirm(msg)){
+          f[target].value = eventObj.title;
+          // eventObj.editable = false; 
+          // eventObj.backgroundColor = "#A33F5B";
+          info.el.style.backgroundColor = "#A33F5B";
+          info.el.style.borderColor = "#A33F5B";
+          // eventObj.startEditable = false; 
+          // eventObj.droppable = false;
+
+        }
+        // alert('Clicked ' + eventObj.title);
+      }
+    },
+    eventAllow: function(dropInfo, draggedEvent) {
+      console.log(dropInfo);
+      console.log(draggedEvent);
+      // if (draggedEvent.id === '999') {
+        var f = document.mForm;
+        // console.log(draggedEvent.title);
+        // console.log((dropInfo.title == f.srcWork.value || dropInfo.title == f.destWork.value));
+        return !(draggedEvent.title == f.srcWork.value || draggedEvent.title == f.destWork.value); // a boolean
+      // }
+      // else {
+      //   return true;
+      // }
+    },
+    eventLongPressDelay: 0,
+    // eventLongPressDelay: 100,
+    drop: function(info) {
+      // is the "remove after drop" checkbox checked?
+      if (checkbox.checked) {
+        // if so, remove the element from the "Draggable Events" list
+        info.draggedEl.parentNode.removeChild(info.draggedEl);
+      }
+    }
+  });
+
+  calendar.render();
+
+  // $('#calendar').fullCalendar({
+  // eventClick: function(event, element) {
+
+  //   event.title = "CLICKED!";
+
+  //   $('#calendar').fullCalendar('updateEvent', event);
+
+  // }
+// });
+});
+      // calendar.addEvent( {
+      //   title: '테스트-근무B',
+      //   start: '2021-02-23',
+      //   end: '2021-02-23'
+      // } );
+
+    
+
+
+  </script>
 
 </body>
 
