@@ -1,0 +1,383 @@
+﻿
+@charset "utf-8";
+
+
+/* common*/
+html{overflow:auto;}
+*{margin:0;padding:0;}
+body {min-height:100%;height:100%;font-size:13px; color:#37383a ;line-height:150%;font-family:맑은고딕,Malgun Gothic,나눔고딕,Nanum Gothic, 돋움,Dotum,Helvetica,Verdana,Arial,sans-serif; word-break:keep-all; }
+body, p, ul, ol, li, dl, dt, dd, form, table, th, td, fieldset, input, textarea, select, button, h1, h2, h3, h4, h5, h6, pre {margin:0; padding:0; }
+ol, ul,li { list-style:none; }
+blockquote, q { quotes:none; }
+header, footer, nav, aside, section, article {display:block;}
+fieldset, img , iframe {border:0;}
+em,address{font-style:normal}
+.fl{float:left;} 
+.fr{float:right;} 
+.tc{text-align:center;} 
+.cb{clear:both;}
+.hc{visibility:hidden;overflow:hidden;position:absolute;left:-1000em;width:0;height:0;font-size:0;line-height:0}
+.nc,hr{display:none !important}
+img {-ms-interpolation-mode:bicubic !important;}
+img,table,fieldset,button{ border:0}
+a,img,input,span,button {outline: none;selector-dummy:expression(this.hideFocus=true);}
+table {border-collapse:collapse;border-spacing:0; table-layout:fixed;}
+legend, caption { overflow:hidden; visibility:hidden; width:0; height:0; font-size:0; line-height:0; display:none}
+a:link, a:visited, a:hover, a,active, a:focus { text-decoration:none; cursor:pointer;  }
+input,select,textarea{font-family:나눔고딕,Nanum Gothic, 돋움,Dotum,Helvetica,Verdana,Arial,sans-serif;font-size:12px; color:#505153; }
+.txt_left{ text-align:left}
+.txt_right{ text-align:right}	
+
+/* 객실상황판*/
+.roomv_wrap{width:90%; padding:2%;}
+.roomv { width:82px; height:89px; position:absolute; border:solid 1px #d7dcdf; padding:5px; border-radius:3px; margin-right:10px; background:#ffffff}
+.roomv.p_clean{width:84px; height:91px; background-color:#7a9f0c; border: none}
+.roomv.p_stay{width:84px; height:91px; background-color:#ff5949; border: none}
+.roomv.p_stay02{width:84px; height:91px; background-color:#ff6400; border: none}
+.roomv.p_out{width:84px; height:91px; background-color:#ff968c; border: none}
+.roomv.p_out02{width:84px; height:91px; background-color:#ffb687; border: none}
+.roomv.p_repair{width:84px; height:91px; background-color:#656565; border: none}
+.roomv.p_repair02{width:84px; height:91px; background-color:#8b8b8b; border: none}
+.roomv.p_hold{width:84px; height:91px; background-color:#517e97; border: none}
+/* 2019.02.19 채기모 - 인스펙트 상태 추가 시작 */
+.roomv.p_inspect{width:84px; height:91px; background-color:#F781F3; border: none}	
+/* 2019.02.19 채기모 - 인스펙트 상태 추가 시작 */
+
+/* 2020.02.14 eklee - 임시 oos  추가 시작 */
+.roomv.p_imsioos{width:84px; height:91px; background-color:#0054FF; border: none}
+/* 2020.02.14 eklee - 임시 oos  종료 */
+
+/* --2021.01.28 채기모_객실상황판 내 정비 시작 시간 추가_CSR210100000636 */
+
+.roomv.p_emergency{width:84px; height:91px; background-color:#ff0000; border: none}
+.roomv .rnum{width:100%; font-size:14px; font-weight:bold; color:#000;}
+.roomv .m_self{width:16px; height:16px; border-radius:3px; text-align:center; color:#000; line-height:13px ; float:left; margin-top:2px;}
+.roomv .m_self.op {background-color:#ffffff; opacity:1}
+.roomv .m_top{width:16px; height:16px; background-color:#a2a2af; border-radius:10px; text-align:center; color:#fff; line-height:13px ; float:right; margin-top:-18px}
+.roomv .m_top.op {background-color:#000; opacity:0.3}
+.roomv .rtit{position:relative;width:100%; font-size:12px; text-align:center; color:#000;  }
+.roomv .rtit_out{background:url(./../../../jspLink/images/rom/ico_goout_w.png) no-repeat left 0; position:relative;width:100%; font-size:12px; text-align:center; color:#000;  }
+.roomv .serv_out {width:100%; margin-top:8px}
+.roomv .serv { width:26px; height:24px;float:left}
+.roomv .serv span{width:26px; height:24px;display:inline-block; text-indent: 0px; font-weight:bold; color:black; font-size:14px; text-align: center;}
+.roomv .serv .call{background:url(./../../../jspLink/images/rom/ico_call.png) no-repeat  center 0; margin-right:5px;}
+.roomv .serv .repair{ background:url(./../../../jspLink/images/rom/ico_repair.png) no-repeat center 0; margin-right:5px}
+.roomv .serv .clean{ background:url(./../../../jspLink/images/rom/ico_cleaning.png) no-repeat center 0; }
+.roomv .serv .call02{background:url(./../../../jspLink/images/rom/ico_call_w.png) no-repeat  center 0; margin-right:5px;}
+.roomv .serv .repair02{ background:url(./../../../jspLink/images/rom/ico_repair_w.png) no-repeat center 0; margin-right:5px}
+.roomv .serv .clean02{ background:url(./../../../jspLink/images/rom/ico_cleaning_w.png) no-repeat center 0; }
+.roomv .blok_out{width:100%; margin-top:2px}
+.roomv  a{width:25px; height:18px; display:inline-block; background-color:#ddddde; border-radius:3px; text-align:center; line-height:16px; color:#656565; font-size:11px; font-weight:bold}
+.roomv  a:hover{ background-color:#656565; color:#fff}
+.roomv  a.mt{margin-right:3px}
+.roomv  a.op{ background-color:#fff; opacity:0.3   }
+.roomv  a.op:hover{ background-color:#fff; opacity:1 }
+.roomv  a .ftex{ color:#000; opacity:1  }
+
+.roomv_emergency { width:82px; height:89px; position:absolute; border:solid 1px #d7dcdf; padding:5px; border-radius:3px; margin-right:10px; background:url(./../../../jspLink/images/rom/emergency_w.png) no-repeat;}
+.roomv_emergency.p_clean{width:84px; height:91px; background-color:#7a9f0c; border: none}
+.roomv_emergency.p_stay{width:84px; height:91px; background-color:#ff5949; border: none}
+.roomv_emergency.p_stay02{width:84px; height:91px; background-color:#ff6400; border: none}
+.roomv_emergency.p_out{width:84px; height:91px; background-color:#ff968c; border: none}
+.roomv_emergency.p_out02{width:84px; height:91px; background-color:#ffb687; border: none}
+.roomv_emergency.p_repair{width:84px; height:91px; background-color:#656565; border: none}
+.roomv_emergency.p_repair02{width:84px; height:91px; background-color:#8b8b8b; border: none}
+.roomv_emergency.p_hold{width:84px; height:91px; background-color:#517e97; border: none}
+/* 2019.02.19 채기모 - 인스펙트 상태 추가 시작 */
+.roomv_emergency.p_inspect{width:84px; height:91px; background-color:#F781F3; border: none}
+/* 2019.02.19 채기모 - 인스펙트 상태 추가 시작 */
+
+/* 2020.02.14 eklee - 임시 oos 추가 시작 */
+.roomv_emergency.p_imsioos{width:84px; height:91px; background-color:#0054FF; border: none}
+/* 2020.02.14 eklee - 임시 oos 추가 시작 */
+
+.roomv_emergency.p_emergency{width:84px; height:91px; background-color:#ff0000; border: none}
+.roomv_emergency .rnum{width:100%; font-size:14px; font-weight:bold; color:#000;}
+.roomv_emergency .m_self{width:16px; height:16px; border-radius:3px; text-align:center; color:#000; line-height:13px ; float:left; margin-top:2px;}
+.roomv_emergency .m_self.op {background-color:#ffffff; opacity:1}
+.roomv_emergency .m_top{width:16px; height:16px; background-color:#a2a2af; border-radius:10px; text-align:center; color:#fff; line-height:13px ; float:right; margin-top:-18px}
+.roomv_emergency .m_top.op {background-color:#000; opacity:0.3}
+.roomv_emergency .rtit{position:relative;width:100%; font-size:12px; text-align:center; color:#000;  }
+.roomv_emergency .rtit_out{background:url(./../../../jspLink/images/rom/ico_goout_w.png) no-repeat left 0; position:relative;width:100%; font-size:12px; text-align:center; color:#000;  }
+.roomv_emergency .serv_out {width:100%; margin-top:8px}
+.roomv_emergency .serv { width:26px; height:24px;float:left}
+.roomv_emergency .serv span{width:26px; height:24px;display:inline-block; text-indent: 0px; font-weight:bold;  color:black; font-size:14px; text-align: center;}
+.roomv_emergency .serv .call{background:url(./../../../jspLink/images/rom/ico_call.png) no-repeat  center 0; margin-right:5px;}
+.roomv_emergency .serv .repair{ background:url(./../../../jspLink/images/rom/ico_repair.png) no-repeat center 0; margin-right:5px}
+.roomv_emergency .serv .clean{ background:url(./../../../jspLink/images/rom/ico_cleaning.png) no-repeat center 0; }
+.roomv_emergency .serv .call02{background:url(./../../../jspLink/images/rom/ico_call_w.png) no-repeat  center 0; margin-right:5px;}
+.roomv_emergency .serv .repair02{ background:url(./../../../jspLink/images/rom/ico_repair_w.png) no-repeat center 0; margin-right:5px}
+.roomv_emergency .serv .clean02{ background:url(./../../../jspLink/images/rom/ico_cleaning_w.png) no-repeat center 0; }
+.roomv_emergency .blok_out{width:100%; margin-top:2px}
+.roomv_emergency  a{width:25px; height:18px; display:inline-block; background-color:#ddddde; border-radius:3px; text-align:center; line-height:16px; color:#656565; font-size:11px; font-weight:bold}
+.roomv_emergency  a:hover{ background-color:#656565; color:#fff}
+.roomv_emergency  a.mt{margin-right:3px}
+.roomv_emergency  a.op{ background-color:#fff; opacity:0.3   }
+.roomv_emergency  a.op:hover{ background-color:#fff; opacity:1 }
+.roomv_emergency  a .ftex{ color:#000; opacity:1  }
+
+
+/* 로얄 */
+.roomv_r {width:178px; height:89px; position:absolute; border:solid 1px #d7dcdf; padding:5px; border-radius:3px; margin-right:10px; background:#ffffff}
+.roomv_r.p_clean{width:180px; height:91px; background-color:#7a9f0c; border: none}
+.roomv_r.p_stay{width:180px; height:91px; background-color:#ff5949; border: none}
+.roomv_r.p_stay02{width:180px; height:91px; background-color:#ff6400; border: none}
+.roomv_r.p_out{width:180px; height:91px; background-color:#ff968c; border: none}
+.roomv_r.p_out02{width:180px; height:91px; background-color:#ffb687; border: none}
+.roomv_r.p_repair{width:180px; height:91px; background-color:#656565; border: none}
+.roomv_r.p_repair02{width:180px; height:91px; background-color:#8b8b8b; border: none}
+.roomv_r.p_hold{width:180px; height:91px; background-color:#517e97; border: none}
+/* 2019.02.19 채기모 - 인스펙트 상태 추가 시작 */
+.roomv_r.p_inspect{width:180px; height:91px; background-color:#F781F3; border: none}
+/* 2019.02.19 채기모 - 인스펙트 상태 추가 시작 */
+
+/* 2020.02.14 이은경 - 임시 oos 시작 */
+.roomv_r.p_imsioos{width:180px; height:91px; background-color:#0054FF; border: none}
+/* 2020.02.14 이은경 - 임시 oos 시작 */
+
+.roomv_r.p_emergency{width:180px; height:91px; background-color:#ff0000; border: none}
+.roomv_r .rnum{ width:95%; font-size:14px; font-weight:bold; text-align:center; color:#000 }
+.roomv_r .m_self{width:16px; height:16px; border-radius:3px; text-align:center; color:#000; line-height:13px ; float:left; margin-top:2px}
+.roomv_r .m_self.op {background-color:#ffffff; opacity:1}
+.roomv_r .m_top{width:16px; height:16px; background-color:#a2a2af; border-radius:10px; text-align:center; color:#fff; line-height:13px ; float:right; margin-top:-18px}
+.roomv_r .m_top.op {background-color:#000; opacity:0.3}
+.roomv_r .rtit{ position:relative;width:100%; font-size:12px; text-align:center; color:#000;  }
+.roomv_r .rtit_out{background:url(./../../../jspLink/images/rom/ico_goout_w.png) no-repeat left 0; position:relative;width:100%; font-size:12px; text-align:center; color:#000;  }
+.roomv_r .serv_out{width:100%; margin-top:8px}
+.roomv_r .serv{ width:59px; height:24px;float:left}
+.roomv_r .serv span{width:59px; height:24px;display:inline-block; text-indent: 0px; font-weight:bold;  color:black; font-size:14px; text-align: center;}
+.roomv_r .serv .call{background:url(./../../../jspLink/images/rom/ico_call.png) no-repeat  center 0; margin-right:5px;}
+.roomv_r .serv .repair{ background:url(./../../../jspLink/images/rom/ico_repair.png) no-repeat center 0; margin-right:5px}
+.roomv_r .serv .clean{ background:url(./../../../jspLink/images/rom/ico_cleaning.png) no-repeat center 0; }
+.roomv_r .serv .call02{background:url(./../../../jspLink/images/rom/ico_call_w.png) no-repeat  center 0; margin-right:5px;}
+.roomv_r .serv .repair02{ background:url(./../../../jspLink/images/rom/ico_repair_w.png) no-repeat center 0; margin-right:5px}
+.roomv_r .serv .clean02{ background:url(./../../../jspLink/images/rom/ico_cleaning_w.png) no-repeat center 0; }
+.roomv_r .blok_out{width:100%; margin-top:2px}
+.roomv_r  a{width:57px; height:18px;display:inline-block; background-color:#ddddde; border-radius:3px; text-align:center; line-height:16px; color:#656565; font-size:11px; font-weight:bold}
+.roomv_r  a:hover{ background-color:#656565; color:#fff}
+.roomv_r  a.mt{margin-right:3px}
+.roomv_r  a.op{ background-color:#fff; opacity:0.3   }
+.roomv_r  a.op:hover{ background-color:#fff; opacity:1 }
+.roomv_r  a .ftex{ color:#000; opacity:1  }
+
+.roomv_r_emergency {width:178px; height:89px; position:absolute; border:solid 1px #d7dcdf; padding:5px; border-radius:3px; margin-right:10px; background:url(./../../../jspLink/images/rom/emergency_w.png) no-repeat;}
+.roomv_r_emergency.p_clean{width:180px; height:91px; background-color:#7a9f0c; border: none}
+.roomv_r_emergency.p_stay{width:180px; height:91px; background-color:#ff5949; border: none}
+.roomv_r_emergency.p_stay02{width:180px; height:91px; background-color:#ff6400; border: none}
+.roomv_r_emergency.p_out{width:180px; height:91px; background-color:#ff968c; border: none}
+.roomv_r_emergency.p_out02{width:180px; height:91px; background-color:#ffb687; border: none}
+.roomv_r_emergency.p_repair{width:180px; height:91px; background-color:#656565; border: none}
+.roomv_r_emergency.p_repair02{width:180px; height:91px; background-color:#8b8b8b; border: none}
+.roomv_r_emergency.p_hold{width:180px; height:91px; background-color:#517e97; border: none}
+/* 2019.02.19 채기모 - 인스펙트 상태 추가 시작 */
+.roomv_r_emergency.p_inspect{width:180px; height:91px; background-color:#F781F3; border: none}
+/* 2019.02.19 채기모 - 인스펙트 상태 추가 시작 */
+
+/* 2020.02.14 eklee - 임시oos  추가 시작 */
+.roomv_r_emergency.p_imsioos{width:180px; height:91px; background-color:#0054FF; border: none}
+/* 2020.02.14 eklee - 임시oos  추가  */
+
+
+.roomv_r_emergency.p_emergency{width:180px; height:91px; background-color:#ff0000; border: none}
+.roomv_r_emergency .rnum{ width:95%; font-size:14px; font-weight:bold; text-align:center; color:#000 }
+.roomv_r_emergency .m_self{width:16px; height:16px; border-radius:3px; text-align:center; color:#000; line-height:13px ; float:left; margin-top:2px}
+.roomv_r_emergency .m_self.op {background-color:#ffffff; opacity:1}
+.roomv_r_emergency .m_top{width:16px; height:16px; background-color:#a2a2af; border-radius:10px; text-align:center; color:#fff; line-height:13px ; float:right; margin-top:-18px}
+.roomv_r_emergency .m_top.op {background-color:#000; opacity:0.3}
+.roomv_r_emergency .rtit{ position:relative;width:100%; font-size:12px; text-align:center; color:#000;  }
+.roomv_r_emergency .rtit_out{background:url(./../../../jspLink/images/rom/ico_goout_w.png) no-repeat left 0; position:relative;width:100%; font-size:12px; text-align:center; color:#000;  }
+.roomv_r_emergency .serv_out{width:100%; margin-top:8px}
+.roomv_r_emergency .serv{ width:59px; height:24px;float:left}
+.roomv_r_emergency .serv span{width:59px; height:24px;display:inline-block; text-indent: 0px; font-weight:bold;  color:black; font-size:14px; text-align: center;}
+.roomv_r_emergency .serv .call{background:url(./../../../jspLink/images/rom/ico_call.png) no-repeat  center 0; margin-right:5px;}
+.roomv_r_emergency .serv .repair{ background:url(./../../../jspLink/images/rom/ico_repair.png) no-repeat center 0; margin-right:5px}
+.roomv_r_emergency .serv .clean{ background:url(./../../../jspLink/images/rom/ico_cleaning.png) no-repeat center 0; }
+.roomv_r_emergency .serv .call02{background:url(./../../../jspLink/images/rom/ico_call_w.png) no-repeat  center 0; margin-right:5px;}
+.roomv_r_emergency .serv .repair02{ background:url(./../../../jspLink/images/rom/ico_repair_w.png) no-repeat center 0; margin-right:5px}
+.roomv_r_emergency .serv .clean02{ background:url(./../../../jspLink/images/rom/ico_cleaning_w.png) no-repeat center 0; }
+.roomv_r_emergency .blok_out{width:100%; margin-top:2px}
+.roomv_r_emergency  a{width:57px; height:18px;display:inline-block; background-color:#ddddde; border-radius:3px; text-align:center; line-height:16px; color:#656565; font-size:11px; font-weight:bold}
+.roomv_r_emergency  a:hover{ background-color:#656565; color:#fff}
+.roomv_r_emergency  a.mt{margin-right:3px}
+.roomv_r_emergency  a.op{ background-color:#fff; opacity:0.3   }
+.roomv_r_emergency  a.op:hover{ background-color:#fff; opacity:1 }
+.roomv_r_emergency  a .ftex{ color:#000; opacity:1  }
+
+/* 스위트 */
+.roomv_s {width:129.5px; height:89px; position:absolute; border:solid 1px #d7dcdf; padding:5px; border-radius:3px; margin-right:10px; background:#ffffff}
+.roomv_s.p_clean{width:131.5px; height:91px; background-color:#7a9f0c; border: none}
+.roomv_s.p_stay{width:131.5px; height:91px; background-color:#ff5949; border: none}
+.roomv_s.p_stay02{width:131.5px; height:91px; background-color:#ff6400; border: none}
+.roomv_s.p_out{width:131.5px; height:91px; background-color:#ff968c; border: none}
+.roomv_s.p_out02{width:131.5px; height:91px; background-color:#ffb687; border: none}
+.roomv_s.p_repair{width:131.5px; height:91px; background-color:#656565; border: none}
+.roomv_s.p_repair02{width:131.5px; height:91px; background-color:#8b8b8b; border: none}
+.roomv_s.p_hold{width:131.5px; height:91px; background-color:#517e97; border: none}
+/* 2019.02.19 채기모 - 인스펙트 상태 추가 시작 */
+.roomv_s.p_inspect{width:131.5px; height:91px; background-color:#F781F3; border: none}
+/* 2019.02.19 채기모 - 인스펙트 상태 추가 시작 */
+
+/* 2020.02.14 eklee - 임시 oos 추가 시작 */
+.roomv_s.p_imsioos{width:131.5px; height:91px; background-color:#0054FF; border: none}
+/* 2020.02.14 eklee - 임시 oos 추가 종료*/
+
+
+.roomv_s.p_emergency{width:131.5px; height:91px; background-color:#ff0000; border: none}
+.roomv_s .rnum{ width:95%; font-size:14px; font-weight:bold; text-align:center; color:#000 }
+.roomv_s .m_self{width:16px; height:16px; border-radius:3px; text-align:center; color:#000; line-height:13px ; float:left; margin-top:2px}
+.roomv_s .m_self.op {background-color:#ffffff; opacity:1}
+.roomv_s .m_top{width:16px; height:16px; background-color:#a2a2af; border-radius:10px; text-align:center; color:#fff; line-height:13px ; float:right; margin-top:-18px}
+.roomv_s .m_top.op {background-color:#000; opacity:0.3}
+.roomv_s .rtit{ position:relative;width:100%; font-size:12px; text-align:center; color:#000;  }
+.roomv_s .rtit_out{background:url(./../../../jspLink/images/rom/ico_goout_w.png) no-repeat left 0; position:relative;width:100%; font-size:12px; text-align:center; color:#000;  }
+.roomv_s .serv_out{width:100%; margin-top:8px}
+.roomv_s .serv{ width:43px; height:24px;float:left}
+.roomv_s .serv span{width:43px; height:24px;display:inline-block;  text-indent: 0px; font-weight:bold;  color:black; font-size:14px; text-align: center;}
+.roomv_s .serv .call{background:url(./../../../jspLink/images/rom/ico_call.png) no-repeat  center 0; margin-right:5px;}
+.roomv_s .serv .repair{ background:url(./../../../jspLink/images/rom/ico_repair.png) no-repeat center 0; margin-right:5px}
+.roomv_s .serv .clean{ background:url(./../../../jspLink/images/rom/ico_cleaning.png) no-repeat center 0; }
+.roomv_s .serv .call02{background:url(./../../../jspLink/images/rom/ico_call_w.png) no-repeat  center 0; margin-right:5px;}
+.roomv_s .serv .repair02{ background:url(./../../../jspLink/images/rom/ico_repair_w.png) no-repeat center 0; margin-right:5px}
+.roomv_s .serv .clean02{ background:url(./../../../jspLink/images/rom/ico_cleaning_w.png) no-repeat center 0; }
+.roomv_s .blok_out{width:100%; margin-top:2px}
+.roomv_s  a{width:41px; height:18px;display:inline-block; background-color:#ddddde; border-radius:3px; text-align:center; line-height:16px; color:#656565; font-size:11px; font-weight:bold}
+.roomv_s  a:hover{ background-color:#656565; color:#fff}
+.roomv_s  a.mt{margin-right:3px}
+.roomv_s  a.op{ background-color:#fff; opacity:0.3   }
+.roomv_s  a.op:hover{ background-color:#fff; opacity:1 }
+.roomv_s  a .ftex{ color:#000; opacity:1  }
+
+.roomv_s_emergency {width:129.5px; height:89px; position:absolute; border:solid 1px #d7dcdf; padding:5px; border-radius:3px; margin-right:10px; background:url(./../../../jspLink/images/rom/emergency_w.png) no-repeat;}
+.roomv_s_emergency.p_clean{width:131.5px; height:91px; background-color:#7a9f0c; border: none}
+.roomv_s_emergency.p_stay{width:131.5px; height:91px; background-color:#ff5949; border: none}
+.roomv_s_emergency.p_stay02{width:131.5px; height:91px; background-color:#ff6400; border: none}
+.roomv_s_emergency.p_out{width:131.5px; height:91px; background-color:#ff968c; border: none}
+.roomv_s_emergency.p_out02{width:131.5px; height:91px; background-color:#ffb687; border: none}
+.roomv_s_emergency.p_repair{width:131.5px; height:91px; background-color:#656565; border: none}
+.roomv_s_emergency.p_repair02{width:131.5px; height:91px; background-color:#8b8b8b; border: none}
+.roomv_s_emergency.p_hold{width:131.5px; height:91px; background-color:#517e97; border: none}
+/* 2019.02.19 채기모 - 인스펙트 상태 추가 시작 */
+.roomv_s_emergency.p_inspect{width:131.5px; height:91px; background-color:#F781F3; border: none}
+/* 2019.02.19 채기모 - 인스펙트 상태 추가 시작 */
+
+/* 2020.02.14 eklee - 임시 oos 추가 시작 */
+.roomv_s_emergency.p_imsioos{width:131.5px; height:91px; background-color:#0054FF; border: none}
+/* 2020.02.14 eklee - 임시 oos 추가  */
+
+
+.roomv_s_emergency.p_emergency{width:131.5px; height:91px; background-color:#ff0000; border: none}
+.roomv_s_emergency .rnum{ width:95%; font-size:14px; font-weight:bold; text-align:center; color:#000 }
+.roomv_s_emergency .m_self{width:16px; height:16px; border-radius:3px; text-align:center; color:#000; line-height:13px ; float:left; margin-top:2px}
+.roomv_s_emergency .m_self.op {background-color:#ffffff; opacity:1}
+.roomv_s_emergency .m_top{width:16px; height:16px; background-color:#a2a2af; border-radius:10px; text-align:center; color:#fff; line-height:13px ; float:right; margin-top:-18px}
+.roomv_s_emergency .m_top.op {background-color:#000; opacity:0.3}
+.roomv_s_emergency .rtit{ position:relative;width:100%; font-size:12px; text-align:center; color:#000;  }
+.roomv_s_emergency .rtit_out{background:url(./../../../jspLink/images/rom/ico_goout_w.png) no-repeat left 0; position:relative;width:100%; font-size:12px; text-align:center; color:#000;  }
+.roomv_s_emergency .serv_out{width:100%; margin-top:8px}
+.roomv_s_emergency .serv{ width:43px; height:24px;float:left}
+.roomv_s_emergency .serv span{width:43px; height:24px;display:inline-block;  text-indent: 0px; font-weight:bold;  color:black; font-size:14px; text-align: center;}
+.roomv_s_emergency .serv .call{background:url(./../../../jspLink/images/rom/ico_call.png) no-repeat  center 0; margin-right:5px;}
+.roomv_s_emergency .serv .repair{ background:url(./../../../jspLink/images/rom/ico_repair.png) no-repeat center 0; margin-right:5px}
+.roomv_s_emergency .serv .clean{ background:url(./../../../jspLink/images/rom/ico_cleaning.png) no-repeat center 0; }
+.roomv_s_emergency .serv .call02{background:url(./../../../jspLink/images/rom/ico_call_w.png) no-repeat  center 0; margin-right:5px;}
+.roomv_s_emergency .serv .repair02{ background:url(./../../../jspLink/images/rom/ico_repair_w.png) no-repeat center 0; margin-right:5px}
+.roomv_s_emergency .serv .clean02{ background:url(./../../../jspLink/images/rom/ico_cleaning_w.png) no-repeat center 0; }
+.roomv_s_emergency .blok_out{width:100%; margin-top:2px}
+.roomv_s_emergency  a{width:41px; height:18px;display:inline-block; background-color:#ddddde; border-radius:3px; text-align:center; line-height:16px; color:#656565; font-size:11px; font-weight:bold}
+.roomv_s_emergency  a:hover{ background-color:#656565; color:#fff}
+.roomv_s_emergency  a.mt{margin-right:3px}
+.roomv_s_emergency  a.op{ background-color:#fff; opacity:0.3   }
+.roomv_s_emergency  a.op:hover{ background-color:#fff; opacity:1 }
+.roomv_s_emergency  a .ftex{ color:#000; opacity:1  }
+
+/* 로얄2 */
+.roomv_r2 {width:226px; height:89px; position:absolute; border:solid 1px #d7dcdf; padding:5px; border-radius:3px; margin-right:10px; background:#ffffff}
+.roomv_r2.p_clean{width:228px; height:91px; background-color:#7a9f0c; border: none}
+.roomv_r2.p_stay{width:228px; height:91px; background-color:#ff5949; border: none}
+.roomv_r2.p_stay02{width:228px; height:91px; background-color:#ff6400; border: none}
+.roomv_r2.p_out{width:228px; height:91px; background-color:#ff968c; border: none}
+.roomv_r2.p_out02{width:228px; height:91px; background-color:#ffb687; border: none}
+.roomv_r2.p_repair{width:228px; height:91px; background-color:#656565; border: none}
+.roomv_r2.p_repair02{width:228px; height:91px; background-color:#8b8b8b; border: none}
+.roomv_r2.p_hold{width:228px; height:91px; background-color:#517e97; border: none}
+/* 2019.02.19 채기모 - 인스펙트 상태 추가 시작 */
+.roomv_r2.p_inspect{width:228px; height:91px; background-color:#F781F3; border: none}
+/* 2019.02.19 채기모 - 인스펙트 상태 추가 시작 */
+
+/* 2020.02.14 eklee - 임시 oos 추가 시작 */
+.roomv_r2.p_imsioos{width:228px; height:91px; background-color:#0054FF; border: none}
+/* 2020.02.14 eklee - 임시 oos 추가 */
+
+
+.roomv_r2.p_emergency{width:228px; height:91px; background-color:#ff0000; border: none}
+.roomv_r2 .rnum{ width:95%; font-size:14px; font-weight:bold; text-align:center; color:#000 }
+.roomv_r2 .m_self{width:16px; height:16px; border-radius:3px; text-align:center; color:#000; line-height:13px ; float:left; margin-top:2px}
+.roomv_r2 .m_self.op {background-color:#ffffff; opacity:1;}
+.roomv_r2 .m_top{width:16px; height:16px; background-color:#a2a2af; border-radius:10px; text-align:center; color:#fff; line-height:13px ; float:right; margin-top:-18px}
+.roomv_r2 .m_top.op {background-color:#000; opacity:0.3}
+.roomv_r2 .rtit{ position:relative;width:100%; font-size:12px; text-align:center; color:#000;  }
+.roomv_r2 .rtit_out{background:url(./../../../jspLink/images/rom/ico_goout_w.png) no-repeat left 0; position:relative;width:100%; font-size:12px; text-align:center; color:#000;  }
+.roomv_r2 .serv_out{width:100%; margin-top:8px}
+.roomv_r2 .serv{ width:75px; height:24px;float:left}
+.roomv_r2 .serv span{width:75px; height:24px;display:inline-block;  text-indent: 0px; font-weight:bold;  color:black; font-size:14px; text-align: center;}
+.roomv_r2 .serv .call{background:url(./../../../jspLink/images/rom/ico_call.png) no-repeat  center 0; margin-right:5px;}
+.roomv_r2 .serv .repair{ background:url(./../../../jspLink/images/rom/ico_repair.png) no-repeat center 0; margin-right:5px}
+.roomv_r2 .serv .clean{ background:url(./../../../jspLink/images/rom/ico_cleaning.png) no-repeat center 0; }
+.roomv_r2 .serv .call02{background:url(./../../../jspLink/images/rom/ico_call_w.png) no-repeat  center 0; margin-right:5px;}
+.roomv_r2 .serv .repair02{ background:url(./../../../jspLink/images/rom/ico_repair_w.png) no-repeat center 0; margin-right:5px}
+.roomv_r2 .serv .clean02{ background:url(./../../../jspLink/images/rom/ico_cleaning_w.png) no-repeat center 0; }
+.roomv_r2 .blok_out{width:100%; margin-top:2px}
+.roomv_r2  a{width:73px; height:18px;display:inline-block; background-color:#ddddde; border-radius:3px; text-align:center; line-height:16px; color:#656565; font-size:11px; font-weight:bold}
+.roomv_r2  a:hover{ background-color:#656565; color:#fff}
+.roomv_r2  a.mt{margin-right:3px}
+.roomv_r2  a.op{ background-color:#fff; opacity:0.3   }
+.roomv_r2  a.op:hover{ background-color:#fff; opacity:1 }
+.roomv_r2  a .ftex{ color:#000; opacity:1  }
+
+.roomv_r2_emergency {width:226px; height:89px; position:absolute; border:solid 1px #d7dcdf; padding:5px; border-radius:3px; margin-right:10px; background:url(./../../../jspLink/images/rom/emergency_w.png) no-repeat;}
+.roomv_r2_emergency.p_clean{width:228px; height:91px; background-color:#7a9f0c; border: none}
+.roomv_r2_emergency.p_stay{width:228px; height:91px; background-color:#ff5949; border: none}
+.roomv_r2_emergency.p_stay02{width:228px; height:91px; background-color:#ff6400; border: none}
+.roomv_r2_emergency.p_out{width:228px; height:91px; background-color:#ff968c; border: none}
+.roomv_r2_emergency.p_out02{width:228px; height:91px; background-color:#ffb687; border: none}
+.roomv_r2_emergency.p_repair{width:228px; height:91px; background-color:#656565; border: none}
+.roomv_r2_emergency.p_repair02{width:228px; height:91px; background-color:#8b8b8b; border: none}
+.roomv_r2_emergency.p_hold{width:228px; height:91px; background-color:#517e97; border: none}
+/* 2019.02.19 채기모 - 인스펙트 상태 추가 시작 */
+.roomv_r2_emergency.p_inspect{width:228px; height:91px; background-color:#F781F3; border: none}
+/* 2019.02.19 채기모 - 인스펙트 상태 추가 시작 */
+
+/* 2020.02.14 eklee - 암시oos 추가 시작 */
+.roomv_r2_emergency.p_imsioos{width:228px; height:91px; background-color:#0054FF; border: none}
+/* 2020.02.14 eklee - 암시oos 추가 */
+
+.roomv_r2_emergency.p_emergency{width:228px; height:91px; background-color:#ff0000; border: none}
+.roomv_r2_emergency .rnum{ width:95%; font-size:14px; font-weight:bold; text-align:center; color:#000 }
+.roomv_r2_emergency .m_self{width:16px; height:16px; border-radius:3px; text-align:center; color:#000; line-height:13px ; float:left; margin-top:2px}
+.roomv_r2_emergency .m_self.op {background-color:#ffffff; opacity:1;}
+.roomv_r2_emergency .m_top{width:16px; height:16px; background-color:#a2a2af; border-radius:10px; text-align:center; color:#fff; line-height:13px ; float:right; margin-top:-18px}
+.roomv_r2_emergency .m_top.op {background-color:#000; opacity:0.3}
+.roomv_r2_emergency .rtit{ position:relative;width:100%; font-size:12px; text-align:center; color:#000;  }
+.roomv_r2_emergency .rtit_out{background:url(./../../../jspLink/images/rom/ico_goout_w.png) no-repeat left 0; position:relative;width:100%; font-size:12px; text-align:center; color:#000;  }
+.roomv_r2_emergency .serv_out{width:100%; margin-top:8px}
+.roomv_r2_emergency .serv{ width:75px; height:24px;float:left}
+.roomv_r2_emergency .serv span{width:75px; height:24px;display:inline-block;  text-indent: 0px; font-weight:bold;  color:black; font-size:14px;text-align: center;}
+.roomv_r2_emergency .serv .call{background:url(./../../../jspLink/images/rom/ico_call.png) no-repeat  center 0; margin-right:5px;}
+.roomv_r2_emergency .serv .repair{ background:url(./../../../jspLink/images/rom/ico_repair.png) no-repeat center 0; margin-right:5px}
+.roomv_r2_emergency .serv .clean{ background:url(./../../../jspLink/images/rom/ico_cleaning.png) no-repeat center 0; }
+.roomv_r2_emergency .serv .call02{background:url(./../../../jspLink/images/rom/ico_call_w.png) no-repeat  center 0; margin-right:5px;}
+.roomv_r2_emergency .serv .repair02{ background:url(./../../../jspLink/images/rom/ico_repair_w.png) no-repeat center 0; margin-right:5px}
+.roomv_r2_emergency .serv .clean02{ background:url(./../../../jspLink/images/rom/ico_cleaning_w.png) no-repeat center 0; }
+.roomv_r2_emergency .blok_out{width:100%; margin-top:2px}
+.roomv_r2_emergency  a{width:73px; height:18px;display:inline-block; background-color:#ddddde; border-radius:3px; text-align:center; line-height:16px; color:#656565; font-size:11px; font-weight:bold}
+.roomv_r2_emergency  a:hover{ background-color:#656565; color:#fff}
+.roomv_r2_emergency  a.mt{margin-right:3px}
+.roomv_r2_emergency  a.op{ background-color:#fff; opacity:0.3   }
+.roomv_r2_emergency  a.op:hover{ background-color:#fff; opacity:1 }
+.roomv_r2_emergency  a .ftex{ color:#000; opacity:1  }
+
+/* 층 블럭 */
+.parent {width: 40px;height: 100px;padding:0px;border-radius:3px;margin-right:10px;display:table;position:absolute;border:solid 1px #d7dcdf;}
+.child {display:table-cell;vertical-align: middle;background-color:#eae9e8;width:40px;height:100%;}
+.p_block {display: block;text-align: center;margin: 0px;font-size:14px; font-weight:bold; }
+

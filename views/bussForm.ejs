@@ -70,7 +70,7 @@
                                       <label for="carNm" class="col-sm-2 control-label col-form-label">회사코드</label>
                                       <div class="col-sm-10">
                                         <% if(data != null && data.length > 0) { %>
-                                          <input type="text" class="form-control" id="bussCd" name="bussCd" value=<%= data[0].BUSSCD %>>
+                                          <input type="text" class="form-control" id="bussCd" name="bussCd" readonly value=<%= data[0].BUSSCD %>>
                                         <% } else { %>
                                           <input type="text" class="form-control" id="bussCd" name="bussCd">
                                         <% } %>
@@ -80,7 +80,7 @@
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">회사명 *</label>
                                     <div class="col-sm-10">
                                       <% if(data != null && data.length > 0) { %>
-                                        <input type="text" class="form-control is-invalid" id="bussNm" name="bussNm" value=<%= data[0].BUSSCD %>>
+                                        <input type="text" class="form-control is-invalid" id="bussNm" name="bussNm" value=<%= data[0].BUSSNM %>>
                                       <% } else { %>
                                         <input type="text" class="form-control is-invalid" id="bussNm" name="bussNm">
                                       <% } %>

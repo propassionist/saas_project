@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>SB Admin 2 - Tables</title>
+
+  <!-- Custom fonts for this template -->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/common.css">
+
+  <!-- Custom styles for this page -->
+  <!-- <link href="vendor/datatables/dataTables.min.css" rel="stylesheet"> -->
+  <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <% include ./sidebar %>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <% include ./topbar %>
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <!-- Page Heading -->
+          <h1 class="h3 mb-2 text-gray-800">객실 상태 현황</h1>
+          <!-- <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p> -->
+          <p class="mb-4">객실 상태 현황을 확인하는 메뉴 입니다.</p>
+
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-primary">청소현황</h6>
+              <div class="dropdown no-arrow">
+                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                  <!-- <div class="dropdown-header">Dropdown Header:</div> -->
+                  <!-- <a class="dropdown-item" href="/workGroupForm">등록</a> -->
+                  <!-- <a class="dropdown-item" href="#">Another action</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#">Something else here</a> -->
+                </div>
+              </div>
+            </div>
+            <%
+            var maxY = 0;
+            for(var i=0; i<data.length; i++){
+              if(maxY < data[i].Y_CORDNT){
+                maxY = data[i].Y_CORDNT;
+              }
+            }
+            maxY += 120;
+            %>
+            <div class="card-body" style="height: <%=maxY%>px;">
+              <%
+              for(var i=0; i<data.length; i++){
+              %>
+              <%
+                var cssRoomNo = "rnum";     // 객실번호
+                var cssRoomType = "roomv"; // 기본 FAM객실
+                var cssInhs = "";          // 투숙객명
+                var viewRoomNo = data[i].ROOM_NO;
+                var roomTypeCd = data[i].ROOM_TYPE_CD;
+                var reprRoomTypeCd = data[i].REPR_ROOM_TYPE_CD;
+                var bedTypeCd = data[i].BED_TYPE_CD;
+                var roomOoStatYn = data[i].ROOM_OO_STAT_YN;
+                var roomStatCd = data[i].ROOM_STAT_CD;
+                var inhsRoomStatCd = data[i].INHS_ROOM_STAT_CD;
+
+                if (reprRoomTypeCd == "RYL" || reprRoomTypeCd == "PSR") cssRoomType = "roomv_r";      // 로얄
+                else if (reprRoomTypeCd == "SUI" || reprRoomTypeCd == "OSU" || reprRoomTypeCd == "PLZ" || reprRoomTypeCd == "PSU" || reprRoomTypeCd == "SUT") cssRoomType = "roomv_s"; // 스위트
+                else if (reprRoomTypeCd == "RSA" || reprRoomTypeCd == "RSB" || reprRoomTypeCd == "PLT" || reprRoomTypeCd == "GLA" || reprRoomTypeCd == "GLB" || reprRoomTypeCd == "PTS") cssRoomType = "roomv_r2"; // 로얄2
+                else {
+                  if (viewRoomNo.length < 5) {
+                    viewRoomNo = "&nbsp;&nbsp;" + viewRoomNo;
+                  }
+                }
+                if (roomOoStatYn == "Y") {
+                  cssInhs = " p_repair"; //고장객실
+                }else if (roomStatCd == "OC" || roomStatCd == "OD") {
+                  switch (inhsRoomStatCd) {
+                    case "1" : // 투숙
+                      cssInhs = " p_stay02";
+                      break;
+                    case "2" : // 외출
+                      cssInhs = " p_out02";
+                      break;
+                    default : // 공실(외출로 처리)
+                      cssInhs = " p_stay02";
+                      break;
+                  }
+                }else if (roomStatCd == "VD") {
+                  // 청소지시
+                  cssInhs = " p_clean";
+                }
+                yCordnt = data[i].Y_CORDNT;
+              %>
+              <%
+                if(data[i].DIV_CD != "ROOM"){
+              %>
+                <div id='div_<%=data[i].ROOM_NO%>' floorno='<%=data[i].ROOM_NO%>' class='parent' style="left:<%= data[i].X_CORDNT %>px; top:<%= yCordnt %>px">
+                  <div class='child'>
+                    <p class='p_block' align='center'><%=data[i].INHS_CUST_NM%></p>
+                  </div>
+                  <div style='background-color:#eae9e8; opacity: 0.1;'>
+                  </div>
+                </div>
+              <%
+                }else{
+              %>
+                <div id='div_<%=data[i].ROOM_NO%>' name='roomNo' roomStatCd='<%=roomStatCd%>' roomNo='<%=data[i].ROOM_NO%>' class='<%=cssRoomType%><%=cssInhs%>' title='<%=roomTypeCd%>  <%=bedTypeCd%>' style="left:<%= data[i].X_CORDNT %>px; top:<%=yCordnt%>px" align='center' onclick="test()"><%=data[i].ROOM_NO%></div>
+              <%
+                }
+              %>
+              <%
+              }
+              %>
+            </div>
+          </div>
+        </div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <% include ./footer %>
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin-2.min.js"></script>
+
+  <!-- Page level plugins -->
+  <!-- <script src="vendor/datatables/dataTables.min.js"></script> -->
+  <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="/js/demo/datatables-demo.js"></script>
+
+</body>
+
+</html>
+<script type="text/javascript">
+  $(document).ready(function(){ 
+    $('body').click(function(e){
+      var data = '';
+      var clnMsg = '';
+      var roomNo = e.target.getAttribute('roomNo');
+      if ( ( roomNo != '') && (roomNo != null)){
+        // alert(e.target.getAttribute('roomStatCd'));
+        roomStatCd = e.target.getAttribute('roomStatCd');
+        if(roomStatCd == 'OC' || roomStatCd == 'OD'){
+          alert("투숙 중인 객실은 청소상태 변경이 불가합니다.");
+        }else{
+          if(roomStatCd == 'VC'){
+            clnMsg = '청소지시';
+            roomStatCd = 'VD';
+          }else{
+            clnMsg = '청소완료'
+            roomStatCd = 'VC';
+          }
+          if (confirm(clnMsg + " 하시겠습니까?")) {
+            // 확인 버튼 클릭 시 동작
+            var form = document.createElement("form");
+            form.setAttribute("charset", "UTF-8");
+            form.setAttribute("method", "Post"); // Get 또는 Post 입력
+            form.setAttribute("action", "clnStatBoard");
+      
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", "roomNo");
+            hiddenField.setAttribute("value", roomNo);
+            form.appendChild(hiddenField);
+  
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", "roomStatCd");
+            hiddenField.setAttribute("value", roomStatCd);
+            form.appendChild(hiddenField);
+      
+            var url ="clnStatBoard"
+            document.body.appendChild(form);
+            form.submit();
+          } else {
+            // 취소 버튼 클릭 시 동작
+            // alert("동작을 취소했습니다.");
+          }
+        } 
+      } 
+    });
+  });
+  function autoRefresh_sample_div()
+  {
+    var currentLocation = window.location;
+    //alert(window.location); // http://localhost:3000/workGroup
+    // window.location.reload();
+    //  $("#card-body").fadeOut('slow').load(window.location.href + ' #card-body').fadeIn("slow");
+  }
+  setInterval('autoRefresh_sample_div()', 10000); //10초 후 새로고침
+
+</script>
