@@ -13,191 +13,13 @@
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
+  <link href='fullcalendar/main.css' rel='stylesheet' />
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
-
-  <link href='fullcalendar/main.css' rel='stylesheet' />
-  <script src='fullcalendar/main.js'></script>
-  <script>
-
-    document.addEventListener('DOMContentLoaded', function() {
-      
-      let draggableEl = document.getElementById('mydraggable');      
-
-      var calendarEl = document.getElementById('calendar');
-      var calendar = new FullCalendar.Calendar(calendarEl, {
-        // plugins: [ interactionPlugin ],
-        droppable: true,
-        eventClick: function(info) {
-          // alert('Event: ' + info.event.title);
-          // alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
-          // alert('View: ' + info.view.type);
-
-          // change the border color just for fun
-          
-          if(info.el.style.borderColor == 'red'){
-            info.el.style.borderColor = 'white';
-          }else{
-            info.el.style.borderColor = 'red';
-          }
-          
-        },
-        initialView: 'dayGridMonth',
-        // initialDate: '2020-10-07',
-    headerToolbar: {
-      left: 'prev,next today',
-      center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay'
-    },
-    events: [
-      {
-        title: '홍길동-근무A',
-        start: '2020-10-01',
-        end: '2020-10-03'
-      },
-      {
-        title: '홍길동-근무A',
-        start: '2020-10-05',
-        end: '2020-10-10'
-      },
-      {
-        title: '홍길동-근무A',
-        start: '2020-10-12',
-        end: '2020-10-17'
-      },
-      {
-        title: '홍길동-근무A',
-        start: '2020-10-19',
-        end: '2020-10-24'
-      },
-      {
-        title: '홍길동-근무A',
-        start: '2020-10-26',
-        end: '2020-10-31'
-      },
-      {
-        title: '김사원-근무B',
-        start: '2020-10-01',
-        end: '2020-10-02'
-      },
-      {
-        title: '김사원-근무B',
-        start: '2020-10-07',
-        end: '2020-10-10'
-      },
-      {
-        title: '김사원-근무B',
-        start: '2020-10-13',
-        end: '2020-10-15'
-      },
-      {
-        title: '김사원-근무B',
-        start: '2020-10-20',
-        end: '2020-10-23'
-      },
-      {
-        title: '김사원-근무B',
-        start: '2020-10-26',
-        end: '2020-10-31'
-      },
-      {
-        title: '홍길동-근무A',
-        start: '2020-11-02',
-        end: '2020-11-07'
-      },
-      {
-        title: '홍길동-근무A',
-        start: '2020-11-09',
-        end: '2020-11-14'
-      },
-      {
-        title: '홍길동-근무A',
-        start: '2020-11-17',
-        end: '2020-11-20'
-      },
-      {
-        title: '홍길동-근무A',
-        start: '2020-11-25',
-        end: '2020-11-29'
-      },
-      {
-        title: '홍길동-근무A',
-        start: '2020-11-30',
-        end: '2020-11-30'
-      },
-      {
-        title: '김사원-근무B',
-        start: '2020-11-03',
-        end: '2020-11-07'
-      },
-      {
-        title: '김사원-근무B',
-        start: '2020-11-10',
-        end: '2020-11-13'
-      },
-      {
-        title: '김사원-근무B',
-        start: '2020-11-16',
-        end: '2020-11-19'
-      },
-      {
-        title: '김사원-근무B',
-        start: '2020-11-23',
-        end: '2020-11-28'
-      },
-      {
-        title: '김사원-근무B',
-        start: '2020-11-30',
-        end: '2020-11-30'
-      },
-      // {
-      //   groupId: '999',
-      //   title: 'Repeating Event',
-      //   start: '2020-10-09T16:00:00'
-      // },
-      // {
-      //   groupId: '999',
-      //   title: 'Repeating Event',
-      //   start: '2020-10-16T16:00:00'
-      // },
-      // {
-      //   title: 'Conference',
-      //   start: '2020-10-11',
-      //   end: '2020-10-13'
-      // },
-      // {
-      //   title: 'Meeting',
-      //   start: '2020-10-12T10:30:00',
-      //   end: '2020-10-12T12:30:00'
-      // },
-      // {
-      //   title: 'Lunch',
-      //   start: '2020-10-12T12:00:00'
-      // },
-      // {
-      //   title: 'Meeting',
-      //   start: '2020-10-12T14:30:00'
-      // },
-      // {
-      //   title: 'Birthday Party',
-      //   start: '2020-10-13T07:00:00'
-      // },
-      // {
-      //   title: 'Click for Google',
-      //   url: 'http://google.com/',
-      //   start: '2020-10-28'
-      // }
-    ]
-      });
-      calendar.render();
-
-      new Draggable(draggableEl);
-
-    });
-
-  </script>
 
 </head>
 
@@ -210,65 +32,249 @@
 
     <% include ./sidebar %>
 
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
 
-      <!-- Main Content -->
-      <div id="content">
+        <!-- Main Content -->
+        <div id="content">
 
-        <% include ./topbar %>
+          <% include ./topbar %>
 
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
 
-          <!-- Page Heading -->
-          <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">근무스케줄관리</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Schedule</a>
-          </div>
+              <!-- Page Heading -->
+              <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mb-0 text-gray-800">근무스케줄관리</h1>
+                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                    class="fas fa-download fa-sm text-white-50"></i> Generate Schedule</a>
+              </div>
 
-          <!-- Content Row -->
-          <div class="row">
-            <!-- Pie Chart -->
-            <div class="col-xl col-lg">
-              <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">근무스케줄표</h6>
-                  <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                      <div class="dropdown-header">Dropdown Header:</div>
-                      <a class="dropdown-item" href="#">Action</a>
-                      <a class="dropdown-item" href="#">Another action</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Something else here</a>
+              <!-- Content Row -->
+              <div class="row">
+                <!-- Pie Chart -->
+                <div class="col-xl col-lg">
+                  <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                      <h6 class="m-0 font-weight-bold text-primary">근무스케줄표</h6>
+                      <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false">
+                          <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                          aria-labelledby="dropdownMenuLink">
+                          <div class="dropdown-header">Dropdown Header:</div>
+                          <a class="dropdown-item" href="#">Action</a>
+                          <a class="dropdown-item" href="#">Another action</a>
+                          <div class="dropdown-divider"></div>
+                          <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                      </div>
                     </div>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                      <form action="" name="mForm">
+                        <input type="hidden" name="srcWork">
+                        <input type="hidden" name="destWork">
+                        <input type="hidden" name="destWorkId">
+
+                        <div class="form-group row">
+                          <label for="worker" class="col-sm-2 control-label col-form-label">사업장 *</label>
+                          <div class="col-sm-2">
+                            <select class="select form-control custom-select" style="width: 100%;" id="site"
+                              name="site">
+                              <option>--선택--</option>
+                              <%for(var i=0; i<site.length; i++){%>
+                                <option value="<%=site[i].SITECD%>" <%=siteCd==site[i].SITECD ? 'selected' : '' %>>
+                                  <%=site[i].SITENM%>
+                                </option>
+                                <%}%>
+                            </select>
+                          </div>
+                        </div>
+
+                        <style>
+                          p {
+                            margin: 0px;
+                          }
+
+                          #external-events {
+                            display: flex;
+                          }
+
+                          .fc-event {
+                            margin: 2px;
+                            width: 75px;
+                            height: 20px;
+                            text-align: center;
+                          }
+                        </style>
+
+                        <div class="row">
+                          <div class="col-sm-2">
+                            <p>
+                              근무자 목록
+                            </p>
+                          </div>
+                          <!-- <div class="col-sm-5">
+                        <div>대기 or 변경 완료</div>
+                        <div>결재요청</div>
+                        <div>결재진행중</div>
+                      </div> -->
+                        </div>
+                        <div class="row">
+                          <div class="card" style="margin:10px 10px">
+                            <div class="card-body" id='external-events'>
+                              <%for(var i=0; i<data3.length; i++){%>
+                                <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'
+                                  data-workercd="<%=data3[i].WORKERCD%>">
+                                  <div class='fc-event-main'>
+                                    <%=data3[i].NAME%>
+                                  </div>
+                                </div>
+                                <%}%>
+                            </div>
+                          </div>
+
+                          <!-- <p>
+                        <input type='checkbox' id='drop-remove' />
+                        <label for='drop-remove'>remove after drop</label>
+                      </p> -->
+                        </div>
+
+                        <div id='calendar-container'>
+                          <div id='calendar'></div>
+                        </div>
+                      </form>
+                    </div>'
                   </div>
                 </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                  <div id='calendar'></div>
-                </div>
+
               </div>
+
             </div>
-            
-          </div>
-          
+            <!-- /.container-fluid -->
+
         </div>
-        <!-- /.container-fluid -->
+        <!-- End of Main Content -->
+
+        <% include ./footer %>
 
       </div>
-      <!-- End of Main Content -->
-
-      <% include ./footer %>
-
-    </div>
-    <!-- End of Content Wrapper -->
+      <!-- End of Content Wrapper -->
 
   </div>
+
+  <form id="modalForm" name="modalForm">
+    <div class="modal" id="myModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+
+            <div class="form-group row">
+              <label for="carNm" class="col-sm-2 control-label col-form-label">근무일자 *</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control is-invalid" id="workymd" name="workymd" disabled>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="worktype" class="col-sm-2 control-label col-form-label">근무조 *</label>
+              <div class="col-sm-10">
+                <select class="select form-control custom-select" style="width: 100%;" id="worktype" name="worktype">
+                  <option>--선택--</option>
+                  <%for(var i=0; i<data2.length; i++){%>
+                    <option value="<%=data2[i].WORKTYPCD%>"><%=data2[i].WORKTYPNM%></option>
+                    <%}%>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="worker" class="col-sm-2 control-label col-form-label">근무자 *</label>
+              <div class="col-sm-10">
+                <select class="select form-control custom-select" style="width: 100%;" id="worker" name="worker"
+                  disabled>
+                  <option>--선택--</option>
+                  <%for(var i=0; i<data3.length; i++){%>
+                    <option value="<%=data3[i].WORKERCD%>"><%=data3[i].NAME%></option>
+                    <%}%>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="confirm" class="btn btn-primary">확인</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <form id="batchModalForm" name="batchModalForm">
+    <div class="modal" id="myBatchModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+
+            <div class="form-group row">
+              <label for="carNm" class="col-sm-3 control-label col-form-label">등록기간 *</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control text-center" id="batch_workymd_from" name="batch_workymd_from"
+                  disabled>
+              </div>
+              ~
+              <div class="col-sm-4">
+                <input type="text" class="form-control text-center" id="batch_workymd_to" name="batch_workymd_to"
+                  disabled>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="worktype" class="col-sm-3 control-label col-form-label">근무조 *</label>
+              <div class="col-sm-5">
+                <select class="select form-control custom-select" style="width: 100%;" id="batch_worktype" name="batch_worktype">
+                  <option>--선택--</option>
+                  <%for(var i=0; i<data2.length; i++){%>
+                    <option value="<%=data2[i].WORKTYPCD%>"><%=data2[i].WORKTYPNM%></option>
+                    <%}%>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="worker" class="col-sm-3 control-label col-form-label">근무자 *</label>
+              <div class="col-sm-5">
+                <select class="select form-control custom-select" style="width: 100%;" id="batch_worker" name="batch_worker">
+                  <option>--선택--</option>
+                  <%for(var i=0; i<data3.length; i++){%>
+                    <option value="<%=data3[i].WORKERCD%>">
+                      <%=data3[i].NAME%>
+                    </option>
+                    <%}%>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="batch_confirm" class="btn btn-primary">확인</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
   <!-- End of Page Wrapper -->
 
   <!-- Scroll to Top Button-->
@@ -276,7 +282,7 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  
+
 
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
@@ -294,6 +300,281 @@
   <!-- Page level custom scripts -->
   <script src="js/demo/chart-area-demo.js"></script>
   <script src="js/demo/chart-pie-demo.js"></script>
+
+  <script src='fullcalendar/main.js'></script>
+
+  <script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+      var Calendar = FullCalendar.Calendar;
+      var Draggable = FullCalendar.Draggable;
+
+      var containerEl = document.getElementById('external-events');
+      var calendarEl = document.getElementById('calendar');
+      var checkbox = document.getElementById('drop-remove');
+
+      // initialize the external events
+      // -----------------------------------------------------------------
+
+      new Draggable(containerEl, {
+        itemSelector: '.fc-event',
+        longPressDelay: 0,
+        eventData: function (eventEl) {
+          // alert('wegweg');
+          return {
+            id: "external",
+            title: eventEl.innerText
+          };
+        }
+      });
+
+      // initialize the calendar
+      // -----------------------------------------------------------------
+
+      var calendar = new Calendar(calendarEl, {
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          // right: 'dayGridMonth,timeGridWeek,timeGridDay'
+          right: 'dayGridMonth'
+        },
+        eventBackgroundColor: "",
+        eventBorderColor: "",
+        eventTextColor: "",
+        editable: false,
+        eventStartEditable: true,
+        eventResizableFromStart: false,
+        droppable: true, // this allows things to be dropped onto the calendar
+        selectable: true,
+        select: function (info) {
+
+          var f = document.batchModalForm;
+
+          $("#myBatchModal").modal("show");
+          console.log(info);
+
+          f.batch_workymd_from.value = info.startStr;
+          f.batch_workymd_to.value = info.endStr;
+
+        },
+        eventClickEx: function (jsEvent, ev, view, cellDate) {
+          alert(cellDate);
+        },
+        dayClick: function (date, jsEvent, view) {
+          alert('Clicked on: ' + date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
+        },
+        dateClick: function (info) {
+          // alert('Clicked on: ' + info.dateStr);
+          // alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
+          // alert('Current view: ' + info.view.type);
+          // change the day's background color just for fun
+          // info.dayEl.style.backgroundColor = 'red';
+        },
+        eventClick: function (info) {
+          var eventObj = info.event;
+          var f = document.mForm;
+
+          // alert('Event: ' + info.event.title);
+          // alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
+          // alert('View: ' + info.view.type);
+          // console.log(info.el.parentNode);
+          // console.log(document.elementsFromPoint(info.jsEvent.pageX, info.jsEvent.pageY));
+
+          // console.log(eventObj);
+
+          if (eventObj.url) {
+            alert(
+              'Clicked ' + eventObj.title + '.\n' +
+              'Will open ' + eventObj.url + ' in a new tab'
+            );
+
+            window.open(eventObj.url);
+
+            info.jsEvent.preventDefault(); // prevents browser from following link in current tab.
+          } else {
+            var msg = "변경 대상으로 지정하시겠습니까?";
+            var target = "srcWork";
+
+            if (f.srcWork.value == eventObj.title) {
+              msg = "변경 요청을 초기화 하시겠습니까?";
+              target = "init";
+            } else if (f.srcWork.value != "") {
+              msg = "변경 요청 하시겠습니까? [" + f.srcWork.value + "] => [" + eventObj.title + "]";
+              target = "destWork"
+            }
+
+            if (confirm(msg)) {
+              if (target == "init") {
+                // info.el.style.borderColor = "#4877CF";
+                // info.el.style.backgroundColor = "#4877CF";
+                // console.log(calendar.getEventById(f.destWorkId.value));
+                // console.log(calendar.getEventById(f.destWorkId.value).id);
+                eventObj.setProp("borderColor", "#4877CF");
+                eventObj.setProp("backgroundColor", "#4877CF");
+                calendar.getEventById(f.destWorkId.value).setProp("borderColor", "#4877CF");
+                calendar.getEventById(f.destWorkId.value).setProp("backgroundColor", "#4877CF");
+                // calendar.getEventById(f.destWorkId.value)._def.ui.backgroundColor = "#4877CF";
+                // console.log(calendar.getEventById(f.destWorkId.value));
+                f.srcWork.value = "";
+                f.destWork.value = "";
+                f.destWorkId.value = "";
+              } else {
+                f[target].value = eventObj.title;
+                eventObj.setProp("borderColor", "#A33F5B");
+                eventObj.setProp("backgroundColor", "#A33F5B");
+                // info.el.style.backgroundColor = "#A33F5B";
+                // info.el.style.borderColor = "#A33F5B";
+                f.destWorkId.value = eventObj.id;
+              }
+              // eventObj.editable = false; 
+              // eventObj.backgroundColor = "#A33F5B";
+              // eventObj.startEditable = false; 
+              // eventObj.droppable = false;
+
+            }
+            // alert('Clicked ' + eventObj.title);
+          }
+        },
+        eventAllow: function (dropInfo, draggedEvent) {
+          console.log(dropInfo);
+          console.log(draggedEvent);
+          // if (draggedEvent.id === '999') {
+          var f = document.mForm;
+          // console.log(draggedEvent.title);
+          // console.log((dropInfo.title == f.srcWork.value || dropInfo.title == f.destWork.value));
+          // return true;
+          return !(draggedEvent.title == f.srcWork.value || draggedEvent.title == f.destWork.value); // a boolean
+          // }
+          // else {
+          //   return true;
+          // }
+        },
+        eventLongPressDelay: 0,
+        dropAccept: function (draggableItem) {
+          return true;
+          // if(confirm("dfdfdf")){
+          //   return true;
+          // }else{
+          //   return false
+          // }
+          // return confirm("dfdfdf");
+          // $('#myModal').modal({
+          //   backdrop: false
+          // });
+          // $("#myModal").modal('show', {
+          //   backdrop: false
+          // });
+          // $('#myModal').on('show.bs.modal', function (e) {
+          //   // do something...
+          //   if($("#test").val() == "1"){
+          //     return true;
+          //   }else{
+          //     return false;
+          //   }
+          // });
+          // console.log(alert('111'));
+        },
+        // eventLongPressDelay: 100,
+        drop: function (info) {
+
+          var f = document.modalForm;
+
+          console.log(info);
+          f.workymd.value = info.dateStr;
+          f.worker.value = info.draggedEl.getAttribute('data-workercd');
+
+          $("#myModal").modal('show', {
+            backdrop: false
+          });
+          // is the "remove after drop" checkbox checked? 
+          // if (checkbox.checked) {
+            // if so, remove the element from the "Draggable Events" list
+            // info.draggedEl.parentNode.removeChild(info.draggedEl);
+          // }
+        }
+      });
+
+      calendar.render();
+
+      $("#confirm").click(function () {
+        var f = document.modalForm;
+
+        calendar.addEvent({
+          id: "S" + f.workymd.value.replaceAll("-", "") + f.worktype.value + f.worker.value,
+          title: $("#worker option:selected").text() + "-" + $("#worktype option:selected").text(),
+          start: f.workymd.value
+        });
+
+        $("#myModal").modal('hide');
+      });
+
+      $("#batch_confirm").click(function () {
+        var f = document.batchModalForm;
+
+        var date1 = new Date(f.batch_workymd_from.value);
+        var date2 = new Date(f.batch_workymd_to.value);
+
+        // To calculate the time difference of two dates 
+        var Difference_In_Time = date2.getTime() - date1.getTime();
+
+        // To calculate the no. of days between two dates 
+        var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+
+        // var arrEvents = new Array();
+
+        for (var i = 0; i < Difference_In_Days; i++) {
+          var temp = new Date(f.batch_workymd_from.value);
+          console.log(temp);
+          temp.setDate(temp.getDate() + i);
+          console.log(temp);
+          var tempYear = temp.getFullYear();
+          var tempMonth = temp.getMonth() + 1;
+          tempMonth = tempMonth < 10 ? "0" + tempMonth : tempMonth;
+          var tempDate = temp.getDate(); 
+          tempDate = tempDate < 10 ? "0" + tempDate : tempDate;
+          var tempYmd = tempYear + "-" + tempMonth + "-" + tempDate;
+          console.log(tempYmd);
+
+          calendar.addEvent({
+            allDay: true,
+            id: "S" + tempYmd.replaceAll("-", "") + f.batch_worktype.value + f.batch_worker.value,
+            title: $("#batch_worker option:selected").text() + "-" + $("#batch_worktype option:selected").text(),
+            start: tempYmd,
+            end: tempYmd
+          });
+        }
+
+        $("#myBatchModal").modal('hide');
+      });
+
+      $("#myModal").on("hide.bs.modal", function (e) {
+        calendar.getEventById("external").remove();
+      });
+
+      $("#site").change(function () {
+        location.href = "/workPlan?site=" + this.value;
+      });
+      // $('#calendar').fullCalendar({
+      // eventClick: function(event, element) {
+
+      //   event.title = "CLICKED!";
+
+      //   $('#calendar').fullCalendar('updateEvent', event);
+
+      // }
+      // });
+    });
+      // calendar.addEvent( {
+      //   title: '테스트-근무B',
+      //   start: '2021-02-23',
+      //   end: '2021-02-23'
+      // } );
+
+
+
+
+  </script>
 
 </body>
 
