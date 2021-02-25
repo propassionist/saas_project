@@ -106,8 +106,8 @@
 
                           .fc-event {
                             margin: 2px;
-                            width: 75px;
-                            height: 20px;
+                            /* width: 100px; */
+                            /* height: 20px; */
                             text-align: center;
                           }
                         </style>
@@ -187,8 +187,8 @@
             <div class="form-group row">
               <label for="worktype" class="col-sm-2 control-label col-form-label">근무조 *</label>
               <div class="col-sm-10">
-                <select class="select form-control custom-select" style="width: 100%;" id="worktype" name="worktype">
-                  <option>--선택--</option>
+                <select class="select form-control custom-select" style="width: 100%;" id="worktype" name="worktype" required>
+                  <option value="">--선택--</option>
                   <%for(var i=0; i<data2.length; i++){%>
                     <option value="<%=data2[i].WORKTYPCD%>"><%=data2[i].WORKTYPNM%></option>
                     <%}%>
@@ -209,7 +209,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" id="confirm" class="btn btn-primary">확인</button>
+            <button type="submit" class="btn btn-primary">확인</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
           </div>
         </div>
@@ -244,8 +244,8 @@
             <div class="form-group row">
               <label for="worktype" class="col-sm-3 control-label col-form-label">근무조 *</label>
               <div class="col-sm-5">
-                <select class="select form-control custom-select" style="width: 100%;" id="batch_worktype" name="batch_worktype">
-                  <option>--선택--</option>
+                <select class="select form-control custom-select" style="width: 100%;" id="batch_worktype" name="batch_worktype" required>
+                  <option value="">--선택--</option>
                   <%for(var i=0; i<data2.length; i++){%>
                     <option value="<%=data2[i].WORKTYPCD%>"><%=data2[i].WORKTYPNM%></option>
                     <%}%>
@@ -255,8 +255,8 @@
             <div class="form-group row">
               <label for="worker" class="col-sm-3 control-label col-form-label">근무자 *</label>
               <div class="col-sm-5">
-                <select class="select form-control custom-select" style="width: 100%;" id="batch_worker" name="batch_worker">
-                  <option>--선택--</option>
+                <select class="select form-control custom-select" style="width: 100%;" id="batch_worker" name="batch_worker" required>
+                  <option value="">--선택--</option>
                   <%for(var i=0; i<data3.length; i++){%>
                     <option value="<%=data3[i].WORKERCD%>">
                       <%=data3[i].NAME%>
@@ -267,7 +267,8 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" id="batch_confirm" class="btn btn-primary">확인</button>
+            <button type="submit" class="btn btn-primary">확인</button>
+            <button type="button" id="batchDelete" class="btn btn-primary">삭제</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
           </div>
         </div>
@@ -321,6 +322,7 @@
         longPressDelay: 0,
         eventData: function (eventEl) {
           // alert('wegweg');
+
           return {
             id: "external",
             title: eventEl.innerText
@@ -350,11 +352,16 @@
 
           var f = document.batchModalForm;
 
+          var endDte = new Date(info.endStr);
+          endDte.setDate(endDte.getDate() - 1)
+          
+          var endDteStr = getYMDFormat(endDte, "-");;
+
           $("#myBatchModal").modal("show");
           console.log(info);
 
           f.batch_workymd_from.value = info.startStr;
-          f.batch_workymd_to.value = info.endStr;
+          f.batch_workymd_to.value = endDteStr;
 
         },
         eventClickEx: function (jsEvent, ev, view, cellDate) {
@@ -395,11 +402,12 @@
             var msg = "변경 대상으로 지정하시겠습니까?";
             var target = "srcWork";
 
-            if (f.srcWork.value == eventObj.title) {
+            if (f.srcWork.value == eventObj.id) {
               msg = "변경 요청을 초기화 하시겠습니까?";
               target = "init";
             } else if (f.srcWork.value != "") {
-              msg = "변경 요청 하시겠습니까? [" + f.srcWork.value + "] => [" + eventObj.title + "]";
+              msg = "변경 요청 하시겠습니까?";
+              // [" + f.srcWork.value + "] => [" + eventObj.title + "]";
               target = "destWork"
             }
 
@@ -409,22 +417,32 @@
                 // info.el.style.backgroundColor = "#4877CF";
                 // console.log(calendar.getEventById(f.destWorkId.value));
                 // console.log(calendar.getEventById(f.destWorkId.value).id);
-                eventObj.setProp("borderColor", "#4877CF");
-                eventObj.setProp("backgroundColor", "#4877CF");
-                calendar.getEventById(f.destWorkId.value).setProp("borderColor", "#4877CF");
-                calendar.getEventById(f.destWorkId.value).setProp("backgroundColor", "#4877CF");
+                eventObj.setProp("borderColor", "#3788D8");
+                eventObj.setProp("backgroundColor", "#3788D8");
+                eventObj.setProp("textColor", "#FFF");
+                if(f.destWork.value != ""){
+                  calendar.getEventById(f.destWork.value).setProp("borderColor", "#3788D8");
+                  calendar.getEventById(f.destWork.value).setProp("backgroundColor", "#3788D8");
+                  calendar.getEventById(f.destWork.value).setProp("textColor", "#FFF");
+                }
                 // calendar.getEventById(f.destWorkId.value)._def.ui.backgroundColor = "#4877CF";
                 // console.log(calendar.getEventById(f.destWorkId.value));
                 f.srcWork.value = "";
                 f.destWork.value = "";
-                f.destWorkId.value = "";
-              } else {
-                f[target].value = eventObj.title;
+              } else {                
+                if(f.destWork.value != ""){
+                  calendar.getEventById(f.destWork.value).setProp("borderColor", "#3788D8");
+                  calendar.getEventById(f.destWork.value).setProp("backgroundColor", "#3788D8");
+                  calendar.getEventById(f.destWork.value).setProp("textColor", "#FFF");
+                }
+
+                f[target].value = eventObj.id;
                 eventObj.setProp("borderColor", "#A33F5B");
                 eventObj.setProp("backgroundColor", "#A33F5B");
+                eventObj.setProp("textColor", "#FFF");
                 // info.el.style.backgroundColor = "#A33F5B";
                 // info.el.style.borderColor = "#A33F5B";
-                f.destWorkId.value = eventObj.id;
+                // f.destWork.value = eventObj.id;
               }
               // eventObj.editable = false; 
               // eventObj.backgroundColor = "#A33F5B";
@@ -436,14 +454,14 @@
           }
         },
         eventAllow: function (dropInfo, draggedEvent) {
-          console.log(dropInfo);
-          console.log(draggedEvent);
+          // console.log(dropInfo);
+          // console.log(draggedEvent);
           // if (draggedEvent.id === '999') {
           var f = document.mForm;
           // console.log(draggedEvent.title);
           // console.log((dropInfo.title == f.srcWork.value || dropInfo.title == f.destWork.value));
           // return true;
-          return !(draggedEvent.title == f.srcWork.value || draggedEvent.title == f.destWork.value); // a boolean
+          return !(draggedEvent.id == f.srcWork.value || draggedEvent.id == f.destWork.value); // a boolean
           // }
           // else {
           //   return true;
@@ -475,80 +493,169 @@
           // console.log(alert('111'));
         },
         // eventLongPressDelay: 100,
+        eventDrop: function(info){
+          console.log('111');
+          console.log(info.event.id);
+          // console.log(info.event);
+          // console.log(info.event.startStr);
+
+          var startStr = info.event.startStr.replaceAll("-", "");
+          // var partId = info.event.id.substr(9, info.event.id.length);
+          
+          var serachIdArr  = info.event.id.split("|");
+          var searchIdPart = serachIdArr[0] + "|" + serachIdArr[1];
+
+          var newId = startStr + "|" + serachIdArr[1] + "|" + serachIdArr[2];
+
+          console.log(newId);
+
+          // console.log(newId);
+          // console.log(calendar.getEventById(newId));
+          var eventsArr = calendar.getEvents();
+          // for(var i=0; i<eventsArr.length; i++){
+          //   console.log(eventsArr[i].id + " : " + searchIdPart);
+          //   if(eventsArr[i].id.indexOf(searchIdPart) != -1){
+          //     info.revert();
+          //     return false;
+          //   }
+          // }
+
+          if(calendar.getEventById(newId) != null){
+            info.revert();
+            return false;
+          }
+          
+          calendar.addEvent({
+            id: newId,
+            title: info.event.title,
+            start: info.event.startStr,
+            backgroundColor: "#f9f206",
+            borderColor: "#f9f206",
+            textColor: "#000"
+          });
+
+          info.event.remove();
+        },
+        eventReceive: function(info){
+          console.log('222');
+          var strDate = info.event._instance.range.start;
+          var strDateStr = getYMDFormat(strDate, "");
+          var workerCd = info.draggedEl.getAttribute('data-workercd');
+          var f = document.modalForm;
+
+          var checkVal = strDateStr + "|" + workerCd;
+          // console.log(calendar.getEvents());
+
+          var eventsArr = calendar.getEvents();
+
+          // console.log(checkVal);
+          for(var i=0; i<eventsArr.length; i++){
+            // console.log(checkVal + " : " + eventsArr[i].id);
+            if(eventsArr[i].id.indexOf(checkVal) != -1){
+              alert('기등록돼 있어 등록이 불가 합니다.');
+              // info.revert();
+
+              $("#myModal").modal('hide');
+              return false;
+            }
+          }
+        },
         drop: function (info) {
 
           var f = document.modalForm;
 
-          console.log(info);
+          // console.log(info);
+                    
           f.workymd.value = info.dateStr;
           f.worker.value = info.draggedEl.getAttribute('data-workercd');
+
+          var infoTitle = $(info.resource).text().trim();
+          var workerNm = $("#worker option:selected").text().trim();
+
+          // var checkVal = f.workymd.value.replaceAll("-", "") + f.worker.value;
+          // console.log(calendar.getEvents());
+
+          // var eventsArr = calendar.getEvents();
+
+          // for(var i=0; i<eventsArr.length; i++){
+          //   console.log(checkVal + " : " + eventsArr[i].id);
+          //   if(eventsArr[i].id.indexOf(checkVal) != -1){
+          //     alert('기등록돼 있어 등록이 불가 합니다.')
+          //     return false; 
+          //   }
+          // }
 
           $("#myModal").modal('show', {
             backdrop: false
           });
-          // is the "remove after drop" checkbox checked? 
-          // if (checkbox.checked) {
-            // if so, remove the element from the "Draggable Events" list
-            // info.draggedEl.parentNode.removeChild(info.draggedEl);
-          // }
         }
       });
 
       calendar.render();
 
-      $("#confirm").click(function () {
+      $("#modalForm").submit(function () {
         var f = document.modalForm;
 
         calendar.addEvent({
-          id: "S" + f.workymd.value.replaceAll("-", "") + f.worktype.value + f.worker.value,
-          title: $("#worker option:selected").text() + "-" + $("#worktype option:selected").text(),
+          id: f.workymd.value.replaceAll("-", "") + "|" + f.worker.value + "|" + f.worktype.value,
+          title: $("#worker option:selected").text().trim() + "-" + $("#worktype option:selected").text().trim(),
           start: f.workymd.value
         });
 
         $("#myModal").modal('hide');
+
+        return false;
       });
 
-      $("#batch_confirm").click(function () {
+      $("#batchModalForm").submit(function (e) {        
+        console.log('wegwegewg');
         var f = document.batchModalForm;
 
-        var date1 = new Date(f.batch_workymd_from.value);
-        var date2 = new Date(f.batch_workymd_to.value);
 
-        // To calculate the time difference of two dates 
-        var Difference_In_Time = date2.getTime() - date1.getTime();
+        // var checkVal = f.batchworkymd.value.replaceAll("-", "") + f.worker.value;
+        // console.log(calendar.getEvents());
 
-        // To calculate the no. of days between two dates 
-        var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+        // var eventsArr = calendar.getEvents();
+
+        // for(var i=0; i<eventsArr.length; i++){
+        //   console.log(checkVal + " : " + eventsArr[i].id);
+        //   if(eventsArr[i].id.indexOf(checkVal) != -1){
+        //     alert('기등록돼 있어 등록이 불가 합니다.');
+        //     info.revert();
+        //     $("#myModal").modal('hide');
+        //     return false;
+        //   }
+        // }
+
+        var Difference_In_Days = getDiffDays(f.batch_workymd_from.value, f.batch_workymd_to.value);
 
         // var arrEvents = new Array();
-
-        for (var i = 0; i < Difference_In_Days; i++) {
+        console.log(Difference_In_Days);
+        for (var i = 0; i <= Difference_In_Days; i++) {
           var temp = new Date(f.batch_workymd_from.value);
-          console.log(temp);
           temp.setDate(temp.getDate() + i);
-          console.log(temp);
-          var tempYear = temp.getFullYear();
-          var tempMonth = temp.getMonth() + 1;
-          tempMonth = tempMonth < 10 ? "0" + tempMonth : tempMonth;
-          var tempDate = temp.getDate(); 
-          tempDate = tempDate < 10 ? "0" + tempDate : tempDate;
-          var tempYmd = tempYear + "-" + tempMonth + "-" + tempDate;
-          console.log(tempYmd);
+          
+          var tempYmd = getYMDFormat(temp, "-");
+          var id = tempYmd.replaceAll("-", "") + "|" + f.batch_worker.value + "|" + f.batch_worktype.value;
+
+          if(calendar.getEventById(id) != null) continue;
 
           calendar.addEvent({
             allDay: true,
-            id: "S" + tempYmd.replaceAll("-", "") + f.batch_worktype.value + f.batch_worker.value,
-            title: $("#batch_worker option:selected").text() + "-" + $("#batch_worktype option:selected").text(),
-            start: tempYmd,
-            end: tempYmd
+            id: id,
+            title: $("#batch_worker option:selected").text().trim() + "-" + $("#batch_worktype option:selected").text().trim(),
+            start: tempYmd
           });
         }
 
         $("#myBatchModal").modal('hide');
+
+        return false;
       });
 
       $("#myModal").on("hide.bs.modal", function (e) {
-        calendar.getEventById("external").remove();
+        if(calendar.getEventById("external") != null)
+          calendar.getEventById("external").remove();
       });
 
       $("#site").change(function () {
@@ -563,12 +670,60 @@
 
       // }
       // });
+
+      $("#batchDelete").click(function(){
+        var f = document.batchModalForm;
+
+        var Difference_In_Days = getDiffDays(f.batch_workymd_from.value, f.batch_workymd_to.value);
+        
+        for(var i=0; i<=Difference_In_Days; i++){
+          var temp = new Date(f.batch_workymd_from.value);
+          temp.setDate(temp.getDate() + i);
+
+          var tempStr = getYMDFormat(temp, "");
+          var id = tempStr + "|" + f.batch_worker.value + "|" + f.batch_worktype.value;
+
+          if(calendar.getEventById(id) == null) continue;
+
+          console.log(id);
+
+          if(!(document.mForm.srcWork.value == id || document.mForm.destWork.value == id)){
+            calendar.getEventById(id).remove();
+          }
+        }
+        
+        $("#myBatchModal").modal("hide");
+      });
     });
       // calendar.addEvent( {
       //   title: '테스트-근무B',
       //   start: '2021-02-23',
       //   end: '2021-02-23'
       // } );
+
+  function getYMDFormat(date, delim){
+    var tempYear = date.getFullYear();
+    var tempMonth = date.getMonth() + 1;
+    tempMonth = tempMonth < 10 ? "0" + tempMonth : tempMonth;
+    var tempDate = date.getDate(); 
+    tempDate = tempDate < 10 ? "0" + tempDate : tempDate;
+    var tempYmd = tempYear + delim + tempMonth + delim + tempDate;
+
+    return tempYmd;
+  }
+
+  function getDiffDays(date1_str, date2_str){
+      var date1 = new Date(date1_str);
+      var date2 = new Date(date2_str);
+
+      // To calculate the time difference of two dates 
+      var Difference_In_Time = date2.getTime() - date1.getTime();
+
+      // To calculate the no. of days between two dates 
+      var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+
+      return Difference_In_Days;
+  }
 
 
 
