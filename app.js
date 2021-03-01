@@ -16,6 +16,7 @@ var workGroupFormRouter = require('./routes/workGroupForm');
 var workerRouter = require('./routes/worker');
 var workerFormRouter = require('./routes/workerForm');
 var workPlanRouter = require('./routes/workPlan');
+var workPlanAdminRouter = require('./routes/workPlanAdmin');
 var workModifyRouter = require('./routes/workModify');
 var workRequestRouter = require('./routes/workRequest');
 var workReqCmfRouter = require('./routes/workReqCmf');
@@ -149,6 +150,9 @@ app.use('/workerForm', workerFormRouter);
 
 // 근무스케줄관리
 app.use('/workPlan', workPlanRouter);
+
+app.use('/workPlanAdmin', workPlanAdminRouter);
+
 
 // R/M관리
 app.use('/workModify', workModifyRouter);
