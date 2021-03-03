@@ -171,6 +171,7 @@ router.post('/save', function (req, res, next) {
 
     var event = eventObj.split("|");
 
+    var approvalCheckPost = [ bussCd, siteCd, event[0], event[1] ];
     var post = { BUSSCD: bussCd, SITECD: siteCd, WORKYMD: event[0], WORKERCD: event[1], WORKTYP: event[2], STATUS: event[3], APPRSTATUS: "02", CREBY: req.session.usrId, CREDTE: mysql.raw("NOW()") };
 
     if(event.length > 4){
@@ -180,7 +181,14 @@ router.post('/save', function (req, res, next) {
       post.SWITCHEDWITH = event.slice(-3).join("|");
     }
 
-    var query = db.query("INSERT INTO SAS_SCHEDULE SET ? ", post
+    var query = db.query("SELECT APPRSTATUS \n" +
+                         "FROM SAS_SCHEDULE A \n" +
+                         "INNER JOIN (SELECT MAX(CREDTE) MAXDTE, BUSSCD, SITECD, WORKYMD, WORKERCD  \n" +
+                         "            FROM SAS_SCHEDULE \n" +
+                         "            GROUP BY BUSSCD, SITECD, WORKYMD, WORKERCD \n" +
+                         "          ) B ON A.BUSSCD = B.BUSSCD AND A.SITECD = B.SITECD AND A.WORKYMD = B.WORKYMD AND A.WORKERCD = B.WORKERCD AND A.CREDTE = B.MAXDTE \n" +
+                         "WHERE A.BUSSCD = ? AND A.SITECD = ? AND A.WORKYMD = ? AND A.WORKERCD = ? \n"
+      , approvalCheckPost
       , function (error, results, fields) {
         if (error) {
           console.log(error);
@@ -188,12 +196,27 @@ router.post('/save', function (req, res, next) {
         }
 
         console.log(query.sql);
-        console.log('inserted ' + results.affectedRows + ' rows');
+        console.log(results);
 
-        callback();
+        if(results[0].APPRSTATUS == "04" || results[0].APPRSTATUS == "05"){ // 반려(04) or 결재완료(05) 상태인 경우만 변경 요청 가능 (결재중 상태 변경 요청 불가)
+          query = db.query("INSERT INTO SAS_SCHEDULE SET ? ", post
+            , function (error, results, fields) {
+              if (error) {
+                console.log(error);
+                throw error;
+              }
+
+              console.log(query.sql);
+              console.log('inserted ' + results.affectedRows + ' rows');
+
+              callback();
+          });
+        }else{
+          callback("결재 중인 건이 있어 처리가 중단 됐습니다.");
+        }
     });
   }, function(err){
-    res.json({site: siteCd});
+    res.json({site: siteCd, msg: err});
   });
   // }
 

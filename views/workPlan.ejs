@@ -744,7 +744,12 @@
           resultObjArr.push(newId + "|U|" + info.event.id);
 
           $.post('/workPlan/save', {data: JSON.stringify(resultObjArr), "site": new FormData(document.mForm).get("site")}, function(data){
-            info.event.remove();
+            if(data.msg){
+              alert(data.msg);
+            }else{
+              info.event.remove();
+            }
+
             location.href = '/workPlan?site=' + data.site;
             // alert('처리 됐습니다.');
           });

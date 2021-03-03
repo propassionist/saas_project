@@ -507,7 +507,7 @@
   <script>
 
     var backColors = {
-      basic : "#323233",
+      basic : "#3788D8",
       delete : "#323233",
       change : "#F9F206",
       switch : "#A33F5B"
@@ -577,7 +577,7 @@
           for(var i=0; i<data.length; i++){
             var title = data[i].NAME + "-" + data[i].WORKTYPNM;
             var statusNm = "";
-            var keyColor = "";
+            var keyColor = "basic";
             var id = data[i].WORKYMD + "|" + data[i].WORKERCD + "|" + data[i].WORKTYP;
             var relatedTo = data[i].RELATEDTO;
             var switchedWith = data[i].SWITCHEDWITH;
@@ -844,7 +844,12 @@
           resultObjArr.push(newId + "|U|" + info.event.id);
 
           $.post('/workPlan/save', {data: JSON.stringify(resultObjArr), "site": new FormData(document.mForm).get("site")}, function(data){
-            info.event.remove();
+            if(data.msg){
+              alert(data.msg);
+            }else{
+              info.event.remove();
+            }
+            
             location.href = '/workPlanAdmin?site=' + data.site;
             // alert('처리 됐습니다.');
           });
