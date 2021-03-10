@@ -65,7 +65,7 @@
                       <div class="card">
                           <form class="form-horizontal" id="mform" method="POST">
                               <div class="card-body">
-                                  <div class="form-group row">
+                                  <!-- <div class="form-group row">
                                     <label for="userId" class="col-sm-2 control-label col-form-label">회사 *</label>
                                     <div class="col-sm-10">
                                         <select class="select form-control custom-select" style="width: 100%;" id="bussCd" name="bussCd">
@@ -78,6 +78,18 @@
                                               }
                                             %>
                                         </select>
+                                    </div>
+                                  </div> -->
+                                  <div class="form-group row">
+                                    <label for="carNm" class="col-sm-2 control-label col-form-label">회사</label>
+                                    <div class="col-sm-10">
+                                      <%
+                                      if(bussList.length > 0){
+                                      %>
+                                        <input type="text" class="form-control" id="bussCd" name="bussCd" readonly value=<%=bussList[0].BUSSNM%>>
+                                      <%
+                                        }
+                                      %>
                                     </div>
                                   </div>
                                   <div class="form-group row">
@@ -98,7 +110,7 @@
                                   <div class="form-group row">
                                       <label for="carNm" class="col-sm-2 control-label col-form-label">근무자코드</label>
                                       <div class="col-sm-10">
-                                          <input type="text" class="form-control" id="workerCd" name="workerCd" value="E20200104" readonly>
+                                          <input type="text" class="form-control" id="workerCd" name="workerCd">
                                       </div>
                                   </div>
                                   <div class="form-group row">

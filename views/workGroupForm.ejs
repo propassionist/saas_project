@@ -63,45 +63,52 @@
                   <div class="col-md-12">
                 <!-- Tabs -->
                       <div class="card">
-                          <form class="form-horizontal" id="mform">
+                          <form class="form-horizontal" id="mform" method="POST">
                               <div class="card-body">                                  
                                   <div class="form-group row">
                                     <label for="userId" class="col-sm-2 control-label col-form-label">사업장 *</label>
                                     <div class="col-sm-10">
-                                        <select class="select form-control custom-select" style="width: 100%;" id="siteCd">
-                                            <option value="">선택</option>
-                                            <option value="S0001">한화데이터센터</option>                                            
-                                        </select>
+                                      <select class="select form-control custom-select" style="width: 100%;" id="siteCd" name="siteCd">
+                                        <option value="">선택</option>
+                                        <%
+                                          for(var i=0; i<siteList.length; i++){
+                                        %>
+                                          <option value=<%=siteList[i].SITECD%>><%=siteList[i].SITENM%></option>
+                                        <%
+                                          }
+                                        %>
+                                      </select>
                                     </div>
                                   </div>
                                   <div class="form-group row">
                                       <label for="carNm" class="col-sm-2 control-label col-form-label">근무조코드</label>
                                       <div class="col-sm-10">
-                                          <input type="text" class="form-control" id="empCd" value="W0003" readonly>
+                                          <input type="text" class="form-control" id="workTypCd" name="workTypCd">
                                       </div>
                                   </div>
                                   <div class="form-group row">
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">근무조명 *</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control is-invalid" id="empNm">
+                                        <input type="text" class="form-control is-invalid" id="workTypNm" name="workTypNm">
                                     </div>
                                   </div>                                                             
                                   <div class="form-group row">
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">근무시간 *</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control is-invalid" placeholder="ex) 09:00-18:00" id="addr">
+                                        <input type="text" class="form-control is-invalid" placeholder="ex) 09:00-18:00" data-mask="000 000 000" id="workTime">
+                                        <input class="" type="text" data-role="input, input-mask" data-mask="+380 (__) ___-____" data-label="Phone:" data-role-input="true" data-role-inputmask="true">
                                     </div>
                                   </div>                                  
                                   <div class="form-group row">
                                       <label for="remark" class="col-sm-2 control-label col-form-label">비고</label>
                                       <div class="col-sm-10">
-                                          <input type="text" class="form-control" id="remark">
+                                          <input type="text" class="form-control" id="remark" name="remark">
                                       </div>
                                   </div>
                               </div>
                               <div class="border-top">
                                   <div class="card-body" style="text-align: center;">
-                                      <button type="button" class="btn btn-info" id="mSubmit">저장</button>
+                                      <button type="submit" class="btn btn-info" id="mSubmit">저장</button>
                                       <button type="button" class="btn btn-info" onclick="location.href='/workGroup'">목록</button>
                                   </div>
                               </div>
@@ -142,6 +149,9 @@
 
   <!-- Core plugin JavaScript-->
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="jquery.js"></script>
+
+  <script src="/dist/jquery.inputmask.js"></script>
 
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin-2.min.js"></script>
@@ -156,3 +166,10 @@
 </body>
 
 </html>
+<script>
+  // $('input[name="workTime"]').mask('00:00');
+  // var selector = document.getElementById("workTime");
+  // Inputmask("9-a{1,3}9{1,3}").mask(selector);
+  $("input[remark]").inputmask("999-9999-9999");
+  // alert(selector);
+</script>

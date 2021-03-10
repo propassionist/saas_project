@@ -5,6 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
 
+NODE_TLS_REJECT_UNAUTHORIZED='0'
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var bussRouter = require('./routes/buss');
@@ -30,6 +32,8 @@ var mngPointRouter = require('./routes/mngPoint');
 var mngPointFormRouter = require('./routes/mngPointForm');
 
 var clnStatBoardRouter = require('./routes/clnStatBoard');
+
+var imgRouter = require('./routes/img');
 
 // DataBase
 var mysql      = require('mysql');
@@ -168,6 +172,9 @@ app.use('/workForm', workFormRouter);
 
 // 청소현황
 app.use('/clnStatBoard', clnStatBoardRouter);
+
+// 이미지
+app.use('/img', imgRouter);
 
 app.use('/', indexRouter);
 

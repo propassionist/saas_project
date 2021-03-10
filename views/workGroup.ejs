@@ -79,41 +79,21 @@
                       <th>근무시간</th>                      
                     </tr>
                   </thead>
-                  <tfoot>
-                    <tr>
-                      <th>No</th>
-                      <th>사업장명</th>
-                      <th>사원번호</th>                      
-                      <th>근무조코드</th>                      
-                      <th>근무조</th>
-                      <th>근무시간</th>
-                    </tr>
-                  </tfoot>
                   <tbody>
+                    <%
+                      for(var i=0; i<data.length; i++){
+                    %>
                     <tr>
-                      <td>1</td>
-                      <td>S0001</td>
-                      <td>한화데이터센터</td>
-                      <td>W0001</td>
-                      <td>A</td>
-                      <td>09:00-13:00</td>
+                      <td><%= i + 1 %></td>
+                      <td><%=data[i].SITECD%></td>
+                      <td><%=data[i].SITENM%></td>
+                      <td><%=data[i].WORKTYPCD%></td>
+                      <td><%=data[i].WORKTYPNM%></td>
+                      <td><%=data[i].TIMEFROM%> ~ <%=data[i].TIMETO%></td>
                     </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>S0001</td>
-                      <td>한화데이터센터</td>
-                      <td>W0002</td>
-                      <td>B</td>
-                      <td>09:00-18:00</td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>S0002</td>
-                      <td>한화리조트(수안보)</td>
-                      <td>W0001</td>
-                      <td>A</td>
-                      <td>09:00-13:00</td>
-                    </tr>
+                    <%
+                      }
+                    %>
                   </tbody>
                 </table>
               </div>

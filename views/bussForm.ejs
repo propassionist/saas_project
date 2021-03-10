@@ -60,7 +60,6 @@
           <!-- Recent comment and chats -->
           <!-- ============================================================== -->
               <div class="row">
-                  
                   <div class="col-md-12">
                 <!-- Tabs -->
                       <div class="card">
@@ -70,7 +69,7 @@
                                       <label for="carNm" class="col-sm-2 control-label col-form-label">회사코드</label>
                                       <div class="col-sm-10">
                                         <% if(data != null && data.length > 0) { %>
-                                          <input type="text" class="form-control" id="bussCd" name="bussCd" readonly value=<%= data[0].BUSSCD %>>
+                                          <input type="text" class="form-control" id="bussCd" name="bussCd" readonly value="<%= data[0].BUSSCD %>">
                                         <% } else { %>
                                           <input type="text" class="form-control" id="bussCd" name="bussCd">
                                         <% } %>
@@ -80,7 +79,7 @@
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">회사명 *</label>
                                     <div class="col-sm-10">
                                       <% if(data != null && data.length > 0) { %>
-                                        <input type="text" class="form-control is-invalid" id="bussNm" name="bussNm" value=<%= data[0].BUSSNM %>>
+                                        <input type="text" class="form-control is-invalid" id="bussNm" name="bussNm" value="<%= data[0].BUSSNM %>">
                                       <% } else { %>
                                         <input type="text" class="form-control is-invalid" id="bussNm" name="bussNm">
                                       <% } %>
@@ -90,7 +89,7 @@
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">사업자번호 *</label>
                                     <div class="col-sm-10">
                                       <% if(data != null && data.length > 0) { %>
-                                        <input type="text" class="form-control is-invalid" id="bussNo" name="bussNo" value=<%= data[0].BUSSNO %>>
+                                        <input type="text" class="form-control is-invalid" id="bussNo" name="bussNo" value="<%= data[0].BUSSNO %>">
                                       <% } else { %>
                                         <input type="text" class="form-control is-invalid" id="bussNo" name="bussNo">
                                       <% } %>
@@ -100,7 +99,7 @@
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">주소 *</label>
                                     <div class="col-sm-10">
                                       <% if(data != null && data.length > 0) { %>
-                                        <input type="text" class="form-control is-invalid" id="addr" name="addr" value=<%= data[0].ADDR %>>
+                                        <input type="text" class="form-control is-invalid" id="addr" name="addr" value="<%= data[0].ADDR %>">
                                       <% } else { %>
                                         <input type="text" class="form-control is-invalid" id="addr" name="addr">
                                       <% } %>
@@ -110,7 +109,7 @@
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">대표자명 *</label>
                                     <div class="col-sm-10">
                                       <% if(data != null && data.length > 0) { %>
-                                        <input type="text" class="form-control is-invalid" id="chief" name="chief" value = <%= data[0].CHIEF %>>
+                                        <input type="text" class="form-control is-invalid" id="chief" name="chief" value = "<%= data[0].CHIEF %>">
                                       <% } else { %>
                                         <input type="text" class="form-control is-invalid" id="chief" name="chief">
                                       <% } %>
@@ -120,7 +119,7 @@
                                       <label for="useDte" class="col-sm-2 control-label col-form-label">설립일자 *</label>
                                       <div class="col-sm-10">
                                         <% if(data != null && data.length > 0) { %>
-                                          <input type="date" class="form-control" id="publymd" name="publymd" placeholder="yyyy/mm/dd" value = <%= data[0].PUBLYMD %>>
+                                          <input type="date" class="form-control" id="publymd" name="publymd" value = "<%= data[0].PUBLYMD %>">
                                         <% } else { %>
                                           <input type="date" class="form-control" id="publymd" name="publymd" placeholder="yyyy/mm/dd">
                                         <% } %>
@@ -130,7 +129,7 @@
                                       <label for="remark" class="col-sm-2 control-label col-form-label">비고</label>
                                       <div class="col-sm-10">
                                         <% if(data != null && data.length > 0) { %>
-                                          <input type="text" class="form-control" id="remark" name="remark" value=<%= data[0].REMARK %>>
+                                          <input type="text" class="form-control" id="remark" name="remark" value="<%= data[0].REMARK %>">
                                         <% } else { %>
                                           <input type="text" class="form-control" id="remark" name="remark">
                                         <% } %>
@@ -141,8 +140,15 @@
                                   <div class="card-body" style="text-align: center;">
                                       <button type="submit" class="btn btn-info" id="mSubmit">저장</button>
                                       <button type="button" class="btn btn-info" onclick="location.href='/buss'">목록</button>
+                                      <button type="button" class="btn btn-info" onclick="openTextFile()">업로드</button>
+                                      <!-- <div id = 'output'></div> -->
+                                      <!-- <img id = 'targetImg'> -->
                                   </div>
                               </div>
+                          </form>
+                          <form name='ocr' action='/bussForm/ocr' encType='multipart/form-data' method="post" align="right">
+                            <input type='file' name='profile_img' accept='image/jpg, image/png, image/jpeg' />
+                            <input type='submit' value='업로드' />
                           </form>
                       </div>
                       
@@ -194,3 +200,30 @@
 </body>
 
 </html>
+<script>
+function openTextFile(){
+  var input = document.createElement("input");
+
+  input.type = "file";
+  input.accept = "image/*";
+  input.id = "uploadInput";
+
+  input.click();
+  input.onchange=function(event){
+    processFile(event.target.files[0]);
+  };
+  var form = document.ocr;
+  form.submit();
+}
+
+function processFile(file){
+  var reader= new FileReader();
+
+  reader.onload=function(){
+    var result = reader.result;
+  output.innerText = result;
+  document.getElementById('targetImg').setAttribute('src', result);
+  };
+  reader.readAsDataURL(file);
+}
+</script>
