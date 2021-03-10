@@ -8,20 +8,24 @@ var async = require('async');
 router.get('/', function (req, res, next) {
 
   var db = req.con;
-  var bussCd = req.session.busscd;
-  var siteCd = req.query.site;
-  var workerCd = '201700117';
+  const bussCd = req.session.busscd;
+  const siteCd = req.query.site;
+  const usrId = req.session.usrId;
+  // workerCd = '201700117';
 
   var site = new Object();
   var data = new Object();
   var data2 = new Object();
   var data3 = new Object();
-  bussCd = 'B000000001';
-  siteCd = '0100';
+  // bussCd = 'B000000001';
+  // siteCd = '0100';
+
+  const sql1 = "SELECT * FROM SAS_SITE A INNER JOIN SAS_WORKER B ON A.BUSSCD = B.BUSSCD AND A.SITECD = B.SITECD WHERE A.BUSSCD = ? AND B.USRID = ?;";
+  const sql2 = "SELECT * FROM SAS_WORKER WHERE BUSSCD = ? AND SITECD = ? AND USRID = ?;";
   
-  var query = db.query("SELECT * FROM SAS_SITE WHERE BUSSCD = ?"
+  var query = db.query(sql1 + sql2
     // , [req.session.busscd], function (error, results, fields) {
-    , [bussCd], function (error, results, fields) {
+    , [bussCd, usrId, bussCd, siteCd, usrId], function (error, results, fields) {
       if (error) {
         console.log(error);
         throw error;
@@ -30,7 +34,10 @@ router.get('/', function (req, res, next) {
       console.log(query.sql);
       console.log(results);
 
-      site = results;
+      site = results[0];
+      var workerCd = ""
+      if(results[1].length > 0)
+        workerCd = results[1][0].WORKERCD;
 
       // query = db.query("SELECT A.BUSSCD, A.SITECD, A.WORKYMD \n" +
       //                 ", A.WORKERCD, C.NAME, A.WORKTYP, D.WORKTYPNM \n" +
@@ -164,7 +171,7 @@ router.post('/save', function (req, res, next) {
   var bussCd = req.session.busscd;
   var siteCd = req.body.site;
   var arr = JSON.parse(req.body.data);
-  bussCd = 'B000000001';
+  // bussCd = 'B000000001';
 
   // for(var i=0; i<arr.length; i++){
   async.eachOfSeries(arr, function (eventObj, key, callback) {
@@ -198,7 +205,7 @@ router.post('/save', function (req, res, next) {
         console.log(query.sql);
         console.log(results);
 
-        if(results[0].APPRSTATUS == "04" || results[0].APPRSTATUS == "05"){ // 반려(04) or 결재완료(05) 상태인 경우만 변경 요청 가능 (결재중 상태 변경 요청 불가)
+        // if(!results[0] || results[0].APPRSTATUS == "04" || results[0].APPRSTATUS == "05"){ // 반려(04) or 결재완료(05) 상태인 경우만 변경 요청 가능 (결재중 상태 변경 요청 불가)
           query = db.query("INSERT INTO SAS_SCHEDULE SET ? ", post
             , function (error, results, fields) {
               if (error) {
@@ -211,9 +218,9 @@ router.post('/save', function (req, res, next) {
 
               callback();
           });
-        }else{
-          callback("결재 중인 건이 있어 처리가 중단 됐습니다.");
-        }
+        // }else{
+        //   callback("결재 중인 건이 있어 처리가 중단 됐습니다.");
+        // }
     });
   }, function(err){
     res.json({site: siteCd, msg: err});
@@ -226,7 +233,7 @@ var approval = function (req, obj, callback){
   var db = req.con;
 
   var usrId = obj.usrId;
-  var bussCd = obj.busscd;
+  var bussCd = obj.BUSSCD;
   var siteCd = obj.SITECD;
   var workYmd = obj.WORKYMD;
   var workerCd = obj.WORKERCD;
@@ -234,7 +241,7 @@ var approval = function (req, obj, callback){
   var relatedTo = obj.RELATEDTO;
   var switchedWith = obj.SWITCHEDWITH;
   var status = obj.status;
-  bussCd = 'B000000001';
+  // bussCd = 'B000000001';
 
   var post = [status, usrId, mysql.raw("NOW()"), bussCd, siteCd, workYmd, workerCd, workTyp, "02"]
   // var where = [bussCd, siteCd, workYmd, workerCd, workTyp, "02"];
@@ -328,7 +335,7 @@ router.post('/approvalBatch', function(req, res, next){
 
 router.post('/approval', function(req, res, next){
   var obj = req.body;
-  obj.bussCd = req.session.busscd;
+  // obj.bussCd = req.session.busscd;
   obj.usrId = req.session.usrId;
   
   // console.log(require("./workPlan.js"));

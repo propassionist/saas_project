@@ -80,8 +80,8 @@
                                         </select>
                                     </div>
                                   </div> -->
-                                  <div class="form-group row">
-                                    <label for="carNm" class="col-sm-2 control-label col-form-label">회사</label>
+                                  <div class="form-group row d-none">
+                                    <label for="bussCd" class="col-sm-2 control-label col-form-label">회사</label>
                                     <div class="col-sm-10">
                                       <%
                                       if(bussList.length > 0){
@@ -93,7 +93,7 @@
                                     </div>
                                   </div>
                                   <div class="form-group row">
-                                    <label for="userId" class="col-sm-2 control-label col-form-label">사업장 *</label>
+                                    <label for="siteCd" class="col-sm-2 control-label col-form-label">사업장 *</label>
                                     <div class="col-sm-10">
                                         <select class="select form-control custom-select" style="width: 100%;" id="siteCd" name="siteCd">
                                             <option value="">선택</option>
@@ -107,16 +107,20 @@
                                         </select>
                                     </div>
                                   </div>
-                                  <div class="form-group row">
+                                  <div class="form-group row d-none">
                                       <label for="carNm" class="col-sm-2 control-label col-form-label">근무자코드</label>
                                       <div class="col-sm-10">
                                           <input type="text" class="form-control" id="workerCd" name="workerCd">
                                       </div>
                                   </div>
                                   <div class="form-group row">
-                                    <label for="carNm" class="col-sm-2 control-label col-form-label">근무자명 *</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control is-invalid" id="name" name="name">
+                                    <label for="userid" class="col-sm-2 control-label col-form-label">근무자명 *</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control is-invalid" id="userNm" name="userNm" readonly>
+                                        <input type="hidden" class="form-control is-invalid" id="userId" name="userId">
+                                    </div>
+                                    <div class="col-sm-2">
+                                      <button type="button" class="btn btn-info" style="width:100px;" data-toggle="modal" data-target="#userModal">선택
                                     </div>
                                   </div>
                                   <!-- <div class="form-group row">
@@ -129,8 +133,8 @@
                                         </select>
                                     </div>
                                   </div> -->
-                                  <div class="form-group row">
-                                    <label for="userId" class="col-sm-2 control-label col-form-label">근무조 *</label>
+                                  <div class="form-group row d-none">
+                                    <label for="workTyp" class="col-sm-2 control-label col-form-label">근무조 *</label>
                                     <div class="col-sm-10">
                                         <select class="select form-control custom-select" style="width: 100%;" id="workTyp" name="workTyp">
                                             <option value="">선택</option>
@@ -140,31 +144,31 @@
                                     </div>
                                   </div>                                  
                                   <div class="form-group row">
-                                    <label for="carNm" class="col-sm-2 control-label col-form-label">전화번호 *</label>
+                                    <label for="telNo" class="col-sm-2 control-label col-form-label">전화번호 *</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control is-invalid" placeholder="ex) 010-0000-0000" id="telNo" name="telNo">
                                     </div>
                                   </div>
                                   <div class="form-group row">
-                                    <label for="carNm" class="col-sm-2 control-label col-form-label">이메일 *</label>
+                                    <label for="email" class="col-sm-2 control-label col-form-label">이메일 *</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control is-invalid" placeholder="ex) aaa@bbb.com" id="email" name="email">
                                     </div>
                                   </div>
                                   <div class="form-group row">
-                                    <label for="carNm" class="col-sm-2 control-label col-form-label">주소 *</label>
+                                    <label for="addr" class="col-sm-2 control-label col-form-label">주소 *</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control is-invalid" id="addr" name="addr">
                                     </div>
                                   </div>                                  
                                   <div class="form-group row">
-                                      <label for="useDte" class="col-sm-2 control-label col-form-label">생년월일 *</label>
+                                      <label for="birthDay" class="col-sm-2 control-label col-form-label">생년월일 *</label>
                                       <div class="col-sm-10">
                                           <input type="date" class="form-control" id="birthDay" name="birthDay" placeholder="yyyy/mm/dd">
                                       </div>
                                   </div>
                                   <div class="form-group row">
-                                    <label for="useDte" class="col-sm-2 control-label col-form-label">입사일자 *</label>
+                                    <label for="startYmd" class="col-sm-2 control-label col-form-label">입사일자 *</label>
                                     <div class="col-sm-10">
                                         <input type="date" class="form-control" id="startYmd" name="startYmd" placeholder="yyyy/mm/dd">
                                     </div>
@@ -211,7 +215,6 @@
 
     </div>
     <!-- End of Content Wrapper -->
-
   </div>
   <!-- End of Page Wrapper -->
 
@@ -219,6 +222,60 @@
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
+
+  <!-- 관리 포인트 양식 선택 Modal-->
+  <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">사용자 정보</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="col-sm-10" style="display: inline-block;">
+            <input type="text" class="form-control" style="display:inline-block;width:60%;" id="userModalFilterText" onkeyup="userModalFilter()">
+          </div>
+          <hr>
+          <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>사용자명</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>사용자명</th>
+                      <th></th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                    <%
+                    for(var i=0; i<userList.length; i++){
+                    %>
+                    <tr id="modal-row-<%=i+1%>">
+                      <td style="display:none;"><%=userList[i].USRID%></td>
+                      <td><%=userList[i].NAME%></td>
+                      <td align="center"><button type="button" class="btn btn-dark" style="width:70px;" onclick="userModalClick('<%=userList[i].USRID%>', '<%=userList[i].NAME%>')">선택</td>
+                    </tr>
+                    <%
+                    }
+                    %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>          
+        </div>
+      </div>
+    </div>
+  </div>
 
   
 
@@ -245,5 +302,28 @@
 
 
 <script>
+  function userModalFilter(){
+      var input = $("#userModalFilterText").val();
+      var filter = input.toUpperCase();
+      var modalList = $("#userModal").find("tr[id*=modal-row]");
+      // console.log(modalList);
+      // console.log(modalList.get(0));
+      
+      for(let i=0; i<modalList.length; i++){
+        let temp = $(modalList[i]).contents()[3];
+        let textValue = temp.textContent || temp.innerText;
+        if(textValue.toUpperCase().indexOf(filter) > -1){
+          modalList[i].style.display = "";
+        }else{
+          modalList[i].style.display = "none";
+        }
+      }
+    }
 
+    function userModalClick(userId, userNm){
+      $("#userId").val(userId);
+      $("#userNm").val(userNm);
+      // $("reportModal .close").click();
+      $('#userModal').modal('hide');
+    }
 </script>

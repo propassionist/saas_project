@@ -5,7 +5,7 @@ var router = express.Router();
 router.get('/', function (req, res, next) {
 
   var db = req.con;
-  var bussCd = req.session.bussCd;
+  var bussCd = req.session.busscd;
   // bussCd = "B000000001";
 
   var query = db.query("SELECT A.BUSSCD, B.BUSSNM, A.SITECD, C.SITENM, A.MNGPOINTCD, A.MNGPOINTNM, A.REMARK, A.RPTCD, D.RPTNM \n" +
@@ -36,7 +36,7 @@ router.get('/form', function (req, res, next) {
   var site = "";
   var rpt = "";
 
-  var bussCd = req.session.bussCd;
+  var bussCd = req.session.busscd;
   // bussCd = "B000000001";
   data.BUSSCD = bussCd;
 

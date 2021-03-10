@@ -246,6 +246,12 @@
                             if(data3)
                               workerObj = data3.reduce((obj, item) => Object.assign(obj, { [item.WORKERCD]: item.NAME }), {});
 
+                            console.log('wegwegweg');
+                            console.log(workerCd);
+                            console.log(workerObj[workerCd]);
+                              
+                            
+
                             if(data != undefined && data != null){
                                 var checkSwitchedWith = "";
                                 var titleSwitchedWith = new Object();
@@ -372,7 +378,7 @@
                 <select class="select form-control custom-select" style="width: 100%;" id="batch_worker" name="batch_worker" required <%=workerCd ? 'disabled' : ''%>>
                   <!-- <option value="">--선택--</option> -->
                   <%for(var i=0; i<data3.length; i++){%>
-                    <option value="<%=data3[i].WORKERCD%>" <%workerCd && workerCd == data3[i].WORKERCD ? 'selected' : '' %>>
+                    <option value="<%=data3[i].WORKERCD%>" <%workerCd && workerCd == data3[i].USRID ? 'selected' : '' %>>
                       <%=data3[i].NAME%>
                     </option>
                     <%}%>
@@ -518,10 +524,21 @@
             }
 
             if(workerCd != data[i].WORKERCD){
-              if(data[i].APPRSTATUS == "05" || !data[i].SWITCHEDWITH || data[i].SWITCHEDWITH.indexOf(workerCd) == -1){
-                keyColor = "noauth";
+              keyColor = "noauth";
+
+              if(data[i].SWITCHEDWITH && data[i].SWITCHEDWITH.indexOf(workerCd) != -1){
+                keyCOlor = "switch";
               }
+              // if(data[i].APPRSTATUS == "05" || !data[i].SWITCHEDWITH || data[i].SWITCHEDWITH.indexOf(workerCd) == -1){
+                // keyColor = "noauth";
+              // }
             }
+
+            // if(workerCd != data[i].WORKERCD){
+            //   if(data[i].APPRSTATUS == "05" || !data[i].SWITCHEDWITH || data[i].SWITCHEDWITH.indexOf(workerCd) == -1){
+            //     keyColor = "noauth";
+            //   }
+            // }
 
           %>
           {

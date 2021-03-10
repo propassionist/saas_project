@@ -15,7 +15,7 @@ router.get('/', function (req, res, next) {
   var data = new Object();
   var data2 = new Object();
   var data3 = new Object();
-  bussCd = 'B000000001';
+  // bussCd = 'B000000001';
 
   var query = db.query("SELECT * FROM SAS_SITE WHERE BUSSCD = ?"
     // , [req.session.busscd], function (error, results, fields) {

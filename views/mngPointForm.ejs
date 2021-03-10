@@ -66,8 +66,7 @@
                           <form class="form-horizontal" id="mform" method="post" action="/mngPoint/save">
                               <div class="card-body">
                                   <div class="form-group row">
-                                    <% console.log("Dfdfdfdfdf"); console.log(data) %>
-                                    <label for="carNm" class="col-sm-2 control-label col-form-label">회사명 *</label>
+                                    <!-- <label for="carNm" class="col-sm-2 control-label col-form-label">회사명 *</label> -->
                                     <div class="col-sm-10">
                                         <%=data != undefined ? data.BUSSNM : ''%>
                                         <input type="hidden" name="bussCd" value="<%=data != undefined ? data.BUSSCD : ''%>">

@@ -5,7 +5,7 @@ router.get('/', function (req, res, next) {
 
   var db = req.con;
   var data = new Object();
-  var bussCd = req.session.bussCd;
+  var bussCd = req.session.busscd;
 
   // bussCd = "B000000001";
 
@@ -44,7 +44,7 @@ router.get('/form', function (req, res, next) {
   var mngPoint = "";
   var rpt = "";
 
-  var bussCd = req.session.bussCd;
+  var bussCd = req.session.busscd;
   // bussCd = "B000000001";
   data.BUSSCD = bussCd;
 
