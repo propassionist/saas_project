@@ -10,15 +10,13 @@ router.get('/', function (req, res, next) {
   var db = req.con;
   var bussCd = req.session.busscd;
   var siteCd = req.query.site;
-  var workerCd = '201700117';
 
   var site = new Object();
   var data = new Object();
   var data2 = new Object();
   var data3 = new Object();
   bussCd = 'B000000001';
-  siteCd = '0100';
-  
+
   var query = db.query("SELECT * FROM SAS_SITE WHERE BUSSCD = ?"
     // , [req.session.busscd], function (error, results, fields) {
     , [bussCd], function (error, results, fields) {
@@ -147,7 +145,7 @@ router.get('/', function (req, res, next) {
 
                   data3 = results;
 
-                  res.render('workPlan', { workerCd: workerCd, siteCd: siteCd, site:site, data: data, data2: data2, data3: data3 });
+                  res.render('workPlanAdmin', { siteCd: siteCd, site:site, data: data, data2: data2, data3: data3 });
 
                 });
 
@@ -156,191 +154,6 @@ router.get('/', function (req, res, next) {
         });
     });
 
-});
-
-router.post('/save', function (req, res, next) {
-  var db = req.con;
-
-  var bussCd = req.session.busscd;
-  var siteCd = req.body.site;
-  var arr = JSON.parse(req.body.data);
-  bussCd = 'B000000001';
-
-  // for(var i=0; i<arr.length; i++){
-  async.eachOfSeries(arr, function (eventObj, key, callback) {
-
-    var event = eventObj.split("|");
-
-    var approvalCheckPost = [ bussCd, siteCd, event[0], event[1] ];
-    var post = { BUSSCD: bussCd, SITECD: siteCd, WORKYMD: event[0], WORKERCD: event[1], WORKTYP: event[2], STATUS: event[3], APPRSTATUS: "02", CREBY: req.session.usrId, CREDTE: mysql.raw("NOW()") };
-
-    if(event.length > 4){
-      post.RELATEDTO = event.slice(4, 7).join("|");
-    }
-    if(event.length > 7){
-      post.SWITCHEDWITH = event.slice(-3).join("|");
-    }
-
-    var query = db.query("SELECT APPRSTATUS \n" +
-                         "FROM SAS_SCHEDULE A \n" +
-                         "INNER JOIN (SELECT MAX(CREDTE) MAXDTE, BUSSCD, SITECD, WORKYMD, WORKERCD  \n" +
-                         "            FROM SAS_SCHEDULE \n" +
-                         "            GROUP BY BUSSCD, SITECD, WORKYMD, WORKERCD \n" +
-                         "          ) B ON A.BUSSCD = B.BUSSCD AND A.SITECD = B.SITECD AND A.WORKYMD = B.WORKYMD AND A.WORKERCD = B.WORKERCD AND A.CREDTE = B.MAXDTE \n" +
-                         "WHERE A.BUSSCD = ? AND A.SITECD = ? AND A.WORKYMD = ? AND A.WORKERCD = ? \n"
-      , approvalCheckPost
-      , function (error, results, fields) {
-        if (error) {
-          console.log(error);
-          throw error;
-        }
-
-        console.log(query.sql);
-        console.log(results);
-
-        if(results[0].APPRSTATUS == "04" || results[0].APPRSTATUS == "05"){ // 반려(04) or 결재완료(05) 상태인 경우만 변경 요청 가능 (결재중 상태 변경 요청 불가)
-          query = db.query("INSERT INTO SAS_SCHEDULE SET ? ", post
-            , function (error, results, fields) {
-              if (error) {
-                console.log(error);
-                throw error;
-              }
-
-              console.log(query.sql);
-              console.log('inserted ' + results.affectedRows + ' rows');
-
-              callback();
-          });
-        }else{
-          callback("결재 중인 건이 있어 처리가 중단 됐습니다.");
-        }
-    });
-  }, function(err){
-    res.json({site: siteCd, msg: err});
-  });
-  // }
-
-});
-
-var approval = function (req, obj, callback){
-  var db = req.con;
-
-  var usrId = obj.usrId;
-  var bussCd = obj.busscd;
-  var siteCd = obj.SITECD;
-  var workYmd = obj.WORKYMD;
-  var workerCd = obj.WORKERCD;
-  var workTyp = obj.WORKTYP;
-  var relatedTo = obj.RELATEDTO;
-  var switchedWith = obj.SWITCHEDWITH;
-  var status = obj.status;
-  bussCd = 'B000000001';
-
-  var post = [status, usrId, mysql.raw("NOW()"), bussCd, siteCd, workYmd, workerCd, workTyp, "02"]
-  // var where = [bussCd, siteCd, workYmd, workerCd, workTyp, "02"];
-
-  var query = db.query("UPDATE SAS_SCHEDULE SET APPRSTATUS = ?, UPDBY = ?, UPDDTE = ? \n" +
-      "WHERE BUSSCD = ? AND SITECD = ? AND WORKYMD = ? AND WORKERCD = ? AND WORKTYP = ? AND APPRSTATUS IN ('02', '03')"
-    , post
-    , function (error, results, fields) {
-      if (error) {
-        console.log(error);
-        throw error;
-      }
-
-      console.log(query.sql);
-      console.log('updated ' + results.affectedRows + ' rows');
-
-      if(relatedTo){
-
-        var relatedInfoArr = relatedTo.split("|");
-
-        var post = [status, usrId, bussCd, siteCd, relatedInfoArr[0], relatedInfoArr[1], relatedInfoArr[2]]
-
-        query = db.query("UPDATE SAS_SCHEDULE SET APPRSTATUS = ?, UPDBY = ?, UPDDTE = NOW() \n" +
-                        "WHERE BUSSCD = ? AND SITECD = ? AND WORKYMD = ? AND WORKERCD = ? AND WORKTYP = ? AND APPRSTATUS IN ('02', '03')"
-          , post
-          , function (error, results, fields) {
-            if (error) {
-              console.log(error);
-              throw error;
-            }
-
-            console.log(query.sql);
-            console.log('updated ' + results.affectedRows + ' rows');
-
-            if(switchedWith){
-              post = [status, usrId, bussCd, siteCd, switchedWith]
-
-              query = db.query("UPDATE SAS_SCHEDULE SET APPRSTATUS = ?, UPDBY = ?, UPDDTE = NOW() \n" +
-                        "WHERE BUSSCD = ? AND SITECD = ? AND RELATEDTO = ? AND APPRSTATUS IN ('02', '03')"
-                , post
-                , function (error, results, fields) {
-                  if (error) {
-                    console.log(error);
-                    throw error;
-                  }
-
-                  console.log(query.sql);
-                  console.log('updated ' + results.affectedRows + ' rows');
-
-                  var switchedWithInfoArr = switchedWith.split("|");
-
-                  post = [status, usrId, bussCd, siteCd, switchedWithInfoArr[0], switchedWithInfoArr[1], switchedWithInfoArr[2]]
-
-                  query = db.query("UPDATE SAS_SCHEDULE SET APPRSTATUS = ?, UPDBY = ?, UPDDTE = NOW() \n" +
-                        "WHERE BUSSCD = ? AND SITECD = ? AND WORKYMD = ? AND WORKERCD = ? AND WORKTYP = ? AND APPRSTATUS IN ('02', '03')"
-                    , post
-                    , function (error, results, fields) {
-                      if (error) {
-                        console.log(error);
-                        throw error;
-                      }
-
-                      console.log(query.sql);
-                      console.log('updated ' + results.affectedRows + ' rows');
-
-                      callback();
-
-                  });
-              });
-            }else{
-              callback();
-            }
-        });
-      }else{
-        callback();
-      } 
-  });
-}
-
-router.post('/approvalBatch', function(req, res, next){
-  var objArr = JSON.parse(req.body.data);
-
-  objArr.forEach(function(obj){
-    approval(req, obj, function(){
-    });
-  });
-
-  res.json({site: req.body.site});
-
-});
-
-router.post('/approval', function(req, res, next){
-  var obj = req.body;
-  obj.bussCd = req.session.busscd;
-  obj.usrId = req.session.usrId;
-  
-  // console.log(require("./workPlan.js"));
-
-  approval(req, obj, function(){
-    res.json({site: obj.SITECD});
-  });
-
-});
-
-router.post('/reject', function(req, res, next){
-  res.json("dfdfdf");
 });
 
 module.exports = router;
