@@ -220,13 +220,35 @@
 
       console.log(idx);
 
+      var bussCd;
+      var workCd;
+      var mngPointCd;
+      var mngPointNm;
+      var rptCd;
+
+      console.log(f.bussCd.value);      
+
+      if(!f.bussCd[idx]){
+        bussCd = f.bussCd.value;
+        workCd = f.workCd.value;
+        mngPointCd = f.mngPointCd.value;
+        mngPointNm = f.mngPointNm.value;
+        rptCd = f.rptCd.value;
+      }else{
+        bussCd = f.bussCd[idx].value;
+        workCd = f.workCd[idx].value;
+        mngPointCd = f.mngPointCd[idx].value;
+        mngPointNm = f.mngPointNm[idx].value;
+        rptCd = f.rptCd[idx].value;
+      }
+
       $.get("/report/view", {
         viewType : "modal",
-        bussCd: f.bussCd[idx].value,
-        workCd: f.workCd[idx].value,
-        mngPointCd: f.mngPointCd[idx].value,
-        mngPointNm: f.mngPointNm[idx].value,
-        rptCd: f.rptCd[idx].value
+        bussCd: bussCd,
+        workCd: workCd,
+        mngPointCd: mngPointCd,
+        mngPointNm: mngPointNm,
+        rptCd: rptCd
       }, function (data) {
         $( "#rptPrintModal" ).html( data );
         // alert("Load was performed.");

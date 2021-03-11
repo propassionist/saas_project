@@ -263,11 +263,11 @@
                             <div class="card-body" style="overflow-x: scroll;white-space: nowrap;">
                               <ul class="list-group list-group-horizontal approval-list">
                             <%
-                            var workObj;
+                            var workTypObj;
                             var siteObj;
 
                             if(data2)
-                              workObj = data2.reduce((obj, item) => Object.assign(obj, { [item.WORKTYPCD]: item.WORKTYPNM }), {});
+                              workTypObj = data2.reduce((obj, item) => Object.assign(obj, { [item.WORKTYPCD]: item.WORKTYPNM }), {});
                             if(data3)
                               workerObj = data3.reduce((obj, item) => Object.assign(obj, { [item.WORKERCD]: item.NAME }), {});
 
@@ -298,7 +298,7 @@
                                     if(checkSwitchedWith.indexOf(id) == -1){
                                       let workYmd = relatedTo.split("|")[0];
                                       let workerNm = workerObj[relatedTo.split("|")[1]];
-                                      let worktypNm = workObj[relatedTo.split("|")[2]];
+                                      let worktypNm = workTypObj[relatedTo.split("|")[2]];
 
                                       titleSwitchedWith[data[i].SWITCHEDWITH] = workYmd + " " + workerNm + "-" + worktypNm;
                                       checkSwitchedWith += data[i].SWITCHEDWITH;
@@ -306,7 +306,7 @@
                                     }else{
                                       let workYmd = relatedTo.split("|")[0];
                                       let workerNm = workerObj[relatedTo.split("|")[1]];
-                                      let worktypNm = workObj[relatedTo.split("|")[2]];
+                                      let worktypNm = workTypObj[relatedTo.split("|")[2]];
 
                                       titleNm = titleSwitchedWith[id] + "<>" + workYmd + " " + workerNm + "-" + worktypNm;
                                       <!-- console.log(titleSwitchedWith[id]); -->
@@ -587,7 +587,7 @@
             }
 
             if(switchedWith && (data[i].APPRSTATUS == "02" || data[i].APPRSTATUS == "03")){
-              var worktypNm= workObj[relatedTo.split("|")[2]];
+              var worktypNm= workTypObj[relatedTo.split("|")[2]];
               var workerNm = workerObj[relatedTo.split("|")[1]];
 
               title = workerNm + "-" + worktypNm;
@@ -715,6 +715,21 @@
               console.log(srcWorkYmd + "|" + eventObj.id.split("|")[1] + "|" + eventObj.id.split("|")[2]);
               if(calendar.getEventById(srcWorkYmd + "|" + eventObj.id.split("|")[1] + "|" + eventObj.id.split("|")[2])){
                 alert('소스 일자에 동일한 근무자-근무조가 존재 합니다.');
+                return;
+              }
+
+              var workTypObj = <%-JSON.stringify(workTypObj)%>;
+              var checkWorker = false;
+              Object.keys(workTypObj).forEach(function(val){
+                if(val != eventObj.id.split("|")[2]){
+                  if(calendar.getEventById(srcWorkYmd + "|" + eventObj.id.split("|")[1] + "|" + val)){
+                    alert('소스 일자에 동일한 근무자가 존재 합니다.');
+                    checkWorker = true;
+                  }
+                }
+              });
+
+              if(checkWorker){
                 return;
               }
 

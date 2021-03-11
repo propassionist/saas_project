@@ -10,7 +10,9 @@ router.get('/', function (req, res, next) {
   var bussCd = req.session.busscd;
   // bussCd = 'B000000001';
 
-  var query = db.query("SELECT * FROM SAS_REPORT_MST WHERE BUSSCD = ?"
+  var query = db.query("SELECT A.RPTCD, A.BUSSCD, A.SITECD, B.SITENM, A.RPTNM, A.RPTSUBNM, A.DESC, A.REMARK   \n"
+                    + "FROM SAS_REPORT_MST A INNER JOIN SAS_SITE B ON A.BUSSCD = B.BUSSCD AND A.SITECD = B.SITECD \n"
+                    + "WHERE A.BUSSCD = ? "
     // , [req.session.busscd], function (error, results, fields) {
     , [bussCd], function (error, results, fields) {
       if (error) {
@@ -54,7 +56,25 @@ router.get('/formaa', function (req, res, next) {
 
 router.get('/form', function (req, res, next) {
 
-  res.render('reportForm', { data: "" });
+  var db = req.con;
+  const bussCd = req.session.busscd;
+  var siteList = "";
+
+  const sql1 = "SELECT * FROM SAS_SITE WHERE BUSSCD = ?;";
+
+  var query = db.query(sql1
+  , [bussCd], function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      throw error;
+    }
+
+    console.log(query.sql);
+    siteList = results;
+
+    res.render('reportForm', { data: "", siteList: siteList });
+
+  });
 
 });
 
@@ -214,26 +234,42 @@ router.post('/form', function (req, res, next) {
   var data = "";
   // var bussCd = req.session.busscd;
   var rowIdx = req.body.rowIdx;
-  var bussCd = req.body.bussCd[rowIdx];
-  var rptCd = req.body.rptCd[rowIdx];
+
+  var bussCd;
+  var siteCd;
+  var rptCd;
+  
+  if(typeof req.body.rptCd == 'string'){
+    bussCd = req.body.bussCd;
+    rptCd = req.body.rptCd;
+  }else{
+    bussCd = req.body.bussCd[rowIdx];
+    rptCd = req.body.rptCd[rowIdx];
+  }
+
+  var siteList = "";
+  const sql1 = "SELECT * FROM SAS_SITE WHERE BUSSCD = ?;";
+  const sql2 = "SELECT * FROM SAS_REPORT_MST WHERE BUSSCD = ? AND RPTCD = ?;";
+  
 
   mngPoint = {
     code: req.query.mngPointCd,
     name: req.query.mngPointName
   };
 
-  var query = db.query("SELECT * \n" +
-    "FROM SAS_REPORT_MST \n" +
-    "WHERE BUSSCD = ? AND RPTCD = ?"
+  var query = db.query(sql1 + sql2
     // , [req.session.busscd, req.body.rptCd], function (error, results, fields) {
-    , [bussCd, rptCd], function (error, results, fields) {
+    , [bussCd, bussCd, rptCd], function (error, results, fields) {
       if (error) {
         console.log(error);
         throw error;
       }
 
       console.log(query.sql);
-      data = results[0];
+
+      siteList = results[0];
+      data = results[1][0];
+      
 
       // query = db.query("SELECT A.ITEMCD, A.ITEMNM, A.ITEMTYP, B.SEQ, B.KEY, B.VALUE \n" + 
       //                 "FROM SAS_ITEM_MST A \n" +
@@ -274,7 +310,7 @@ router.post('/form', function (req, res, next) {
                 callback();
               })
           }, function (err) {
-            res.render('reportForm', { data: data, mngPoint: mngPoint });
+            res.render('reportForm', { siteList: siteList, data: data, mngPoint: mngPoint });
           });
 
         });
@@ -295,9 +331,10 @@ router.post('/save', function (req, res, next) {
   var rptTitle = req.body.rptTitle;
   var rptSubtitle = req.body.rptSubtitle;
   var rptDesc = req.body.rptDesc;
+  var siteCd = req.body.siteCd;
 
   var bussCd = req.session.busscd;
-  var siteCd = req.session.sitecd;
+  
   // bussCd = 'B000000001';
   // siteCd = 'S0001';
 
@@ -325,7 +362,7 @@ router.post('/save', function (req, res, next) {
       };
 
       //RPT입력
-      query = db.query("INSERT INTO SAS_REPORT_MST SET ? ON DUPLICATE KEY UPDATE RPTNM = '" + rptTitle + "', RPTSUBNM = '" + rptSubtitle + "', `DESC` = '" + rptDesc + "'", post
+      query = db.query("INSERT INTO SAS_REPORT_MST SET ? ON DUPLICATE KEY UPDATE SITECD = '" + siteCd + "', RPTNM = '" + rptTitle + "', RPTSUBNM = '" + rptSubtitle + "', `DESC` = '" + rptDesc + "'", post
         , function (error, results, fields) {
           if (error) {
             console.log(error);

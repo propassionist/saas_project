@@ -67,6 +67,23 @@
                     <!-- <input type="hidden" name="delList" value="">                     -->
                     <div class="card">
                         <div class="card-body">
+                          <div class="form-group row">
+                            <label for="siteCd" class="col-sm-2 control-label col-form-label">사업장 *</label>
+                            <div class="col-sm-10">
+                                <select class="select form-control custom-select" style="width: 100%;" id="siteCd" name="siteCd">
+                                    <option value="">선택</option>
+                                    <%
+                                    console.log("dFDFDFDF");
+                                    console.log(data);
+                                      for(var i=0; i<siteList.length; i++){
+                                    %>
+                                      <option value=<%=siteList[i].SITECD%> <%= data && data.SITECD == siteList[i].SITECD ? "selected" : "" %>><%=siteList[i].SITENM%></option>
+                                    <%
+                                      }
+                                    %>
+                                </select>
+                            </div>
+                          </div>
                           <div class="form-group row">                              
                             <label for="carNm" class="col-sm-2 control-label col-form-label">제목</label>
                             <div class="col-sm-10">

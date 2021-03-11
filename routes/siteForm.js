@@ -33,7 +33,7 @@ router.post('/', function (req, res, next) {
     var data = "";
 
     const sql1 = "SELECT CONCAT('S', LPAD(COALESCE(MAX(REPLACE(SITECD, 'S', '')), 0) + 1, 9, '0')) SITECD \n" +
-        "FROM SAS_SITE \n"
+        "FROM SAS_SITE \n" +
     "WHERE BUSSCD = ?";
 
     db.query(sql1, [bussCd]

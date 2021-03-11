@@ -238,11 +238,11 @@
                               <ul class="list-group list-group-horizontal">
                             <%
 
-                            var workObj;
+                            var workTypObj;
                             var siteObj;
 
                             if(data2)
-                              workObj = data2.reduce((obj, item) => Object.assign(obj, { [item.WORKTYPCD]: item.WORKTYPNM }), {});
+                              workTypObj = data2.reduce((obj, item) => Object.assign(obj, { [item.WORKTYPCD]: item.WORKTYPNM }), {});
                             if(data3)
                               workerObj = data3.reduce((obj, item) => Object.assign(obj, { [item.WORKERCD]: item.NAME }), {});
 
@@ -492,7 +492,7 @@
             }
 
             if(switchedWith && (data[i].APPRSTATUS == "02" || data[i].APPRSTATUS == "03")){
-              var worktypNm= workObj[relatedTo.split("|")[2]];
+              var worktypNm= workTypObj[relatedTo.split("|")[2]];
               var workerNm = workerObj[relatedTo.split("|")[1]];
 
               title = workerNm + "-" + worktypNm;
@@ -526,8 +526,8 @@
             if(workerCd != data[i].WORKERCD){
               keyColor = "noauth";
 
-              if(data[i].SWITCHEDWITH && data[i].SWITCHEDWITH.indexOf(workerCd) != -1){
-                keyCOlor = "switch";
+              if(data[i].SWITCHEDWITH && data[i].SWITCHEDWITH.indexOf(workerCd) != -1 && data[i].APPRSTATUS != "05" && data[i].APPRSTATUS != "04"){
+                keyColor = "switch";
               }
               // if(data[i].APPRSTATUS == "05" || !data[i].SWITCHEDWITH || data[i].SWITCHEDWITH.indexOf(workerCd) == -1){
                 // keyColor = "noauth";
@@ -633,6 +633,21 @@
               console.log(srcWorkYmd + "|" + eventObj.id.split("|")[1] + "|" + eventObj.id.split("|")[2]);
               if(calendar.getEventById(srcWorkYmd + "|" + eventObj.id.split("|")[1] + "|" + eventObj.id.split("|")[2])){
                 alert('소스 일자에 동일한 근무자-근무조가 존재 합니다.');
+                return;
+              }
+
+              var workTypObj = <%-JSON.stringify(workTypObj)%>;
+              var checkWorker = false;
+              Object.keys(workTypObj).forEach(function(val){
+                if(val != eventObj.id.split("|")[2]){
+                  if(calendar.getEventById(srcWorkYmd + "|" + eventObj.id.split("|")[1] + "|" + val)){
+                    alert('소스 일자에 동일한 근무자가 존재 합니다.');
+                    checkWorker = true;
+                  }
+                }
+              });
+
+              if(checkWorker){
                 return;
               }
 
