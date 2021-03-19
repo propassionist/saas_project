@@ -63,7 +63,7 @@
                 <div class="col-md-12">
                   <!-- Tabs -->
                   <div class="card">
-                    <form class="form-horizontal" id="mform" method="POST">
+                    <form class="form-horizontal" id="mform" name="mForm" method="POST">
                       <div class="card-body">
                         <div class="card" style="float:right; width:300px; height:390px; border:cornsilk">
                           <form name='ocr' id='ocr' action='/bussForm/ocr' encType='multipart/form-data' style="float:left" method="post" >
@@ -79,7 +79,8 @@
                             <div class="card-body" style="text-align: center;">
                               <button type="button" class="btn btn-info" onclick="openTextFile()" style="width: 80px; align-self:center">업로드</button>
                               <!-- <button type="submit" class="btn btn-info" style="width: 80px; align-self:center">확인</button> -->
-                              <input type='submit' formaction="/bussForm/ocr" class="btn btn-info" value='확인' />
+                              <!-- <input type='submit' formaction="/bussForm/ocr" class="btn btn-info" value='확인' /> -->
+                              <input type='button' id="btnOcr" class="btn btn-info" value='확인' />
                             </div>
                           </form>
                         </div>
@@ -251,6 +252,41 @@ window.onload = function(){
     document.getElementById('targetImg').setAttribute('src', data[0].BASE64);
   }
 }
+
+$("#btnOcr").click(function(){
+  
+  var formData = new FormData(document.mForm);
+
+  console.log(formData);
+  
+  // $.post('/bussForm/ocr', $("#mForm").serialize(), function(data){
+  //   alert('데이터가 로딩 되었습니다.');
+  // });
+
+  $.ajax({
+        url: '/bussForm/ocr',
+        method: "POST",
+        dataType: 'json',
+        // data: $("#mForm").serialize(),
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(result){
+          console.log(result.data);
+          var data = result.data;
+          if(data != null && data.length > 0) {
+            // document.getElementById('targetImg').setAttribute('src', result[0].BASE64);
+            $("#bussCd").val(data[0].BUSSCD);
+            $("#bussNo").val(data[0].BUSSNO);
+            $("#bussNm").val(data[0].BUSSNM);
+            $("#chief").val(data[0].CHIEF);
+            $("#addr").val(data[0].ADDR);
+            $("#publymd").val(data[0].PUBLYMD);
+          }
+        },
+        error: function(er){}
+});
+});
 
 
 </script>

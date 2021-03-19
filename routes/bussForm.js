@@ -177,7 +177,8 @@ router.post('/ocr', upload.single('profile_img'), async function (req, res, next
       ocrMap[0].BASE64 = req.body.file;
       // console.log(">>>>>>>>>>>>>>>>>>>" + JSON.stringify(ocrMap[0]));
       console.log(ocrMap[0].BASE64);
-      res.render('bussForm', {data: ocrMap});
+      // res.render('bussForm', {data: ocrMap});
+      res.json({data: ocrMap});
   })
 
   function test() {
