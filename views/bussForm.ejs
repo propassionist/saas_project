@@ -56,26 +56,44 @@
               <h6 class="m-0 font-weight-bold text-primary">회사관리 - 등록</h6>
             </div>
             <div class="card-body">
-          <!-- ============================================================== -->
-          <!-- Recent comment and chats -->
-          <!-- ============================================================== -->
+              <!-- ============================================================== -->
+              <!-- Recent comment and chats -->
+              <!-- ============================================================== -->
               <div class="row">
-                  <div class="col-md-12">
-                <!-- Tabs -->
-                      <div class="card">
-                          <form class="form-horizontal" id="mform" method="POST">
-                              <div class="card-body">
-                                  <div class="form-group row">
-                                      <label for="carNm" class="col-sm-2 control-label col-form-label">회사코드</label>
-                                      <div class="col-sm-10">
-                                        <% if(data != null && data.length > 0) { %>
-                                          <input type="text" class="form-control" id="bussCd" name="bussCd" readonly value="<%= data[0].BUSSCD %>">
-                                        <% } else { %>
-                                          <input type="text" class="form-control" id="bussCd" name="bussCd">
-                                        <% } %>
-                                      </div>
-                                  </div>
-                                  <div class="form-group row">
+                <div class="col-md-12">
+                  <!-- Tabs -->
+                  <div class="card">
+                    <form class="form-horizontal" id="mform" method="POST">
+                      <div class="card-body">
+                        <div class="card" style="float:right; width:300px; height:390px; border:cornsilk">
+                          <form name='ocr' id='ocr' action='/bussForm/ocr' encType='multipart/form-data' style="float:left" method="post" >
+                            <input type="text" class="form-control" id="file" name="file" value = "aaa" hidden>
+                            <% if(data != null && data.length > 0) { %>
+                              <!-- <%=data[0].BASE64%> -->
+                              <!-- <img id = 'targetImg' src="<%=data[0].BASS64%>"style="height:330px"> -->
+                              <img id = 'targetImg' style="height:330px">
+                              <!-- <img id = 'targetImg' src="data:image/jpeg;base64,/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAABQAAD/4QMtaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLwA8P3hwYWNrZXQgYmVnaW49Iu+7vyIgaWQ9Ilc1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCI/PiA8eDp4bXBtZXRhIHhtbG5zOng9ImFkb2JlOm5zOm1ldGEvIiB4OnhtcHRrPSJBZG9iZSBYTVAgQ29yZSA1LjYtYzEzOCA3OS4xNTk4MjQsIDIwMTYvMDkvMTQtMDE6MDk6MDEgICAgICAgICI+IDxyZGY6UkRGIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+IDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSIiIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkU4ODJFNjQ0OTQ5OTExRThCQ0U5Q0FBQkU4MTkzM0E0IiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkU4ODJFNjQzOTQ5OTExRThCQ0U5Q0FBQkU4MTkzM0E0IiB4bXA6Q3JlYXRvclRvb2w9IkFkb2JlIFBob3Rvc2hvcCBDQyAyMDE3IFdpbmRvd3MiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpGNUVEOTg2QzBFMDcxMUU3QTJGN0RDNkY1NjhDNUU1RSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpGNUVEOTg2RDBFMDcxMUU3QTJGN0RDNkY1NjhDNUU1RSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pv/uAA5BZG9iZQBkwAAAAAH/2wCEAAICAgICAgICAgIDAgICAwQD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…"style="height:330px"> -->
+                            <% } else { %>
+                              <img id = 'targetImg' style="height:330px">
+                            <% } %>
+                            <div class="card-body" style="text-align: center;">
+                              <button type="button" class="btn btn-info" onclick="openTextFile()" style="width: 80px; align-self:center">업로드</button>
+                              <!-- <button type="submit" class="btn btn-info" style="width: 80px; align-self:center">확인</button> -->
+                              <input type='submit' formaction="/bussForm/ocr" class="btn btn-info" value='확인' />
+                            </div>
+                          </form>
+                        </div>
+                        <div class="form-group row" style="margin-right:300px;">
+                          <label for="carNm" class="col-sm-2 control-label col-form-label">회사코드</label>
+                          <div class="col-sm-10">
+                            <% if(data != null && data.length > 0) { %>
+                              <input type="text" class="form-control" id="bussCd" name="bussCd" readonly value="<%= data[0].BUSSCD %>">
+                              <% } else { %>
+                                <input type="text" class="form-control" id="bussCd" name="bussCd">
+                                <% } %>
+                              </div>
+                            </div>
+                            <div class="form-group row" style="margin-right:300px;">
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">회사명 *</label>
                                     <div class="col-sm-10">
                                       <% if(data != null && data.length > 0) { %>
@@ -85,7 +103,7 @@
                                       <% } %>
                                     </div>
                                   </div>
-                                  <div class="form-group row">
+                                  <div class="form-group row" style="margin-right:300px;">
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">사업자번호 *</label>
                                     <div class="col-sm-10">
                                       <% if(data != null && data.length > 0) { %>
@@ -95,7 +113,7 @@
                                       <% } %>
                                     </div>
                                   </div>
-                                  <div class="form-group row">
+                                  <div class="form-group row" style="margin-right:300px;">
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">주소 *</label>
                                     <div class="col-sm-10">
                                       <% if(data != null && data.length > 0) { %>
@@ -105,7 +123,7 @@
                                       <% } %>
                                     </div>
                                   </div>
-                                  <div class="form-group row">
+                                  <div class="form-group row" style="margin-right:300px;">
                                     <label for="carNm" class="col-sm-2 control-label col-form-label">대표자명 *</label>
                                     <div class="col-sm-10">
                                       <% if(data != null && data.length > 0) { %>
@@ -115,7 +133,7 @@
                                       <% } %>
                                     </div>
                                   </div>
-                                  <div class="form-group row">
+                                  <div class="form-group row" style="margin-right:300px;">
                                       <label for="useDte" class="col-sm-2 control-label col-form-label">설립일자 *</label>
                                       <div class="col-sm-10">
                                         <% if(data != null && data.length > 0) { %>
@@ -125,7 +143,7 @@
                                         <% } %>
                                       </div>
                                   </div>
-                                  <div class="form-group row">
+                                  <div class="form-group row" style="margin-right:300px;">
                                       <label for="remark" class="col-sm-2 control-label col-form-label">비고</label>
                                       <div class="col-sm-10">
                                         <% if(data != null && data.length > 0) { %>
@@ -140,16 +158,17 @@
                                   <div class="card-body" style="text-align: center;">
                                       <button type="submit" class="btn btn-info" id="mSubmit">저장</button>
                                       <button type="button" class="btn btn-info" onclick="location.href='/buss'">목록</button>
-                                      <button type="button" class="btn btn-info" onclick="openTextFile()">업로드</button>
+                                      <!-- <button type="button" class="btn btn-info" onclick="openTextFile()">업로드</button> -->
                                       <!-- <div id = 'output'></div> -->
                                       <!-- <img id = 'targetImg'> -->
                                   </div>
                               </div>
                           </form>
-                          <form name='ocr' action='/bussForm/ocr' encType='multipart/form-data' method="post" align="right">
+                          <!-- <form name='ocr' action='/bussForm/ocr' encType='multipart/form-data' method="post" align="right">
                             <input type='file' name='profile_img' accept='image/jpg, image/png, image/jpeg' />
+                            <input type="text" class="form-control" id="file" name="file" value = "aaa">
                             <input type='submit' value='업로드' />
-                          </form>
+                          </form> -->
                       </div>
                       
                   </div>
@@ -212,18 +231,26 @@ function openTextFile(){
   input.onchange=function(event){
     processFile(event.target.files[0]);
   };
-  var form = document.ocr;
-  form.submit();
+
 }
 
-function processFile(file){
+async function processFile(file){
   var reader= new FileReader();
 
   reader.onload=function(){
-    var result = reader.result;
-  output.innerText = result;
+  var result = reader.result;
+  document.getElementById('file').value = result;
   document.getElementById('targetImg').setAttribute('src', result);
   };
   reader.readAsDataURL(file);
 }
+
+window.onload = function(){
+  alert(data[0].BASE64);
+  if(data != null && data.length > 0) {
+    document.getElementById('targetImg').setAttribute('src', data[0].BASE64);
+  }
+}
+
+
 </script>

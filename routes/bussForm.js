@@ -94,21 +94,24 @@ router.post('/update/:bussCd', function(req, res, next) {
 
 
 router.post('/ocr', upload.single('profile_img'), async function (req, res, next) {
-    console.log(JSON.stringify(req.body));
-    console.log(req.file);
+    // console.log(JSON.stringify(req.body.file));
+    // console.log("@@@@@@@@@@@@" + req.body.file);
     // console.log(req.file.filename);
-    console.log(req.body.url);
+    // console.log(req.body.url);
 
     let param = JSON.parse(JSON.stringify(req.body));
-
+    var base64 = req.body.file.split(",")[1];
+    //console.log(base64);
     var data = "";
     var jsonParams = {
         "images": [
           {
             "format": "jpg",
             "name": "demo",
-            "data": null,
-            "url": "http://www.ajugeotec.co.kr/static/images/sub/sheet_l1.jpg"
+            "data": base64,
+            "url": null
+            // "data": null,
+            // "url": "http://www.ajugeotec.co.kr/static/images/sub/sheet_l1.jpg"
           }
         ],
         "lang": "ko",
@@ -152,7 +155,8 @@ router.post('/ocr', upload.single('profile_img'), async function (req, res, next
         PUBLYMD : '',
         CHIEF : '',
         BUSSNO : '',
-        ADDR : ''
+        ADDR : '',
+        BASE64 : ''
       }];
       for(var i = 0 ; i < data.length; i ++){
         console.log(data[i]);
@@ -170,7 +174,9 @@ router.post('/ocr', upload.single('profile_img'), async function (req, res, next
           ocrMap[0].ADDR = data[i].inferText;
         }
       }
-      console.log(">>>>>>>>>>>>>>>>>>>" + JSON.stringify(ocrMap[0]));
+      ocrMap[0].BASE64 = req.body.file;
+      // console.log(">>>>>>>>>>>>>>>>>>>" + JSON.stringify(ocrMap[0]));
+      console.log(ocrMap[0].BASE64);
       res.render('bussForm', {data: ocrMap});
   })
 
